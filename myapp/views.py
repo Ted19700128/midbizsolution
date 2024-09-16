@@ -31,3 +31,7 @@ def equipment_list(request):
     equipments = Equipment.objects.all()  # 모든 설비를 조회
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
+from django.http import HttpResponse
+
+def health_check(request):
+    return HttpResponse("OK", content_type="text/plain")

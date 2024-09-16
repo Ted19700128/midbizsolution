@@ -3,11 +3,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = 'False'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'tedsmanagement.net']
+ALLOWED_HOSTS = ['port-0-midbizsolution-m12xvpzt0e7e6518.sel4.cloudtype.app','localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
