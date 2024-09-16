@@ -8,6 +8,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 DEBUG = False
 
 ALLOWED_HOSTS = ['port-0-midbizsolution-m12xvpzt0e7e6518.sel4.cloudtype.app','localhost']
+CSRF_TRUSTED_ORIGINS = [
+    'http://port-0-midbizsolution-m12xvpzt0e7e6518.sel4.cloudtype.app',
+    'http://localhost',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
