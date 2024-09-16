@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import EquipmentForm
 from .models import Equipment
+from django.views.decorators.csrf import csrf_exempt  # CSRF 검증 비활성화를 위한 임포트
+from django.http import HttpResponse
 
 # 설비 생성 뷰
+@csrf_exempt  # CSRF 검증 비활성화
 def create_equipment(request):
     if request.method == 'POST':
         form = EquipmentForm(request.POST)
@@ -31,7 +34,6 @@ def equipment_list(request):
     equipments = Equipment.objects.all()  # 모든 설비를 조회
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
-from django.http import HttpResponse
-
 def health_check(request):
     return HttpResponse("OK", content_type="text/plain")
+
