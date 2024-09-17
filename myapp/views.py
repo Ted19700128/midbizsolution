@@ -32,6 +32,7 @@ def equipment_menu(request):
         'create_equipment': reverse('create_equipment'),
         'equipment_list_edit_mode': reverse('equipment_list_edit_mode'),
         'mode': mode,
+        'show_table': show_table,
         'equipments': equipments,
     }
     return render(request, 'myapp/equipment_menu.html', context)
