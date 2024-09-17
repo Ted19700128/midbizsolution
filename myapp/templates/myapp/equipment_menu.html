@@ -1,4 +1,4 @@
-<!-- templates/myapp/equipment_menu.html -->
+#equipment_menu.html
 
 {% extends 'base.html' %}
 
@@ -6,50 +6,64 @@
 
 {% block content %}
 <h2>설비관리대장</h2>
-<div class="d-flex justify-content-between mb-3">
-    <div>
-        <a href="{{ create_equipment }}" class="btn btn-success">생성</a>
-        <button class="btn btn-warning" id="changeModeButton" onclick="location.href='?mode=edit'">변경</button>
-    </div>
-    <div>
-        <button class="btn btn-secondary" onclick="exportToExcel()">엑셀로 내보내기</button>
-    </div>
+<div>
+    <button class="btn" onclick="location.href='{{ create_equipment }}'">생성</button>
+    <button class="btn" onclick="location.href='?mode=edit'">변경</button>
+    <button class="btn" onclick="location.href='?mode=view'">조회</button>
 </div>
 
+<!-- 테이블을 이 페이지에 포함 -->
 {% if show_table %}
+<div id="equipment-table" style="margin-top: 20px;">
+    <!-- 엑셀로 내보내기 버튼 -->
+    <div style="text-align: right; margin-bottom: 10px;">
+        <button class="btn" onclick="exportToExcel()">엑셀로 내보내기</button>
+    </div>
     {% if mode == 'edit' %}
-        <form method="post" action="{% url 'delete_equipment' %}" id="deleteForm">
-            {% csrf_token %}
-            {% include 'myapp/equipment_table.html' %}
-            <!-- 수정 및 삭제 버튼 -->
-            <div class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn btn-primary mr-2" id="editButton" disabled>수정</button>
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal" id="deleteButton" disabled>삭제</button>
-            </div>
-        </form>
-
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmModalLabel">삭제 확인</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                정말 삭제하시겠습니까?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">예</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- 수정 및 삭제를 위한 폼 시작 -->
+    <form method="post" action="">
+        {% csrf_token %}
     {% endif %}
-    {% include 'myapp/equipment_table.html' %}
+        <table>
+            <thead>
+                <tr>
+                    {% if mode == 'edit' %}
+                    <th><input type="checkbox" id="select_all"></th>
+                    {% endif %}
+                    <th>설비 번호</th>
+                    <th>설비명</th>
+                    <th>제조사</th>
+                    <th>설비 사양</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipment in equipments %}
+                <tr>
+                    {% if mode == 'edit' %}
+                    <td><input type="checkbox" name="equipment_ids" value="{{ equipment.id }}"></td>
+                    {% endif %}
+                    <td>{{ equipment.equipment_number }}</td>
+                    <td>{{ equipment.name }}</td>
+                    <td>{{ equipment.manufacturer }}</td>
+                    <td>{{ equipment.specs }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비가 없습니다.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% if mode == 'edit' %}
+        <!-- 수정 및 삭제 버튼 -->
+        <div style="margin-top: 10px;">
+            <button class="btn" type="submit" formaction="{% url 'update_equipment' %}">수정</button>
+            <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
+        </div>
+    </form>
+    <!-- 폼 종료 -->
+    {% endif %}
+</div>
 {% endif %}
 
 {% endblock %}
@@ -58,45 +72,15 @@
 {% if mode == 'edit' %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
-    const editButton = document.getElementById('editButton');
-    const deleteButton = document.getElementById('deleteButton');
     const selectAllCheckbox = document.getElementById('select_all');
-    
-    function updateButtons() {
-        const checked = document.querySelectorAll('input[name="equipment_ids"]:checked').length;
-        editButton.disabled = checked !== 1;
-        deleteButton.disabled = checked < 1;
-    }
-    
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', updateButtons);
-    });
-    
     if (selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
         selectAllCheckbox.addEventListener('change', function() {
             checkboxes.forEach(function(checkbox) {
                 checkbox.checked = selectAllCheckbox.checked;
             });
-            updateButtons();
         });
     }
-    
-    updateButtons(); // 초기 버튼 상태 설정
-
-    // 수정 버튼 클릭 시
-    editButton.addEventListener('click', function() {
-        const checkedBox = document.querySelector('input[name="equipment_ids"]:checked');
-        if (checkedBox) {
-            const equipmentId = checkedBox.value;
-            window.location.href = "{% url 'update_equipment' equipment_id=0 %}".replace('/0/', '/' + equipmentId + '/');
-        }
-    });
-
-    // 삭제 확인 버튼 클릭 시 폼 제출
-    document.getElementById('confirmDeleteButton').addEventListener('click', function() {
-        document.getElementById('deleteForm').submit();
-    });
 });
 </script>
 {% endif %}
@@ -106,5 +90,3 @@ function exportToExcel() {
 }
 </script>
 {% endblock %}
-
-

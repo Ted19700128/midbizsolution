@@ -1,6 +1,4 @@
-<!-- templates/myapp/equipment_table.html -->
-
-<table class="table table-bordered">
+<table>
     <thead>
         <tr>
             {% if mode == 'edit' %}
@@ -10,9 +8,6 @@
             <th>설비명</th>
             <th>제조사</th>
             <th>설비 사양</th>
-            {% if mode == 'edit' %}
-            <th>Actions</th> <!-- '수정' 버튼을 위한 열 추가 -->
-            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -25,16 +20,10 @@
             <td>{{ equipment.name }}</td>
             <td>{{ equipment.manufacturer }}</td>
             <td>{{ equipment.specs }}</td>
-            {% if mode == 'edit' %}
-            <td>
-                <!-- 개별 수정 버튼 (선택된 설비에 따라 활성화됨) -->
-                <!-- 현재 폼 외부에 개별 수정 버튼을 구현했으므로 이 부분은 생략 가능합니다. -->
-            </td>
-            {% endif %}
         </tr>
         {% empty %}
         <tr>
-            <td colspan="{% if mode == 'edit' %}6{% else %}5{% endif %}">등록된 설비가 없습니다.</td>
+            <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비가 없습니다.</td>
         </tr>
         {% endfor %}
     </tbody>
