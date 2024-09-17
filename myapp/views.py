@@ -26,7 +26,7 @@ def solutions(request):
 
 def equipment_menu(request):
     mode = request.GET.get('mode')
-    show_table = mode in ['edit', 'view']
+    show_table = True
     equipments = Equipment.objects.all() if show_table else None
     context = {
         'create_equipment': reverse('create_equipment'),

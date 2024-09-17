@@ -7,9 +7,8 @@
 <div>
     <button class="btn" onclick="location.href='{{ create_equipment }}'">생성</button>
     <button class="btn" onclick="location.href='?mode=edit'">변경</button>
-    <button class="btn" onclick="location.href='?mode=view'">조회</button>
+    # <button class="btn" onclick="location.href='?mode=view'">조회</button>
 </div>
-{% include 'myapp/equipment_table.html' %}
 
 {% if show_table %}
     <!-- 엑셀로 내보내기 버튼 -->
