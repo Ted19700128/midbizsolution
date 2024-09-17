@@ -60,22 +60,18 @@ def update_equipment(request):
         equipment = get_object_or_404(Equipment, id=equipment_id)
         
         # 수정 확인 처리
-        if request.POST.get('confirm_update'):
-            form = EquipmentForm(request.POST, instance=equipment)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
-                return redirect('equipment_menu')
-            else:
-                # 폼이 유효하지 않은 경우, 폼을 다시 렌더링
-                messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
-                return render(request, 'myapp/update_equipment.html', {'form': form})
+        form = EquipmentForm(request.POST, instance=equipment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
+            return redirect('equipment_menu')
         else:
-            # POST 요청이지만 'confirm_update'가 없는 경우도 폼을 다시 렌더링
-            form = EquipmentForm(instance=equipment)
+            # 폼이 유효하지 않은 경우, 폼을 다시 렌더링
+            messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
             return render(request, 'myapp/update_equipment.html', {'form': form})
     else:
-        # GET 요청 또는 잘못된 POST 요청은 기본 메뉴로 리디렉션
+        # GET 요청 시 폼을 보여줌
+        messages.error(request, "변경할 설비를 선택하세요.")
         return redirect('equipment_menu')
     
 def delete_equipment(request):
