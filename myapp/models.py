@@ -1,3 +1,5 @@
+# myapp/models.py
+
 from django.db import models
 
 class Equipment(models.Model):
@@ -8,10 +10,15 @@ class Equipment(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.equipment_number:
-            last_equipment = Equipment.objects.all().order_by('id').last()
+            last_equipment = Equipment.objects.order_by('id').last()
             if last_equipment:
-                new_number = int(last_equipment.equipment_number[2:]) + 1
-                self.equipment_number = f'PF{str(new_number).zfill(3)}'
+                last_number = int(last_equipment.equipment_number[2:])
+                new_number = f'PF{last_number + 1:03d}'
             else:
-                self.equipment_number = 'PF001'
+                new_number = 'PF001'
+            self.equipment_number = new_number
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.equipment_number} - {self.name}"
+

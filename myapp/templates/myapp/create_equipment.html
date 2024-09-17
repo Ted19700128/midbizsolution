@@ -1,64 +1,30 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설비 생성</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
+<!-- templates/myapp/create_equipment.html -->
 
-        h1 {
-            color: #333;
-        }
+{% extends 'base.html' %}
 
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+{% block title %}설비 생성{% endblock %}
 
-        label {
-            font-weight: bold;
-        }
+{% block content %}
 
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+<h2>설비 생성</h2>
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>{{ form.name.label_tag }}</th>
+            <td>{{ form.name }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.manufacturer.label_tag }}</th>
+            <td>{{ form.manufacturer }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.specs.label_tag }}</th>
+            <td>{{ form.specs }}</td>
+        </tr>
+    </table>
+    <button type="submit">완료</button>
+</form>
 
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>설비 생성</h1>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">완료</button>
-    </form>
-
-</body>
-</html>
+{% endblock %}

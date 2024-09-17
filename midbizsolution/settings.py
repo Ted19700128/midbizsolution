@@ -38,7 +38,7 @@ ROOT_URLCONF = 'midbizsolution.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # 공통 템플릿 디렉토리 지정,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
