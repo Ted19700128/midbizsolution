@@ -8,6 +8,21 @@ from django.contrib import messages
 from .models import Equipment
 from .forms import EquipmentForm
 
+def landing_page(request):
+    return render(request, 'myapp/landing_page.html')
+
+def translation(request):
+    return render(request, 'myapp/translation.html')
+
+def music(request):
+    return render(request, 'myapp/music.html')
+
+def travel(request):
+    return render(request, 'myapp/travel.html')
+
+def solutions(request):
+    return render(request, 'myapp/solutions.html')
+
 def equipment_menu(request):
     equipments = Equipment.objects.all()
     context = {
@@ -16,6 +31,51 @@ def equipment_menu(request):
         'equipment_list_edit_mode': reverse('equipment_list_edit_mode'),
     }
     return render(request, 'myapp/equipment_menu.html', context)
+
+def equipment_list(request):
+    equipments = Equipment.objects.all()
+    return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
+
+def update_equipment(request):
+    if request.method == 'POST':
+        equipment_ids = request.POST.getlist('equipment_ids')
+        if not equipment_ids:
+            messages.error(request, "변경할 설비를 선택하세요.")
+            return redirect('equipment_list_edit_mode')
+        elif len(equipment_ids) > 1:
+            messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
+            return redirect('equipment_list_edit_mode')
+        else:
+            equipment_id = equipment_ids[0]
+            equipment = get_object_or_404(Equipment, id=equipment_id)
+            if request.POST.get('confirm_update'):
+                form = EquipmentForm(request.POST, instance=equipment)
+                if form.is_valid():
+                    form.save()
+                    return redirect('equipment_list')
+            else:
+                form = EquipmentForm(instance=equipment)
+            return render(request, 'myapp/update_equipment.html', {'form': form})
+    else:
+        return redirect('equipment_list')
+    
+def delete_equipment(request):
+    if request.method == 'POST':
+        equipment_ids = request.POST.getlist('equipment_ids')
+        if equipment_ids:
+            if 'confirm_delete' in request.POST:
+                Equipment.objects.filter(id__in=equipment_ids).delete()
+                return redirect('equipment_list')
+            elif 'cancel_delete' in request.POST:
+                return redirect('equipment_list_edit_mode')
+            else:
+                equipments = Equipment.objects.filter(id__in=equipment_ids)
+                return render(request, 'myapp/delete_confirmation.html', {'equipments': equipments})
+        else:
+            messages.error(request, "삭제할 설비를 선택하세요.")
+            return redirect('equipment_list_edit_mode')
+    else:
+        return redirect('equipment_list')
 
 def export_to_excel(request):
     filename = request.GET.get('filename', 'equipment_list.xlsx')
@@ -58,4 +118,6 @@ def equipment_list_edit_mode(request):
     equipments = Equipment.objects.all()
     return render(request, 'myapp/equipment_list_edit.html', {'equipments': equipments})
 
-# 필요에 따라 다른 뷰 함수들도 포함될 수 있습니다.
+def health_check(request):
+    return HttpResponse("OK", content_type="text/plain")
+
