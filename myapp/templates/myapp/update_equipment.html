@@ -13,7 +13,7 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">완료</button>
+    <button type="submit" name="confirm_update">완료</button>
     <button type="button" class="btn" onclick="window.history.back();">취소</button>
 </form>
 
