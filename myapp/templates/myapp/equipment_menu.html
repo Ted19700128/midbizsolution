@@ -9,6 +9,7 @@
     <button class="btn" onclick="location.href='?mode=edit'">변경</button>
     <button class="btn" onclick="location.href='?mode=view'">조회</button>
 </div>
+{% include 'myapp/equipment_table.html' %}
 
 {% if show_table %}
     <!-- 엑셀로 내보내기 버튼 -->
@@ -26,8 +27,8 @@
             <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
         </div>
     </form>
-    {% elif mode == 'view' %}
-    {% include 'myapp/equipment_table.html' %}
+    #{% elif mode == 'view' %}
+    #{% include 'myapp/equipment_table.html' %}
     {% endif %}
 {% endif %}
 

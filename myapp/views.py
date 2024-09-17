@@ -74,9 +74,8 @@ def delete_equipment(request):
         if equipment_ids:
             if 'confirm_delete' in request.POST:
                 Equipment.objects.filter(id__in=equipment_ids).delete()
-                
-                return render(request, 'myapp/update_equipment.html')
-            
+                return redirect('equipment_menu')
+                   
             else:
                 equipments = Equipment.objects.filter(id__in=equipment_ids)
                 return render(request, 'myapp/delete_confirmation.html', {'equipments': equipments})
