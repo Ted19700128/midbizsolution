@@ -63,7 +63,6 @@ def update_equipment(request):
         form = EquipmentForm(request.POST, instance=equipment)
         if form.is_valid():
             form.save()
-            messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
             return redirect('equipment_menu')
         else:
             # 폼이 유효하지 않을 경우, 입력된 데이터와 함께 폼을 다시 렌더링
@@ -92,7 +91,6 @@ def delete_equipment(request):
         
         # 설비 삭제
         Equipment.objects.filter(id__in=equipment_ids).delete()
-        messages.success(request, "선택한 설비가 삭제되었습니다.")
         return redirect('equipment_menu')
     else:
         # GET 요청 시 기본적으로 equipment_menu로 리디렉션

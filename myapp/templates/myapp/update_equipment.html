@@ -10,7 +10,7 @@
 
 <form method="post">
     {% csrf_token %}
-    <!-- 숨겨진 필드로 equipment_id 전달 -->
+    <!-- 숨겨진 필드로 equipment_id 전달 (필요한 경우) -->
     {% if equipment_id %}
         <input type="hidden" name="equipment_ids" value="{{ equipment_id }}">
     {% endif %}
@@ -20,5 +20,4 @@
 </form>
 
 {% endblock %}
-
 

@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2>설비관리대장</h2>
-<div>
+<div class="mb-3">
     <button class="btn btn-success" onclick="location.href='{{ create_equipment }}'">생성</button>
     <button class="btn btn-warning" onclick="location.href='?mode=edit'">변경</button>
     <!-- 조회 버튼은 주석 처리됨 -->
@@ -14,24 +14,42 @@
 
 {% if show_table %}
     <!-- 엑셀로 내보내기 버튼 -->
-    <div style="text-align: right; margin-bottom: 10px; margin-top: 20px;">
+    <div class="text-right mb-3">
         <button class="btn btn-secondary" onclick="exportToExcel()">엑셀로 내보내기</button>
     </div>
     
     {% if mode == 'edit' %}
     <!-- 변경 모드: 체크박스가 포함된 테이블과 수정/삭제 버튼 -->
-    <form method="post" action="{% url 'update_equipment' %}">
+    <form method="post" action="{% url 'delete_equipment' %}" id="deleteForm">
         {% csrf_token %}
         {% include 'myapp/equipment_table.html' %}
         <!-- 수정 및 삭제 버튼 -->
-        <div style="margin-top: 10px;">
-            <button class="btn btn-primary" type="submit">수정</button>
-            <button class="btn btn-danger" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
+        <div class="mt-3">
+            <button class="btn btn-primary" type="submit" id="editButton" disabled>수정</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmModal" id="deleteButton" disabled>삭제</button>
         </div>
     </form>
-    {% else %}
-        <!-- 'view' 모드나 기본 모드인 경우 테이블을 표시 -->
-        {% include 'myapp/equipment_table.html' %}
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmModalLabel">삭제 확인</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            정말 삭제하시겠습니까?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteButton">예</button>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endif %}
 {% endif %}
 
@@ -40,15 +58,49 @@
 {% block extra_js %}
 {% if mode == 'edit' %}
 <script>
+// Enable/Disable buttons based on checkbox selection
 document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
+    const editButton = document.getElementById('editButton');
+    const deleteButton = document.getElementById('deleteButton');
     const selectAllCheckbox = document.getElementById('select_all');
+    
+    function updateButtons() {
+        const checked = document.querySelectorAll('input[name="equipment_ids"]:checked').length;
+        editButton.disabled = checked !== 1;
+        deleteButton.disabled = checked < 1;
+    }
+    
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', updateButtons);
+    });
+    
     if (selectAllCheckbox) {
-        const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
         selectAllCheckbox.addEventListener('change', function() {
             checkboxes.forEach(function(checkbox) {
                 checkbox.checked = selectAllCheckbox.checked;
             });
+            updateButtons();
         });
+    }
+    
+    updateButtons(); // 초기 버튼 상태 설정
+});
+
+// Handle the delete confirmation
+document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+    // Submit the form
+    document.getElementById('deleteForm').submit();
+});
+
+// Handle the edit button click (optional, based on selection)
+document.getElementById('editButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    const checkedBox = document.querySelector('input[name="equipment_ids"]:checked');
+    if (checkedBox) {
+        const equipmentId = checkedBox.value;
+        // Redirect to update page with equipment_id as GET parameter
+        window.location.href = "{% url 'update_equipment' %}?equipment_id=" + equipmentId;
     }
 });
 </script>

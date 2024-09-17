@@ -27,8 +27,8 @@
             <td>{{ equipment.specs }}</td>
             {% if mode == 'edit' %}
             <td>
-                <!-- 각 설비의 '수정' 버튼 -->
-                <a href="{% url 'update_equipment' %}?equipment_id={{ equipment.id }}" class="btn btn-primary">수정</a>
+                <!-- 개별 수정 버튼 (선택된 설비에 따라 활성화됨) -->
+                <!-- 이미 폼 외부에 개별 수정 버튼을 구현했으므로 이 부분은 생략 가능합니다. -->
             </td>
             {% endif %}
         </tr>
