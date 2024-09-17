@@ -1,5 +1,6 @@
 # myapp/views.py
 
+from io import BytesIO
 import pandas as pd
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -24,11 +25,15 @@ def solutions(request):
     return render(request, 'solutions.html')
 
 def equipment_menu(request):
-    equipments = Equipment.objects.all()
+    mode = request.GET.get('mode')
+    show_table = mode in ['edit', 'view']
+    equipments = Equipment.objects.all() if show_table else None
     context = {
-        'equipments': equipments,
         'create_equipment': reverse('create_equipment'),
         'equipment_list_edit_mode': reverse('equipment_list_edit_mode'),
+        'show_table': show_table,
+        'equipments': equipments,
+        'mode': mode,
     }
     return render(request, 'myapp/equipment_menu.html', context)
 
@@ -93,16 +98,17 @@ def export_to_excel(request):
 
     df = pd.DataFrame(data)
 
-    # 엑셀 파일로 변환
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # 엑셀 파일을 메모리에 생성
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False)
+    output.seek(0)  # 파일 포인터를 시작 위치로 이동
+
+    # HttpResponse에 엑셀 파일 작성
+    response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
-    with pd.ExcelWriter(response, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False)
-
     return response
-
-# 기타 뷰 함수들
 
 def create_equipment(request):
     if request.method == 'POST':
