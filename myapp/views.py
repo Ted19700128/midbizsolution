@@ -67,10 +67,16 @@ def update_equipment(request):
                 messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
                 return redirect('equipment_menu')
             else:
+                # 폼이 유효하지 않은 경우, 폼을 다시 렌더링
                 messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
+                return render(request, 'myapp/update_equipment.html', {'form': form})
         else:
-            # GET 요청으로 다시 렌더링
+            # POST 요청이지만 'confirm_update'가 없는 경우도 폼을 다시 렌더링
             form = EquipmentForm(instance=equipment)
+            return render(request, 'myapp/update_equipment.html', {'form': form})
+    else:
+        # GET 요청 또는 잘못된 POST 요청은 기본 메뉴로 리디렉션
+        return redirect('equipment_menu')
     
 def delete_equipment(request):
     if request.method == 'POST':
