@@ -48,7 +48,7 @@ def update_equipment(request, equipment_id):
         form = EquipmentForm(request.POST, instance=equipment)
         if form.is_valid():
             form.save()   
-            return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})                     
+            return redirect('equipment_menu')                    
         else:
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
     else:
