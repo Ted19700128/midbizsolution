@@ -10,10 +10,6 @@
 
 <form method="post">
     {% csrf_token %}
-    <!-- 숨겨진 필드로 equipment_id 전달 -->
-    {% if equipment_id %}
-        <input type="hidden" name="equipment_ids" value="{{ equipment_id }}">
-    {% endif %}
     {{ form.as_p }}
     <input type="submit" name="confirm_update" value="완료" class="btn btn-primary">
     <button type="button" class="btn btn-secondary" onclick="window.history.back();">취소</button>

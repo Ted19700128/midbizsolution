@@ -1,6 +1,6 @@
 <!-- templates/myapp/equipment_table.html -->
 
-<table>
+<table class="table">
     <thead>
         <tr>
             {% if mode == 'edit' %}
@@ -10,7 +10,7 @@
             <th>설비명</th>
             <th>제조사</th>
             <th>설비 사양</th>
-            <th>Actions</th> <!-- 수정 버튼을 위한 열 추가 -->
+            <th>Actions</th> <!-- '수정' 버튼을 위한 열 추가 -->
         </tr>
     </thead>
     <tbody>
@@ -24,13 +24,13 @@
             <td>{{ equipment.manufacturer }}</td>
             <td>{{ equipment.specs }}</td>
             <td>
-                <!-- 각 설비의 수정 페이지로 이동하는 버튼 -->
+                <!-- 각 설비의 '수정' 버튼 -->
                 <a href="{% url 'update_equipment' equipment.id %}" class="btn btn-primary">수정</a>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비가 없습니다.</td>
+            <td colspan="{% if mode == 'edit' %}6{% else %}5{% endif %}">등록된 설비가 없습니다.</td>
         </tr>
         {% endfor %}
     </tbody>

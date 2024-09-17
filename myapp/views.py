@@ -55,7 +55,7 @@ def update_equipment(request, equipment_id):
     else:
         form = EquipmentForm(instance=equipment)
     
-    return render(request, 'myapp/update_equipment.html', {'form': form})
+    return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})
     
 def delete_equipment(request):
     if request.method == 'POST':
