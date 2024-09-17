@@ -7,28 +7,30 @@
 <div>
     <button class="btn" onclick="location.href='{{ create_equipment }}'">생성</button>
     <button class="btn" onclick="location.href='?mode=edit'">변경</button>
-    <!---- <button class="btn" onclick="location.href='?mode=view'">조회</button> -->
+    <!-- 조회 버튼은 주석 처리됨 -->
 </div>
 
-{% if show_table %}
-    <!-- 엑셀로 내보내기 버튼 -->
-    <div style="text-align: right; margin-bottom: 10px;">
-        <button class="btn" onclick="exportToExcel()">엑셀로 내보내기</button>
+<!-- 테이블 표시 -->
+<!-- 엑셀로 내보내기 버튼 -->
+<div style="text-align: right; margin-bottom: 10px; margin-top: 20px;">
+    <button class="btn" onclick="exportToExcel()">엑셀로 내보내기</button>
+</div>
+
+<!-- 테이블을 항상 표시 -->
+{% if mode == 'edit' %}
+<!-- 변경 모드: 체크박스가 포함된 테이블 -->
+<form method="post" action="">
+    {% csrf_token %}
+    {% include 'myapp/equipment_table.html' %}
+    <!-- 수정 및 삭제 버튼 -->
+    <div style="margin-top: 10px;">
+        <button class="btn" type="submit" formaction="{% url 'update_equipment' %}">수정</button>
+        <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
     </div>
-    {% if mode == 'edit' %}
-    <!-- 변경 모드: 체크박스가 포함된 테이블 -->
-    <form method="post" action="">
-        {% csrf_token %}
-        {% include 'myapp/equipment_table.html' %}
-        <!-- 수정 및 삭제 버튼 -->
-        <div style="margin-top: 10px;">
-            <button class="btn" type="submit" formaction="{% url 'update_equipment' %}">수정</button>
-            <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
-        </div>
-    </form>
-    <!-- {% elif mode == 'view' %} 
-    {% include 'myapp/equipment_table.html' %} -->
-    {% endif %}
+</form>
+{% else %}
+<!-- 'view' 모드나 기본 모드인 경우 테이블을 표시 -->
+{% include 'myapp/equipment_table.html' %}
 {% endif %}
 
 {% endblock %}
