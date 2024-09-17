@@ -7,7 +7,7 @@
 <div>
     <button class="btn" onclick="location.href='{{ create_equipment }}'">생성</button>
     <button class="btn" onclick="location.href='?mode=edit'">변경</button>
-    # <button class="btn" onclick="location.href='?mode=view'">조회</button>
+    <!---- <button class="btn" onclick="location.href='?mode=view'">조회</button> -->
 </div>
 
 {% if show_table %}
@@ -26,8 +26,8 @@
             <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
         </div>
     </form>
-    #{% elif mode == 'view' %}
-    #{% include 'myapp/equipment_table.html' %}
+    <!-- {% elif mode == 'view' %} 
+    {% include 'myapp/equipment_table.html' %} -->
     {% endif %}
 {% endif %}
 
