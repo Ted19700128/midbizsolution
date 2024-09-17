@@ -47,9 +47,7 @@ def update_equipment(request, equipment_id):
     if request.method == 'POST':
         form = EquipmentForm(request.POST, instance=equipment)
         if form.is_valid():
-            form.save()
-            messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
-            return redirect('equipment_menu')
+            form.save()                        
         else:
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
     else:
