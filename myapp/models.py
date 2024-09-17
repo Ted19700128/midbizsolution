@@ -6,7 +6,7 @@ class Equipment(models.Model):
     equipment_number = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=255)
     manufacturer = models.CharField(max_length=255)
-    specs = models.TextField()
+    specs = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):
         if not self.equipment_number:

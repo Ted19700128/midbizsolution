@@ -41,38 +41,63 @@ def equipment_list(request):
     equipments = Equipment.objects.all()
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
-def update_equipment(request, equipment_id):
-    equipment = get_object_or_404(Equipment, id=equipment_id)
-    
+def update_equipment(request):
     if request.method == 'POST':
+        equipment_ids = request.POST.getlist('equipment_ids')
+        
+        # 설비 선택 여부 확인
+        if not equipment_ids:
+            messages.error(request, "변경할 설비를 선택하세요.")
+            return redirect('equipment_menu')
+        
+        # 다중 선택 방지
+        elif len(equipment_ids) > 1:
+            messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
+            return redirect('equipment_menu')
+        
+        # 하나의 설비만 선택한 경우
+        equipment_id = equipment_ids[0]
+        equipment = get_object_or_404(Equipment, id=equipment_id)
+        
+        # 수정 확인 처리
         form = EquipmentForm(request.POST, instance=equipment)
         if form.is_valid():
-            form.save()   
-            return redirect('equipment_menu')                    
+            form.save()
+            messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
+            return redirect('equipment_menu')
         else:
+            # 폼이 유효하지 않을 경우, 입력된 데이터와 함께 폼을 다시 렌더링
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
+            return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})
     else:
+        # GET 요청 시, equipment_id를 쿼리 매개변수로 받음
+        equipment_id = request.GET.get('equipment_id')
+        if not equipment_id:
+            messages.error(request, "변경할 설비를 선택하세요.")
+            return redirect('equipment_menu')
+        
+        equipment = get_object_or_404(Equipment, id=equipment_id)
         form = EquipmentForm(instance=equipment)
-    
-    return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})
+        
+        return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})
     
 def delete_equipment(request):
     if request.method == 'POST':
         equipment_ids = request.POST.getlist('equipment_ids')
-        if equipment_ids:
-            if 'confirm_delete' in request.POST:
-                Equipment.objects.filter(id__in=equipment_ids).delete()
-                return redirect('equipment_menu')
-                   
-            else:
-                equipments = Equipment.objects.filter(id__in=equipment_ids)
-                return render(request, 'myapp/delete_confirmation.html', {'equipments': equipments})
-        else:
+        
+        # 삭제할 설비 선택 여부 확인
+        if not equipment_ids:
             messages.error(request, "삭제할 설비를 선택하세요.")
             return redirect('equipment_menu')
-    else:
+        
+        # 설비 삭제
+        Equipment.objects.filter(id__in=equipment_ids).delete()
+        messages.success(request, "선택한 설비가 삭제되었습니다.")
         return redirect('equipment_menu')
-
+    else:
+        # GET 요청 시 기본적으로 equipment_menu로 리디렉션
+        return redirect('equipment_menu')
+        
 def export_to_excel(request):
     filename = request.GET.get('filename', 'equipment_list.xlsx')
     equipments = Equipment.objects.all()

@@ -9,7 +9,7 @@
 <div>
     <button class="btn btn-success" onclick="location.href='{{ create_equipment }}'">생성</button>
     <button class="btn btn-warning" onclick="location.href='?mode=edit'">변경</button>
-    <!-- <button class="btn btn-info" onclick="location.href='?mode=view'">조회</button> -->
+    <!-- 조회 버튼은 주석 처리됨 -->
 </div>
 
 {% if show_table %}
@@ -18,12 +18,41 @@
         <button class="btn btn-secondary" onclick="exportToExcel()">엑셀로 내보내기</button>
     </div>
     
-    {% include 'myapp/equipment_table.html' %}
+    {% if mode == 'edit' %}
+    <!-- 변경 모드: 체크박스가 포함된 테이블과 수정/삭제 버튼 -->
+    <form method="post" action="{% url 'update_equipment' %}">
+        {% csrf_token %}
+        {% include 'myapp/equipment_table.html' %}
+        <!-- 수정 및 삭제 버튼 -->
+        <div style="margin-top: 10px;">
+            <button class="btn btn-primary" type="submit">수정</button>
+            <button class="btn btn-danger" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
+        </div>
+    </form>
+    {% else %}
+        <!-- 'view' 모드나 기본 모드인 경우 테이블을 표시 -->
+        {% include 'myapp/equipment_table.html' %}
+    {% endif %}
 {% endif %}
 
 {% endblock %}
 
 {% block extra_js %}
+{% if mode == 'edit' %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('select_all');
+    if (selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
+        selectAllCheckbox.addEventListener('change', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+    }
+});
+</script>
+{% endif %}
 <script>
 function exportToExcel() {
     window.location.href = "{% url 'export_to_excel' %}";
