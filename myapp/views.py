@@ -29,9 +29,9 @@ def equipment_list(request):
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
 def equipment_menu(request):
-    mode = request.GET.get('mode')
+    mode = request.GET.get('mode', 'view')
     show_table = True  # 항상 테이블을 표시하도록 설정
-    equipments = Equipment.objects.all() if show_table else None
+    equipments = Equipment.objects.all()
 
     context = {
         'create_equipment': reverse('create_equipment'),
@@ -50,31 +50,27 @@ def update_equipment(request, equipment_id):
         if form.is_valid():
             form.save()
             messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
-            return redirect('equipment_menu')
+            return redirect('equipment_menu')  # 수정 후 설비 목록 페이지로 리다이렉트
         else:
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
     else:
         form = EquipmentForm(instance=equipment)
 
-    return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment': equipment})
+    return render(request, 'myapp/update_equipment.html', {'form': form})
 
 def delete_equipment(request):
     if request.method == 'POST':
         equipment_ids = request.POST.getlist('equipment_ids')
         
-        # 삭제할 설비 선택 여부 확인
         if not equipment_ids:
             messages.error(request, "삭제할 설비를 선택하세요.")
             return redirect('equipment_menu')
         
-        # 삭제 실행
         Equipment.objects.filter(id__in=equipment_ids).delete()
         messages.success(request, "선택한 설비가 성공적으로 삭제되었습니다.")
         return redirect('equipment_menu')
-    else:
-        # GET 요청 시 기본적으로 equipment_menu로 리디렉션
-        messages.error(request, "삭제할 설비를 선택하세요.")
-        return redirect('equipment_menu')
+    
+    return redirect('equipment_menu')  # GET 요청 시 기본적으로 equipment_menu로 리디렉
         
 def export_to_excel(request):
     filename = request.GET.get('filename', 'equipment_list.xlsx')

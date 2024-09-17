@@ -9,7 +9,7 @@
 <div class="d-flex justify-content-between mb-3">
     <div>
         <a href="{{ create_equipment }}" class="btn btn-success">생성</a>
-        <button class="btn btn-warning" id="changeModeButton">변경</button>
+        <button class="btn btn-warning" id="changeModeButton" onclick="location.href='?mode=edit'">변경</button>
     </div>
     <div>
         <button class="btn btn-secondary" onclick="exportToExcel()">엑셀로 내보내기</button>
@@ -106,4 +106,5 @@ function exportToExcel() {
 }
 </script>
 {% endblock %}
+
 
