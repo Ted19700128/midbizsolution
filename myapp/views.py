@@ -74,8 +74,8 @@ def delete_equipment(request):
         if equipment_ids:
             if 'confirm_delete' in request.POST:
                 Equipment.objects.filter(id__in=equipment_ids).delete()
-                messages.success(request, "선택한 설비가 삭제되었습니다.")
-                return redirect('equipment_menu')
+                
+                return render(request, 'myapp/update_equipment.html')
             
             else:
                 equipments = Equipment.objects.filter(id__in=equipment_ids)
