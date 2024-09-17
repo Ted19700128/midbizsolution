@@ -42,39 +42,35 @@ def equipment_list(request):
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
 def update_equipment(request):
-    # 설비 선택이 안된 경우 equipment_menu로 리디렉션
     if request.method == 'POST':
-        # POST 요청으로 선택한 설비 ID 가져오기
         equipment_ids = request.POST.getlist('equipment_ids')
-
+        
         # 설비 선택 여부 확인
         if not equipment_ids:
             messages.error(request, "변경할 설비를 선택하세요.")
-            return redirect('equipment_menu')
-
+                    
         # 다중 선택 방지
         elif len(equipment_ids) > 1:
             messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
             return redirect('equipment_menu')
-
+        
         # 하나의 설비만 선택한 경우
         equipment_id = equipment_ids[0]
         equipment = get_object_or_404(Equipment, id=equipment_id)
-
-        # 'confirm_update' 확인 후 폼 처리
-        form = EquipmentForm(request.POST, instance=equipment)
+        
+        # 수정 확인 처리
+        form = EquipmentForm(request.POST, instance=equipment)  # instance를 사용하여 기존 데이터를 유지하며 폼 초기화
         if form.is_valid():
             form.save()
             messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
             return redirect('equipment_menu')
         else:
-            # 폼이 유효하지 않으면 오류 메시지와 함께 폼을 다시 렌더링
+            # 폼이 유효하지 않을 경우, 입력된 데이터와 함께 폼을 다시 렌더링
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
             return render(request, 'myapp/update_equipment.html', {'form': form})
-    
-    # GET 요청 시 기본적으로 equipment_menu로 리디렉션
-    messages.error(request, "변경할 설비를 선택하세요.")
-    return redirect('equipment_menu')
+    else:
+        # GET 요청 시 기본적으로 equipment_menu로 리디렉션
+        return redirect('equipment_menu')
     
 def delete_equipment(request):
     if request.method == 'POST':
