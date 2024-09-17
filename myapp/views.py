@@ -118,7 +118,7 @@ def create_equipment(request):
         form = EquipmentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('equipment_list')
+            return redirect('equipment_menu')
     else:
         form = EquipmentForm()
     return render(request, 'myapp/create_equipment.html', {'form': form})
