@@ -9,19 +9,19 @@ from .models import Equipment
 from .forms import EquipmentForm
 
 def landing_page(request):
-    return render(request, 'myapp/landing_page.html')
+    return render(request, 'landing_page.html')
 
 def translation(request):
-    return render(request, 'myapp/translation.html')
+    return render(request, 'translation.html')
 
 def music(request):
-    return render(request, 'myapp/music.html')
+    return render(request, 'music.html')
 
 def travel(request):
-    return render(request, 'myapp/travel.html')
+    return render(request, 'travel.html')
 
 def solutions(request):
-    return render(request, 'myapp/solutions.html')
+    return render(request, 'solutions.html')
 
 def equipment_menu(request):
     equipments = Equipment.objects.all()
