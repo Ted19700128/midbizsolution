@@ -126,11 +126,13 @@ def export_to_excel(request):
 def create_equipment(request):
     if request.method == 'POST':
         form = EquipmentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('equipment_menu')
+        if 'confirm_edit' in request.POST:  # 'confirm_edit' 버튼이 눌렸을 때
+            if form.is_valid():  # 폼이 유효한 경우
+                form.save()  # 폼 저장
+                return redirect('equipment_menu')  # 메뉴로 리다이렉트
     else:
-        form = EquipmentForm()
+        form = EquipmentForm()  # GET 요청의 경우 빈 폼 생성
+
     return render(request, 'myapp/create_equipment.html', {'form': form})
 
 def equipment_list_edit_mode(request):
