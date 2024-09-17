@@ -2,7 +2,7 @@
 
 {% extends 'base.html' %}
 
-{% url 'equipment_list' as equipment_list_url %}
+{% url 'equipment_menu' as equipment_menu_url %}
 
 {% block title %}설비 정보 수정{% endblock %}
 
@@ -14,7 +14,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">완료</button>
-    <button type="button" onclick="window.location.href='{{ equipment_list_url }}'">취소</button>
+    <button type="button" class="btn" onclick="window.location.href='{{ equipment_menu_url }}'">취소</button>
 </form>
 
 {% endblock %}
