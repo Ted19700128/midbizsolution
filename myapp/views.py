@@ -1,10 +1,25 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from .forms import EquipmentForm
 from .models import Equipment
-from django.http import HttpResponse
 
 def landing_page(request):
-    return render(request, 'landing_page.html')  # 템플릿 경로에 맞게 수정
+    return render(request, 'landing_page.html')
+
+def translation(request):
+    return render(request, 'translation.html')
+
+def music(request):
+    return render(request, 'music.html')
+
+def travel(request):
+    return render(request, 'travel.html')
+
+def solutions(request):
+    return render(request, 'solutions.html')
+
+def equipment_menu(request):
+    return render(request, 'myapp/equipment_menu.html')
 
 def equipment_list(request):
     equipments = Equipment.objects.all()
