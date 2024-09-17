@@ -48,7 +48,8 @@ def update_equipment(request):
         # 설비 선택 여부 확인
         if not equipment_ids:
             messages.error(request, "변경할 설비를 선택하세요.")
-                    
+            return redirect('equipment_menu')
+        
         # 다중 선택 방지
         elif len(equipment_ids) > 1:
             messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
@@ -67,9 +68,10 @@ def update_equipment(request):
         else:
             # 폼이 유효하지 않을 경우, 입력된 데이터와 함께 폼을 다시 렌더링
             messages.error(request, "입력한 정보에 오류가 있습니다. 다시 시도해주세요.")
-            return render(request, 'myapp/update_equipment.html', {'form': form})
+            return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment_id': equipment_id})
     else:
         # GET 요청 시 기본적으로 equipment_menu로 리디렉션
+        messages.error(request, "변경할 설비를 선택하세요.")
         return redirect('equipment_menu')
     
 def delete_equipment(request):
