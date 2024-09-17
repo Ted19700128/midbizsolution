@@ -3,6 +3,7 @@
 from io import BytesIO
 import pandas as pd
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -32,7 +33,16 @@ def equipment_menu(request):
     mode = request.GET.get('mode', 'view')
     show_table = True  # 항상 테이블을 표시하도록 설정
     equipments = Equipment.objects.all() if show_table else None
-
+    
+    if mode == 'edit':
+        equipment_id = request.GET.get('equipment_id')
+        if not equipment_id:
+            return HttpResponseBadRequest("equipment_id가 제공되지 않았습니다.")
+        
+        equipment = get_object_or_404(Equipment, id=equipment_id)
+        update_url = reverse('update_equipment', kwargs={'equipment_id': equipment.id})
+        return HttpResponseRedirect(update_url)
+    
     context = {
         'create_equipment': reverse('create_equipment'),
         'mode': mode,
