@@ -50,21 +50,84 @@
     </div>
 </form>
 
-<!-- JavaScript 코드 추가 -->
+<!-- 모달 창 추가 -->
+<div id="custom-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>다수 선택 오류</h2>
+        </div>
+        <div class="modal-body">
+            <p>설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.</p>
+        </div>
+        <div class="modal-footer">
+            <button onclick="clearSelections()">확인</button>
+            <button onclick="closeModal()">취소</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* 모달 스타일 */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* Center vertically */
+    padding: 0;
+    border: 1px solid #888;
+    width: 400px; /* Could be more or less, depending on screen size */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: rgb(64,64,64); /* 검정색 배경 */
+    color: white; /* 흰색 글자 */
+    padding: 10px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    padding: 10px;
+    text-align: right;
+}
+
+.modal-footer button {
+    margin-left: 10px;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_js %}
 <script>
 function handleUpdate() {
     const checkboxes = document.querySelectorAll('input[name="equipment_ids"]:checked');
     if (checkboxes.length === 0) {
         alert("변경할 설비를 선택하세요.");
     } else if (checkboxes.length > 1) {
-        // 커스텀 메시지 창 생성
-        if (confirm("설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")) {
-            // 확인 버튼 클릭 시 체크박스 선택 해제
-            checkboxes.forEach(function(checkbox) {
-                checkbox.checked = false;
-            });
-        }
-        // 취소 버튼 클릭 시 아무 동작 안 함
+        // 커스텀 모달 창 열기
+        document.getElementById('custom-modal').style.display = 'block';
     } else {
         // 한 개의 설비만 선택된 경우 폼 제출
         const form = document.getElementById('equipment-form');
@@ -72,6 +135,19 @@ function handleUpdate() {
         form.submit();
     }
 }
-</script>
 
+function closeModal() {
+    document.getElementById('custom-modal').style.display = 'none';
+}
+
+function clearSelections() {
+    // 체크박스 선택 해제
+    const checkboxes = document.querySelectorAll('input[name="equipment_ids"]:checked');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+    // 모달 창 닫기
+    closeModal();
+}
+</script>
 {% endblock %}
