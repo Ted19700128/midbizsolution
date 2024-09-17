@@ -10,58 +10,25 @@
     <button class="btn" onclick="location.href='?mode=view'">조회</button>
 </div>
 
-<!-- 테이블을 이 페이지에 포함 -->
 {% if show_table %}
-<div id="equipment-table" style="margin-top: 20px;">
     <!-- 엑셀로 내보내기 버튼 -->
     <div style="text-align: right; margin-bottom: 10px;">
         <button class="btn" onclick="exportToExcel()">엑셀로 내보내기</button>
     </div>
     {% if mode == 'edit' %}
-    <!-- 수정 및 삭제를 위한 폼 시작 -->
+    <!-- 변경 모드: 체크박스가 포함된 테이블 -->
     <form method="post" action="">
         {% csrf_token %}
-    {% endif %}
-        <table>
-            <thead>
-                <tr>
-                    {% if mode == 'edit' %}
-                    <th><input type="checkbox" id="select_all"></th>
-                    {% endif %}
-                    <th>설비 번호</th>
-                    <th>설비명</th>
-                    <th>제조사</th>
-                    <th>설비 사양</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for equipment in equipments %}
-                <tr>
-                    {% if mode == 'edit' %}
-                    <td><input type="checkbox" name="equipment_ids" value="{{ equipment.id }}"></td>
-                    {% endif %}
-                    <td>{{ equipment.equipment_number }}</td>
-                    <td>{{ equipment.name }}</td>
-                    <td>{{ equipment.manufacturer }}</td>
-                    <td>{{ equipment.specs }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비가 없습니다.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% if mode == 'edit' %}
+        {% include 'myapp/equipment_table.html' %}
         <!-- 수정 및 삭제 버튼 -->
         <div style="margin-top: 10px;">
             <button class="btn" type="submit" formaction="{% url 'update_equipment' %}">수정</button>
             <button class="btn" type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
         </div>
     </form>
-    <!-- 폼 종료 -->
+    {% elif mode == 'view' %}
+    {% include 'myapp/equipment_table.html' %}
     {% endif %}
-</div>
 {% endif %}
 
 {% endblock %}

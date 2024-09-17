@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            {% if mode == 'edit' %}
+            <th><input type="checkbox" id="select_all"></th>
+            {% endif %}
+            <th>설비 번호</th>
+            <th>설비명</th>
+            <th>제조사</th>
+            <th>설비 사양</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for equipment in equipments %}
+        <tr>
+            {% if mode == 'edit' %}
+            <td><input type="checkbox" name="equipment_ids" value="{{ equipment.id }}"></td>
+            {% endif %}
+            <td>{{ equipment.equipment_number }}</td>
+            <td>{{ equipment.name }}</td>
+            <td>{{ equipment.manufacturer }}</td>
+            <td>{{ equipment.specs }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비가 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
