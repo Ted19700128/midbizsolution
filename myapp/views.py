@@ -71,16 +71,16 @@ def delete_equipment(request):
             if 'confirm_delete' in request.POST:
                 Equipment.objects.filter(id__in=equipment_ids).delete()
                 messages.success(request, "선택한 설비가 삭제되었습니다.")
-                #return redirect('equipment_list_edit_mode')
+                return redirect('equipment_list_edit_mode')
             elif 'cancel_delete' in request.POST:
                 messages.info(request, "삭제가 취소되었습니다.")
-                #return redirect('equipment_list_edit_mode')
+                return redirect('equipment_list_edit_mode')
             else:
                 equipments = Equipment.objects.filter(id__in=equipment_ids)
                 return render(request, 'myapp/delete_confirmation.html', {'equipments': equipments})
         else:
             messages.error(request, "삭제할 설비를 선택하세요.")
-            #return redirect('equipment_list_edit_mode')
+            return redirect('equipment_list_edit_mode')
     else:
         return redirect('equipment_menu')
 

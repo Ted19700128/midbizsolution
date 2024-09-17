@@ -14,7 +14,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">완료</button>
-    <button type="button" class="btn" onclick="window.location.href='{{ equipment_menu_url }}'">취소</button>
+    <button type="button" class="btn" onclick="window.history.back();">취소</button>
 </form>
 
 {% endblock %}
