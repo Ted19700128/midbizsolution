@@ -33,15 +33,15 @@ def equipment_menu(request):
     mode = request.GET.get('mode', 'view')
     show_table = True  # 항상 테이블을 표시하도록 설정
     equipments = Equipment.objects.all() if show_table else None
-    
+       
     if mode == 'edit':
-        equipment_id = request.GET.get('equipment_id')
+        equipment_id = request.GET.get('equipment_id')  # GET 파라미터에서 가져오기
         if not equipment_id:
-            return HttpResponseBadRequest("equipment_id가 제공되지 않았습니다.")
-        
+            messages.error(request, "변경할 장비의 ID가 제공되지 않았습니다.")
+            return redirect('equipment_list_edit_mode')  # 적절한 URL 이름으로 변경
         equipment = get_object_or_404(Equipment, id=equipment_id)
-        update_url = reverse('update_equipment', kwargs={'equipment_id': equipment.id})
-        return HttpResponseRedirect(update_url)
+        update_url = reverse('update_equipment', args=[equipment.id])
+        return redirect(update_url)
     
     context = {
         'create_equipment': reverse('create_equipment'),
@@ -52,28 +52,26 @@ def equipment_menu(request):
 
     return render(request, 'myapp/equipment_menu.html', context)
 
-def update_equipment(request):
+def update_equipment(request, equipment_id):
+    equipment = get_object_or_404(Equipment, id=equipment_id)
+    
     if request.method == 'POST':
-        equipment_ids = request.POST.getlist('equipment_ids')
-        if not equipment_ids:
-            messages.error(request, "변경할 설비를 선택하세요.")
-            return redirect('equipment_list_edit_mode')
-        elif len(equipment_ids) > 1:
-            messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
-            return redirect('equipment_list_edit_mode')
+        form = EquipmentForm(request.POST, instance=equipment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "장비가 성공적으로 업데이트되었습니다.")
+            return redirect('equipment_list')  # 적절한 URL 이름으로 변경
         else:
-            equipment_id = equipment_ids[0]
-            equipment = get_object_or_404(Equipment, id=equipment_id)
-            if request.POST.get('confirm_update'):
-                form = EquipmentForm(request.POST, instance=equipment)
-                if form.is_valid():
-                    form.save()
-                    return redirect('equipment_list')
-            else:
-                form = EquipmentForm(instance=equipment)
-            return render(request, 'myapp/update_equipment.html', {'form': form})
+            messages.error(request, "입력한 정보에 오류가 있습니다.")
     else:
-        return redirect('equipment_list')
+        form = EquipmentForm(instance=equipment)
+    
+    context = {
+        'form': form,
+        'equipment': equipment,
+    }
+    
+    return render(request, 'myapp/update_equipment.html', context)
 
 def delete_equipment(request):
     if request.method == 'POST':
