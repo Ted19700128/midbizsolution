@@ -46,10 +46,10 @@ def update_equipment(request):
         equipment_ids = request.POST.getlist('equipment_ids')
         if not equipment_ids:
             messages.error(request, "변경할 설비를 선택하세요.")
-            return redirect('equipment_list_edit_mode')
+            return redirect('equipment_menu')
         elif len(equipment_ids) > 1:
             messages.error(request, "설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")
-            return redirect('equipment_list_edit_mode')
+            return redirect('equipment_menu')
         else:
             equipment_id = equipment_ids[0]
             equipment = get_object_or_404(Equipment, id=equipment_id)
@@ -57,10 +57,14 @@ def update_equipment(request):
                 form = EquipmentForm(request.POST, instance=equipment)
                 if form.is_valid():
                     form.save()
+                    messages.success(request, "설비 정보가 성공적으로 수정되었습니다.")
                     return redirect('equipment_menu')
             else:
                 form = EquipmentForm(instance=equipment)
             return render(request, 'myapp/update_equipment.html', {'form': form})
+            context = {
+                'form': form,
+            }
     else:
         return redirect('equipment_menu')
     
