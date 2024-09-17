@@ -2,17 +2,14 @@
 
 {% extends 'base.html' %}
 
-{% block title %}설비관리대장{% endblock %}
+{% block title %}설비 목록{% endblock %}
 
 {% block content %}
 
-<h2>설비관리대장</h2>
+<h2>설비 목록</h2>
 
-<div>
-    <a href="{% url 'create_equipment' %}" class="btn">생성</a>
-    <a href="#" class="btn">변경</a>
-    <a href="{% url 'equipment_list' %}" class="btn">조회</a>
-</div>
+<a href="{% url 'create_equipment' %}" class="btn">새 설비 생성</a>
+<a href="{% url 'equipment_list_edit_mode' %}" class="btn">변경 모드</a>
 
 <table>
     <thead>

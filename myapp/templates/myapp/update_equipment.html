@@ -1,0 +1,22 @@
+<!-- templates/myapp/update_equipment.html -->
+
+{% extends 'base.html' %}
+
+{% url 'equipment_list' as equipment_list_url %}
+
+{% block title %}설비 정보 수정{% endblock %}
+
+{% block content %}
+
+<h2>설비 정보 수정</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">완료</button>
+    <button type="button" onclick="window.location.href='{{ equipment_list_url }}'">취소</button>
+</form>
+
+{% endblock %}
+
+

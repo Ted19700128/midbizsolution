@@ -1,0 +1,77 @@
+<!-- templates/myapp/equipment_list_edit.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}설비 목록 (변경 모드){% endblock %}
+
+{% block content %}
+
+<h2>설비 목록 (변경 모드)</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form id="equipment-form" method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th></th> <!-- 체크박스 열 -->
+                <th>설비 번호</th>
+                <th>설비명</th>
+                <th>제조사</th>
+                <th>설비 사양</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipment in equipments %}
+            <tr>
+                <td><input type="checkbox" name="equipment_ids" value="{{ equipment.id }}"></td>
+                <td>{{ equipment.equipment_number }}</td>
+                <td>{{ equipment.name }}</td>
+                <td>{{ equipment.manufacturer }}</td>
+                <td>{{ equipment.specs }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">등록된 설비가 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="text-align: right; margin-top: 10px;">
+        <button type="button" onclick="handleUpdate()">변경</button>
+        <button type="submit" formaction="{% url 'delete_equipment' %}">삭제</button>
+    </div>
+</form>
+
+<!-- JavaScript 코드 추가 -->
+<script>
+function handleUpdate() {
+    const checkboxes = document.querySelectorAll('input[name="equipment_ids"]:checked');
+    if (checkboxes.length === 0) {
+        alert("변경할 설비를 선택하세요.");
+    } else if (checkboxes.length > 1) {
+        // 커스텀 메시지 창 생성
+        if (confirm("설비 정보 수정은 한 번에 한 설비에 대해서만 가능합니다. 한 설비만 선택해 주세요.")) {
+            // 확인 버튼 클릭 시 체크박스 선택 해제
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+        }
+        // 취소 버튼 클릭 시 아무 동작 안 함
+    } else {
+        // 한 개의 설비만 선택된 경우 폼 제출
+        const form = document.getElementById('equipment-form');
+        form.action = "{% url 'update_equipment' %}";
+        form.submit();
+    }
+}
+</script>
+
+{% endblock %}
