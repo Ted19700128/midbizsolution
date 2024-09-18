@@ -157,16 +157,16 @@ def export_to_excel(request):
     # 엑셀 파일을 메모리에 생성
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False)
+        df.to_excel(writer, index=False, sheet_name='Equipments')  # 'Equipments'라는 시트 이름으로 저장
     
         # 현재 워크북과 시트를 가져옴
         workbook = writer.book
-        worksheet = writer.sheets['Equipments']
+        worksheet = writer.sheets['Equipments']  # 이제 'Equipments' 시트가 생성됨
         
         # 열 너비 설정
         for column_cells in worksheet.columns:
             max_length = max(len(str(cell.value)) for cell in column_cells)  # 각 열의 최대 길이 계산
-            max_length = max_length + 2  # 적절한 여백 추가
+            max_length += 2  # 적절한 여백 추가
             column_letter = get_column_letter(column_cells[0].column)  # 열의 이름 (A, B, C, ...)
             worksheet.column_dimensions[column_letter].width = max_length  # 열 너비 설정
     
