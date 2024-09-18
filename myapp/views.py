@@ -1,29 +1,27 @@
-# myapp/views.py
-
 from io import BytesIO
 import pandas as pd
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
+from django.db import transaction
 from .models import Equipment
 from .forms import EquipmentForm
 
 def landing_page(request):
-    return render(request, 'landing_page.html')
+    return render(request, 'myapp/landing_page.html')
 
 def translation(request):
-    return render(request, 'translation.html')
+    return render(request, 'myapp/translation.html')
 
 def music(request):
-    return render(request, 'music.html')
+    return render(request, 'myapp/music.html')
 
 def travel(request):
-    return render(request, 'travel.html')
+    return render(request, 'myapp/travel.html')
 
 def solutions(request):
-    return render(request, 'solutions.html')
+    return render(request, 'myapp/solutions.html')
 
 def equipment_list(request):
     equipments = Equipment.objects.all()
@@ -36,12 +34,13 @@ def equipment_menu(request):
        
     if mode == 'edit':
         equipment_id = request.GET.get('equipment_id')  # GET 파라미터에서 가져오기
-        if not equipment_id:
+        if equipment_id:
+            equipment = get_object_or_404(Equipment, id=equipment_id)
+            update_url = reverse('update_equipment', args=[equipment.id])
+            return redirect(update_url)
+        else:
             messages.error(request, "변경할 장비의 ID가 제공되지 않았습니다.")
             return redirect('equipment_list_edit_mode')  # 적절한 URL 이름으로 변경
-        equipment = get_object_or_404(Equipment, id=equipment_id)
-        update_url = reverse('update_equipment', args=[equipment.id])
-        return redirect(update_url)
     
     context = {
         'create_equipment': reverse('create_equipment'),
@@ -80,32 +79,28 @@ def delete_equipment(request):
             if 'confirm_delete' in request.POST:
                 Equipment.objects.filter(id__in=equipment_ids).delete()
                 messages.success(request, "선택한 설비가 삭제되었습니다.")
-                return redirect('equipment_menu')
-            elif 'cancel_delete' in request.POST:
-                messages.info(request, "삭제가 취소되었습니다.")
-                return redirect('equipment_menu')
             else:
-                equipments = Equipment.objects.filter(id__in=equipment_ids)
-                return render(request, 'myapp/delete_confirmation.html', {'equipments': equipments})
+                messages.info(request, "삭제가 취소되었습니다.")
+            return redirect('equipment_menu')
         else:
             messages.error(request, "삭제할 설비를 선택하세요.")
             return redirect('equipment_menu')
-    else:
-        return redirect('equipment_menu')
-        
+    return redirect('equipment_menu')
+
 def export_to_excel(request):
     filename = request.GET.get('filename', 'equipment_list.xlsx')
     equipments = Equipment.objects.all()
 
     # 데이터프레임 생성
-    data = []
-    for equipment in equipments:
-        data.append({
+    data = [
+        {
             '설비 번호': equipment.equipment_number,
             '설비명': equipment.name,
             '제조사': equipment.manufacturer,
             '설비 사양': equipment.specs,
-        })
+        }
+        for equipment in equipments
+    ]
 
     df = pd.DataFrame(data)
 
@@ -127,7 +122,10 @@ def create_equipment(request):
         if 'confirm_edit' in request.POST:  # 'confirm_edit' 버튼이 눌렸을 때
             if form.is_valid():  # 폼이 유효한 경우
                 form.save()  # 폼 저장
+                messages.success(request, "설비가 성공적으로 생성되었습니다.")
                 return redirect('equipment_menu')  # 메뉴로 리다이렉트
+            else:
+                messages.error(request, "입력한 정보에 오류가 있습니다.")
     else:
         form = EquipmentForm()  # GET 요청의 경우 빈 폼 생성
 
@@ -139,4 +137,3 @@ def equipment_list_edit_mode(request):
 
 def health_check(request):
     return HttpResponse("OK", content_type="text/plain")
-

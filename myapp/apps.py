@@ -1,3 +1,5 @@
+#!-- D:/web/midbizsolution/myapp/apps.py
+
 from django.apps import AppConfig
 
 
