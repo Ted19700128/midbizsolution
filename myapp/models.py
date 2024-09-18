@@ -7,7 +7,7 @@ class Equipment(models.Model):
     manufacturer = models.CharField(max_length=255)
     mfg_date = models.CharField(max_length=255)
     mfg_number = models.CharField(max_length=255)
-    types = models.CharField(max_length=255)
+    equipment_type = models.CharField(max_length=255)
     specs = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):

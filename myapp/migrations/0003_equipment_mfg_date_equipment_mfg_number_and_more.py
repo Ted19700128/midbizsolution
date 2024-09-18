@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='equipment',
-            name='types',
+            name='equipment_type',
             field=models.CharField(default='Unknown', max_length=255),
         ),
     ]

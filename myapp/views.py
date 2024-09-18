@@ -146,7 +146,7 @@ def export_to_excel(request):
             '제조사': equipment.manufacturer,
             '제조년월': equipment.mfg_date,
             '제조번호': equipment.mfg_number,
-            '형식': equipment.types,
+            '형식': equipment.equipment_type,
             '설비 사양': equipment.specs,
         }
         for equipment in equipments
