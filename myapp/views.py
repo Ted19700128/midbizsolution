@@ -61,8 +61,8 @@ def create_equipment(request):
             # 설비 번호 자동 부여 (예: PF001 형식)
             last_equipment = Equipment.objects.order_by('id').last()
             if last_equipment:
-                last_equipment_number = last_equipment.equipment_number
-                new_equipment_number = f'PF{int(last_equipment_number[2:]) + 1:03d}'
+                last_equipment_number = int(last_equipment.equipment_number[2:])
+                new_equipment_number = f'PF{last_equipment_number + 1:03d}'
             else:
                 new_equipment_number = 'PF001'
                     

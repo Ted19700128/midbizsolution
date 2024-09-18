@@ -10,20 +10,7 @@
 
 <form method="POST">
     {% csrf_token %}
-    <table>
-        <tr>
-            <th>{{ form.name.label_tag }}</th>
-            <td>{{ form.name }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.manufacturer.label_tag }}</th>
-            <td>{{ form.manufacturer }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.specs.label_tag }}</th>
-            <td>{{ form.specs }}</td>
-        </tr>
-    </table>
+    {{ form.as_p }}
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
