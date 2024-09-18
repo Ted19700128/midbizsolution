@@ -10,7 +10,7 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_custom }}
+    {{ form.as_p }}
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
