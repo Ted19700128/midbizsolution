@@ -10,7 +10,7 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}  <!-- equipment_number 필드를 제외하고 나머지 필드 출력 -->
+    {{ form.as_custom }}  <!-- equipment_number 필드를 제외하고 나머지 필드 출력 -->
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
