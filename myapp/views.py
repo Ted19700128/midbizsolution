@@ -65,7 +65,7 @@ def create_equipment(request):
                 new_equipment_number = f'PF{int(last_equipment_number[2:]) + 1:03d}'
             else:
                 new_equipment_number = 'PF001'
-            
+                    
             # 새 설비 생성
             new_equipment = form.save(commit=False)
             new_equipment.equipment_number = new_equipment_number
