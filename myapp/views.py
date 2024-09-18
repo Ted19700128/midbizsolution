@@ -39,7 +39,6 @@ def equipment_menu(request):
             update_url = reverse('update_equipment', args=[equipment.id])
             return redirect(update_url)
         else:
-            messages.error(request, "변경할 장비의 ID가 제공되지 않았습니다.")
             return redirect('equipment_list_edit_mode')  # 적절한 URL 이름으로 변경
     
     context = {
@@ -82,9 +81,9 @@ def delete_confirmation(request, equipment_id):
         if 'confirm_delete' in request.POST:
             equipment.delete()  # 장비 삭제
             messages.success(request, "장비가 성공적으로 삭제되었습니다.")
-            return redirect('equipment_list')  # 삭제 후 장비 목록으로 리디렉션
+            return redirect('equipment_list_edit_mode')  # 삭제 후 장비 목록으로 리디렉션
         else:
-            return redirect('equipment_list')  # '아니오' 버튼 클릭 시 장비 목록으로 리디렉션
+            return redirect('equipment_list_edit_mode')  # '아니오' 버튼 클릭 시 장비 목록으로 리디렉션
     
     return render(request, 'myapp/delete_confirmation.html', {'equipments': [equipment]})
 
