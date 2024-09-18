@@ -10,13 +10,12 @@
 
 <form method="post">
     {% csrf_token %}
-    <div class="form-group">
-        {{ form.name.label_tag }}<br>
-        {{ form.name }}<br>
-        {% if form.name.errors %}
-            <div class="error">{{ form.name.errors }}</div>
-        {% endif %}
-    </div>
+    <table>
+        <tr>
+            <th>{{ form.name.label_tag }}</th>
+            <td>{{ form.name }}</td>
+        </tr>
+    </table>
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
