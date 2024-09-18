@@ -8,8 +8,9 @@
 
 <h2>설비 생성</h2>
 
-<form method="POST" action="{% url 'create_equipment' %}">
+<form method="POST">
     {% csrf_token %}
+    {{ form.as_p }}
     <table>
         <tr>
             <th>{{ form.name.label_tag }}</th>
@@ -24,7 +25,7 @@
             <td>{{ form.specs }}</td>
         </tr>
     </table>
-    <button type="submit" name="confirm_create">완료</button>
+    <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
 
