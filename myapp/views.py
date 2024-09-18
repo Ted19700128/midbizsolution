@@ -71,7 +71,7 @@ def create_equipment(request):
             new_equipment.equipment_number = new_equipment_number
             new_equipment.save()
 
-            return redirect('equipment_list')  # 생성 후 설비 목록 페이지로 리다이렉트
+            return redirect('equipment_menu')  # 생성 후 설비 목록 페이지로 리다이렉트
     else:
         form = EquipmentForm()
     
@@ -123,10 +123,10 @@ def delete_equipment(request):
                 messages.success(request, "선택한 설비가 삭제되었습니다.")
             else:
                 messages.info(request, "삭제가 취소되었습니다.")
-            return redirect('equipment_menu')
+            return redirect('equipment_list_edit_mode')
         else:
             messages.error(request, "삭제할 설비를 선택하세요.")
-            return redirect('equipment_menu')
+            return redirect('equipment_list_edit_mode')
     return redirect('equipment_menu')
 
 def export_to_excel(request):
