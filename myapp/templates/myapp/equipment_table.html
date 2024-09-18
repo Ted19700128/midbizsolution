@@ -3,9 +3,6 @@
 <table>
     <thead>
         <tr>
-            {% if mode == 'edit' %}
-            <th><input type="checkbox" id="select_all"></th>
-            {% endif %}
             <th>설비 번호</th>
             <th>설비명</th>
             <th>모델명</th>
@@ -19,9 +16,6 @@
     <tbody>
         {% for equipment in equipments %}
         <tr>
-            {% if mode == 'edit' %}
-            <td><input type="checkbox" name="equipment_ids" value="{{ equipment.id }}"></td>
-            {% endif %}
             <td>{{ equipment.equipment_number }}</td>
             <td>{{ equipment.name }}</td>
             <td>{{ equipment.model_name }}</td>

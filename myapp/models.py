@@ -5,9 +5,9 @@ class Equipment(models.Model):
     name = models.CharField(max_length=255)
     model_name = models.CharField(max_length=255)
     manufacturer = models.CharField(max_length=255)
-    mfg_date = models.DateField(default="2024-09-01")
+    mfg_date = models.CharField(max_length=255)
     mfg_number = models.CharField(max_length=255)
-    types = models.CharField(max_length=255, default="Unknown")
+    types = models.CharField(max_length=255)
     specs = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):

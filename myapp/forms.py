@@ -12,25 +12,17 @@ class EquipmentForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manufacturer': forms.TextInput(attrs={'class': 'form-control'}),
-            'mfg_date': forms.DateInput(
-                attrs={
-                    'class': 'form-control',
-                    'type': 'month',
-                    'placeholder': 'YYYY-MM',
-                }
-            ),
+            'mfg_date': forms.TextInput(attrs={'class': 'form-control'}),
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'types': forms.TextInput(attrs={'class': 'form-control'}),
             'specs': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 
-    def as_custom(self):
-        """
-        Returns this form rendered as HTML <div>s for a custom layout,
-        excluding the 'equipment_number' field.
-        """
+    def as_custom(self, exclude_fields=None):
+        if exclude_fields is None:
+            exclude_fields = []
         output = []
         for field in self:
-            if field.name != 'equipment_number':  # 'equipment_number' 필드를 제외
-                output.append(f'<div class="form-group">{field.label_tag()} {field} {field.errors}</div>')
+            if field.name not in exclude_fields:
+                output.append(f'<div class="form-group">{field.label_tag()} {field} {field} {field.errors}</div>')
         return '\n'.join(output)
