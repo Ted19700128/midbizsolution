@@ -14,17 +14,23 @@
     <div class="form-group">
         {{ form.name.label_tag }}
         {{ form.name }}
-        {{ form.name.errors }}
+        {% if form.name.errors %}
+            <div class="error">{{ form.name.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         {{ form.manufacturer.label_tag }}
         {{ form.manufacturer }}
-        {{ form.manufacturer.errors }}
+        {% if form.manufacturer.errors %}
+            <div class="error">{{ form.manufacturer.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         {{ form.specs.label_tag }}
         {{ form.specs }}
-        {{ form.specs.errors }}
+        {% if form.specs.errors %}
+            <div class="error">{{ form.specs.errors }}</div>
+        {% endif %}
     </div>
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
