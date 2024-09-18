@@ -11,19 +11,14 @@
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <!-- 좌측: 생성/변경 버튼 -->
     <div>
-        <button class="btn btn-primary" style="height: 38px;" onclick="location.href='{{ create_equipment }}'">생성</button>
-        <button class="btn btn-primary" style="height: 38px;" onclick="location.href='?mode=edit'">변경</button>
+        <a href="{% url 'solutions' %}" class="btn-home">메인</a>
+        <button class="btn btn-primary" onclick="location.href='{{ create_equipment }}'">신규</button>
+        <button class="btn btn-primary" onclick="location.href='?mode=edit'">변경</button>
     </div>
 
     <!-- 우측: 홈/엑셀 내보내기 버튼 -->
     <div>
-        <!-- 홈 버튼 스타일 커스텀 -->
-        <a href="{% url 'solutions' %}" class="btn" 
-           style="background-color: rgb(0, 32, 96); color: white; border: none; padding: 6px 12px; font-size: 16px; line-height: 1.5; height: 38px;">
-            홈
-        </a>
-        <!-- 엑셀 내보내기 버튼 Bootstrap 스타일 유지 -->
-        <button class="btn btn-primary" style="height: 38px;" onclick="exportToExcel()">엑셀로 내보내기</button>
+        <button class="btn btn-primary" onclick="exportToExcel()">엑셀로 내보내기</button>
     </div>
 </div>
 
