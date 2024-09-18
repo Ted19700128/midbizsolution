@@ -134,7 +134,16 @@ def create_equipment(request):
     return render(request, 'myapp/create_equipment.html', {'form': form})
 
 def equipment_list_edit_mode(request):
-    equipments = Equipment.objects.all()
+    equipments = Equipment.objects.all()  # 모든 장비 목록을 가져옵니다.
+    
+    # 장비 선택 후 수정할 수 있도록 URL 생성 시 equipment_id 인수를 추가합니다.
+    if request.method == 'POST':
+        selected_id = request.POST.get('equipment_id')  # 사용자가 선택한 장비의 ID를 가져옵니다.
+        if selected_id:
+            return redirect('update_equipment', equipment_id=selected_id)  # equipment_id를 전달하여 URL 생성
+        else:
+            messages.error(request, "수정할 장비를 선택하세요.")
+    
     return render(request, 'myapp/equipment_list_edit.html', {'equipments': equipments})
 
 def health_check(request):
