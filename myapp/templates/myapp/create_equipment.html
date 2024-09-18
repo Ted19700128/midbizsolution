@@ -8,22 +8,24 @@
 
 <h2>설비 생성</h2>
 
-<form method="POST">
+<form method="post">
     {% csrf_token %}
-    <table>
-        <tr>
-            <th>{{ form.name.label_tag }}</th>
-            <td>{{ form.name }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.manufacturer.label_tag }}</th>
-            <td>{{ form.manufacturer }}</td>
-        </tr>
-        <tr>
-            <th>{{ form.specs.label_tag }}</th>
-            <td>{{ form.specs }}</td>
-        </tr>
-    </table>
+    {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
+    <div class="form-group">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.manufacturer.label_tag }}
+        {{ form.manufacturer }}
+        {{ form.manufacturer.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.specs.label_tag }}
+        {{ form.specs }}
+        {{ form.specs.errors }}
+    </div>
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>
