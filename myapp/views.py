@@ -27,6 +27,10 @@ def equipment_list(request):
     equipments = Equipment.objects.all()
     return render(request, 'myapp/equipment_list.html', {'equipments': equipments})
 
+def equipment_list_edit(request):
+    equipments = Equipment.objects.all()
+    return render(request, 'myapp/equipment_list_edit.html', {'equipments': equipments})
+
 def equipment_menu(request):
     mode = request.GET.get('mode', 'view')
     show_table = True  # 항상 테이블을 표시하도록 설정
@@ -50,19 +54,42 @@ def equipment_menu(request):
 
     return render(request, 'myapp/equipment_menu.html', context)
 
+def create_equipment(request):
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST)
+        if form.is_valid():
+            # 설비 번호 자동 부여 (예: PF001 형식)
+            last_equipment = Equipment.objects.order_by('id').last()
+            if last_equipment:
+                last_equipment_number = last_equipment.equipment_number
+                new_equipment_number = f'PF{int(last_equipment_number[2:]) + 1:03d}'
+            else:
+                new_equipment_number = 'PF001'
+            
+            # 새 설비 생성
+            new_equipment = form.save(commit=False)
+            new_equipment.equipment_number = new_equipment_number
+            new_equipment.save()
+
+            return redirect('equipment_list')  # 생성 후 설비 목록 페이지로 리다이렉트
+    else:
+        form = EquipmentForm()
+    
+    return render(request, 'myapp/create_equipment.html', {'form': form})
+
 def update_equipment(request, equipment_id):
     equipment = get_object_or_404(Equipment, id=equipment_id)
     
     if request.method == 'POST':
         form = EquipmentForm(request.POST, instance=equipment)
-        # if form.is_valid():
-        form.save()
+        if form.is_valid():
+            form.save()
             # messages.success(request, "장비가 성공적으로 업데이트되었습니다.")
-        return redirect('equipment_list_edit')  # 적절한 URL 이름으로 변경
-        #else:
-        #    messages.error(request, "입력한 정보에 오류가 있습니다.")
+            return redirect('equipment_list_edit_mode')  # 적절한 URL 이름으로 변경
+        else:
+            messages.error(request, "입력한 정보에 오류가 있습니다.")
             # 추가된 코드: 폼 오류를 템플릿에 전달
-        #    return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment': equipment})
+            return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment': equipment})
     else:
         form = EquipmentForm(instance=equipment)
     
@@ -131,20 +158,6 @@ def export_to_excel(request):
 
     return response
 
-def create_equipment(request):
-    if request.method == 'POST':
-        form = EquipmentForm(request.POST)
-        if 'confirm_edit' in request.POST:  # 'confirm_edit' 버튼이 눌렸을 때
-            if form.is_valid():  # 폼이 유효한 경우
-                form.save()  # 폼 저장
-                messages.success(request, "설비가 성공적으로 생성되었습니다.")
-                return redirect('equipment_menu')  # 메뉴로 리다이렉트
-            else:
-                messages.error(request, "입력한 정보에 오류가 있습니다.")
-    else:
-        form = EquipmentForm()  # GET 요청의 경우 빈 폼 생성
-
-    return render(request, 'myapp/create_equipment.html', {'form': form})
 
 def equipment_list_edit_mode(request):
     equipments = Equipment.objects.all()  # 모든 장비 목록을 가져옵니다.
