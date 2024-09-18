@@ -11,6 +11,7 @@ from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
+from openpyxl.styles import Alignment, Font
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -172,7 +173,18 @@ def export_to_excel(request):
         worksheet.column_dimensions['F'].width = 10
         worksheet.column_dimensions['G'].width = 10
         worksheet.column_dimensions['H'].width = 20
+    
+        # 첫 번째 행 병합 및 제목 삽입
+        worksheet.merge_cells('A1:H1')  # A1부터 H1까지 병합
+        title_cell = worksheet['A1']
+        title_cell.value = '설비관리대장'  # 제목 설정
+        title_cell.font = Font(name='맑은 고딕', size=22, bold=True)  # 폰트 설정
+        title_cell.alignment = Alignment(horizontal='center', vertical='center')  # 가운데 정렬
 
+        # 1행 높이 설정
+        worksheet.row_dimensions[1].height = 30
+
+        # 2행부터 데이터가 들어가므로, 데이터 셀의 스타일 설정
         # 모든 셀 세로 중간 맞춤, H열을 제외한 모든 열 가로 중간 맞춤
         for row in worksheet.iter_rows(min_row=1, max_row=worksheet.max_row, min_col=1, max_col=8):
             for cell in row:
