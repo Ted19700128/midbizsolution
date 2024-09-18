@@ -6,7 +6,7 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs']
+        fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'types', 'specs']
         widgets = {
             'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -20,6 +20,6 @@ class EquipmentForm(forms.ModelForm):
                 }
             ),
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'equipment_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'types': forms.TextInput(attrs={'class': 'form-control'}),
             'specs': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }

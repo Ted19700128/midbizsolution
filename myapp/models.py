@@ -3,7 +3,11 @@ from django.db import models, transaction
 class Equipment(models.Model):
     equipment_number = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=255)
+    model_name = models.CharField(max_length=255)
     manufacturer = models.CharField(max_length=255)
+    mfg_date = models.DateField(default="2024-09-01")
+    mfg_number = models.CharField(max_length=255)
+    types = models.CharField(max_length=255, default="Unknown")
     specs = models.CharField(max_length=255)
 
     def save(self, *args, **kwargs):

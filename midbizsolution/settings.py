@@ -62,7 +62,7 @@ DATABASES = {
         'USER': os.getenv('DB_USER', 'root'),
         'PASSWORD': os.getenv('DB_PASSWORD', '2370'),
         'HOST': os.getenv('DB_HOST', 'svc.sel4.cloudtype.app'),
-        'PORT': os.getenv('DB_PORT', '31557'),
+        'PORT': os.getenv('DB_PORT', '31523'),
     }
 }
 
