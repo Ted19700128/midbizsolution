@@ -10,11 +10,30 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
+    <div class="form-group">
+        {{ form.equipment_number.label_tag }}
+        {{ form.equipment_number }}
+        {{ form.equipment_number.errors }}  <!-- 필드별 오류 표시 -->
+    </div>
+    <div class="form-group">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.manufacturer.label_tag }}
+        {{ form.manufacturer }}
+        {{ form.manufacturer.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.specs.label_tag }}
+        {{ form.specs }}
+        {{ form.specs.errors }}
+    </div>
     <button type="submit" name="confirm_update">완료</button>
     <button type="button" class="btn" onclick="window.history.back();">취소</button>
 </form>
 
 {% endblock %}
-
 
