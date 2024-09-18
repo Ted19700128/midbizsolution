@@ -33,7 +33,7 @@
             <tr>
                 <td>
                     <a href="{% url 'update_equipment' equipment.id %}" class="btn btn-primary">수정</a>  <!-- 직접 링크로 수정할 수 있도록 설정 -->
-                    <a href="{% url 'delete_equipment' equipment.id %}" class="btn btn-primary">삭제</a>  <!-- 직접 링크로 삭제할 수 있도록 설정 -->
+                    <a href="{% url 'delete_confirmation' equipment.id %}" class="btn btn-primary">삭제</a>  <!-- 직접 링크로 삭제할 수 있도록 설정 -->
                 <td>{{ equipment.equipment_number }}</td>
                 <td>{{ equipment.name }}</td>
                 <td>{{ equipment.manufacturer }}</td>
