@@ -8,8 +8,12 @@
             {% endif %}
             <th>설비 번호</th>
             <th>설비명</th>
+            <th>모델명</th>
             <th>제조사</th>
-            <th>설비 사양</th>
+            <th>제조년월</th>
+            <th>제조번호</th>
+            <th>형식</th>
+            <th>사양</th>         
         </tr>
     </thead>
     <tbody>
@@ -20,7 +24,11 @@
             {% endif %}
             <td>{{ equipment.equipment_number }}</td>
             <td>{{ equipment.name }}</td>
+            <td>{{ equipment.model_name }}</td>
             <td>{{ equipment.manufacturer }}</td>
+            <td>{{ equipment.mfg_date }}</td>
+            <td>{{ equipment.mfg_number }}</td>
+            <td>{{ equipment.equipment_type }}</td>
             <td>{{ equipment.specs }}</td>
         </tr>
         {% empty %}

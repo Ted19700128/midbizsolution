@@ -22,10 +22,31 @@
         {{ form.name.errors }}
     </div>
     <div class="form-group">
+        {{ form.model_name.label_tag }}
+        {{ form.model_name }}
+        {{ form.model_name.errors }}
+    </div>   
+    <div class="form-group"></div>
         {{ form.manufacturer.label_tag }}
         {{ form.manufacturer }}
         {{ form.manufacturer.errors }}
+    </div>    
+    <div class="form-group"></div>
+        {{ form.mfg_date.label_tag }}
+        {{ form.mfg_date }}
+        {{ form.mfg_date.errors }}
+    </div>    
+    
+    <div class="form-group">
+        {{ form.mfg_number.label_tag }}
+        {{ form.mfg_number }}
+        {{ form.mfg_number.errors }}
     </div>
+    <div class="form-group"></div>
+        {{ form.equipment_type.label_tag }}
+        {{ form.equipment_type }}
+        {{ form.equipment_type.errors }}
+    </div> 
     <div class="form-group">
         {{ form.specs.label_tag }}
         {{ form.specs }}

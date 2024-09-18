@@ -10,28 +10,7 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
-    <div class="form-group">
-        {{ form.name.label_tag }}
-        {{ form.name }}
-        {% if form.name.errors %}
-            <div class="error">{{ form.name.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="form-group">
-        {{ form.manufacturer.label_tag }}
-        {{ form.manufacturer }}
-        {% if form.manufacturer.errors %}
-            <div class="error">{{ form.manufacturer.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="form-group">
-        {{ form.specs.label_tag }}
-        {{ form.specs }}
-        {% if form.specs.errors %}
-            <div class="error">{{ form.specs.errors }}</div>
-        {% endif %}
-    </div>
+    {{ form.as_custom }}
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>

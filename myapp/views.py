@@ -7,6 +7,10 @@ from django.contrib import messages
 from django.db import transaction
 from .models import Equipment
 from .forms import EquipmentForm
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
 
 def landing_page(request):
     return render(request, 'landing_page.html')
@@ -138,7 +142,11 @@ def export_to_excel(request):
         {
             '설비 번호': equipment.equipment_number,
             '설비명': equipment.name,
+            '모델명': equipment.model_name,
             '제조사': equipment.manufacturer,
+            '제조년월': equipment.mfg_date,
+            '제조번호': equipment.mfg_number,
+            '형식': equipment.equipment_type,
             '설비 사양': equipment.specs,
         }
         for equipment in equipments
@@ -150,6 +158,18 @@ def export_to_excel(request):
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         df.to_excel(writer, index=False)
+    
+        # 현재 워크북과 시트를 가져옴
+        workbook = writer.book
+        worksheet = writer.sheets['Equipments']
+        
+        # 열 너비 설정
+        for column_cells in worksheet.columns:
+            max_length = max(len(str(cell.value)) for cell in column_cells)  # 각 열의 최대 길이 계산
+            max_length = max_length + 2  # 적절한 여백 추가
+            column_letter = get_column_letter(column_cells[0].column)  # 열의 이름 (A, B, C, ...)
+            worksheet.column_dimensions[column_letter].width = max_length  # 열 너비 설정
+    
     output.seek(0)  # 파일 포인터를 시작 위치로 이동
 
     # HttpResponse에 엑셀 파일 작성
