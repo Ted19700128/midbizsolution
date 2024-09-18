@@ -55,14 +55,14 @@ def update_equipment(request, equipment_id):
     
     if request.method == 'POST':
         form = EquipmentForm(request.POST, instance=equipment)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "장비가 성공적으로 업데이트되었습니다.")
-            return redirect('equipment_list')  # 적절한 URL 이름으로 변경
-        else:
-            messages.error(request, "입력한 정보에 오류가 있습니다.")
+        # if form.is_valid():
+        form.save()
+            # messages.success(request, "장비가 성공적으로 업데이트되었습니다.")
+        return redirect('equipment_list_edit')  # 적절한 URL 이름으로 변경
+        #else:
+        #    messages.error(request, "입력한 정보에 오류가 있습니다.")
             # 추가된 코드: 폼 오류를 템플릿에 전달
-            return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment': equipment})
+        #    return render(request, 'myapp/update_equipment.html', {'form': form, 'equipment': equipment})
     else:
         form = EquipmentForm(instance=equipment)
     
