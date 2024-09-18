@@ -15,11 +15,22 @@ class EquipmentForm(forms.ModelForm):
             'mfg_date': forms.DateInput(
                 attrs={
                     'class': 'form-control',
-                    'type': 'month',  # 'type="month"'으로 HTML5의 월 선택 입력을 사용
-                    'placeholder': 'YYYY-MM',  # 입력 가이드로 플레이스홀더 추가
+                    'type': 'month',
+                    'placeholder': 'YYYY-MM',
                 }
             ),
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'types': forms.TextInput(attrs={'class': 'form-control'}),
             'specs': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    def as_custom(self):
+        """
+        Returns this form rendered as HTML <div>s for a custom layout,
+        excluding the 'equipment_number' field.
+        """
+        output = []
+        for field in self:
+            if field.name != 'equipment_number':  # 'equipment_number' 필드를 제외
+                output.append(f'<div class="form-group">{field.label_tag()} {field} {field.errors}</div>')
+        return '\n'.join(output)
