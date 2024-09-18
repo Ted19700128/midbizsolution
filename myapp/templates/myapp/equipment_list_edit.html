@@ -8,6 +8,11 @@
 
 <h2>설비관리대장 변경</h2>
 
+<!-- 우측 상단에 홈 버튼 추가 -->
+<div style="text-align: right;">
+    <a href="{% url 'equipment_menu' %}" class="btn btn-primary">홈</a>
+</div>
+
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
