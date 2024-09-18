@@ -164,14 +164,27 @@ def export_to_excel(request):
         worksheet = writer.sheets['Equipments']  # 이제 'Equipments' 시트가 생성됨
         
         # 열 너비 설정
-        for column_cells in worksheet.columns:
-            max_length = max(len(str(cell.value)) for cell in column_cells)  # 각 열의 최대 길이 계산
-            max_length += 2  # 적절한 여백 추가
-            column_letter = get_column_letter(column_cells[0].column)  # 열의 이름 (A, B, C, ...)
-            worksheet.column_dimensions[column_letter].width = max_length  # 열 너비 설정
-    
-    output.seek(0)  # 파일 포인터를 시작 위치로 이동
+        worksheet.column_dimensions['A'].width = 10
+        worksheet.column_dimensions['B'].width = 10
+        worksheet.column_dimensions['C'].width = 10
+        worksheet.column_dimensions['D'].width = 15
+        worksheet.column_dimensions['E'].width = 10
+        worksheet.column_dimensions['F'].width = 10
+        worksheet.column_dimensions['G'].width = 10
+        worksheet.column_dimensions['H'].width = 20
 
+        # 모든 셀 세로 중간 맞춤, H열을 제외한 모든 열 가로 중간 맞춤
+        for row in worksheet.iter_rows(min_row=1, max_row=worksheet.max_row, min_col=1, max_col=8):
+            for cell in row:
+                # 세로 가운데 맞춤
+                cell.alignment = Alignment(vertical='center')
+                
+                # H열 제외, 가로 가운데 맞춤
+                if cell.column != 8:  # H열은 제외
+                    cell.alignment = Alignment(horizontal='center', vertical='center')
+
+    output.seek(0)  # 파일 포인터를 시작 위치로 이동
+    
     # HttpResponse에 엑셀 파일 작성
     response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
