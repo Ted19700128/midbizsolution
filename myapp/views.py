@@ -74,6 +74,20 @@ def update_equipment(request, equipment_id):
     
     return render(request, 'myapp/update_equipment.html', context)
 
+def delete_confirmation(request, equipment_id):
+    equipment = get_object_or_404(Equipment, id=equipment_id)  # 장비가 존재하는지 확인
+    
+    if request.method == 'POST':
+        # 'confirm_delete' 버튼이 클릭되었을 때 장비 삭제
+        if 'confirm_delete' in request.POST:
+            equipment.delete()  # 장비 삭제
+            messages.success(request, "장비가 성공적으로 삭제되었습니다.")
+            return redirect('equipment_list')  # 삭제 후 장비 목록으로 리디렉션
+        else:
+            return redirect('equipment_list')  # '아니오' 버튼 클릭 시 장비 목록으로 리디렉션
+    
+    return render(request, 'myapp/delete_confirmation.html', {'equipments': [equipment]})
+
 def delete_equipment(request):
     if request.method == 'POST':
         equipment_ids = request.POST.getlist('equipment_ids')
