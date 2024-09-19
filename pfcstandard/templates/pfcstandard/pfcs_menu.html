@@ -1,0 +1,67 @@
+<!-- D:/web/midbizsolution/pfcstandard/templates/pfcstandard/pfcs_menu.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}설비 점검 기준서{% endblock %}
+
+{% block content %}
+<h2>설비 점검 기준서</h2>
+
+<!-- 버튼 컨테이너 -->
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- 좌측: 생성/변경 버튼 -->
+    <div>
+        <a href="{% url 'solutions' %}" class="btn btn-primary">메인</a> <!-- 메인 페이지로 이동 -->
+        <button class="btn btn-primary" onclick="location.href='{{ create_pfcs }}'">신규</button> <!-- 신규 생성 기능 -->
+        <button class="btn btn-primary" onclick="location.href='?mode=edit'">변경</button> <!-- 변경 모드로 전환 -->
+        <button class="btn btn-primary" onclick="showEquipmentNumberPopup()">조회</button> <!-- 조회 버튼: 팝업 호출 -->
+    </div>
+    <!-- 우측: 엑셀 내보내기 버튼 -->
+    <div>
+        <button class="btn btn-primary" onclick="exportToExcel()">엑셀로 내보내기</button>
+    </div>
+</div>
+
+<!-- 테이블 표시 (pfcs_table.html을 포함하여 재사용) -->
+{% if mode == 'edit' %}
+<!-- 변경 모드: 체크박스가 포함된 테이블 -->
+<form method="post" action="">
+    {% csrf_token %}
+    {% include 'pfcstandard/pfcs_table.html' %}
+    <!-- 수정 및 삭제 버튼 -->
+    <div style="margin-top: 10px;">
+        <button class="btn" type="submit" formaction="{% url 'update_pfcs' %}">수정</button>
+        <button class="btn" type="submit" formaction="{% url 'delete_pfcs' %}">삭제</button>
+    </div>
+</form>
+{% else %}
+<!-- 'view' 모드나 기본 모드인 경우 테이블을 표시 -->
+{% include 'pfcstandard/pfcs_table.html' %}
+{% endif %}
+
+<!-- 팝업 템플릿을 포함하여 팝업을 이 페이지에서 관리 -->
+{% include 'pfcstandard/equipment_popup.html' %}
+
+<script>
+    // 팝업 열기/닫기 및 조회 기능을 위한 스크립트
+    function showEquipmentNumberPopup() {
+        document.getElementById('equipmentPopup').style.display = 'block';
+        document.getElementById('popupBackground').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('equipmentPopup').style.display = 'none';
+        document.getElementById('popupBackground').style.display = 'none';
+    }
+
+    function searchEquipment() {
+        const equipmentNumber = document.getElementById('equipmentNumber').value;
+        if (equipmentNumber) {
+            window.location.href = `/equipment/detail/?equipment_number=${equipmentNumber}`;
+        } else {
+            alert('설비 번호를 입력하세요.');
+        }
+    }
+</script>
+
+{% endblock %}

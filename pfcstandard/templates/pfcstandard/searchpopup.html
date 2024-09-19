@@ -1,0 +1,68 @@
+<!-- D:\web\midbizsolution\pfcstandard\templates\pfcstandard\searchpopup.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>설비 조회</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        #equipmentPopup {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        #popupBackground {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        #popupHeader {
+            background-color: rgb(64, 64, 64);
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="popupBackground"></div>
+    <div id="equipmentPopup">
+        <div id="popupHeader">
+            설비 번호 조회
+        </div>
+        <div style="margin-top: 20px;">
+            <label for="equipmentNumber">설비번호를 입력하세요.</label>
+            <br>
+            <input type="text" id="equipmentNumber" maxlength="20" style="width: 100%; padding: 10px; margin-top: 10px;">
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button class="btn btn-primary" onclick="searchEquipment()">확인</button>
+            <button class="btn btn-secondary" onclick="window.close();">취소</button>
+        </div>
+    </div>
+
+    <script>
+        function searchEquipment() {
+            const equipmentNumber = document.getElementById('equipmentNumber').value;
+            if (equipmentNumber) {
+                window.opener.location.href = `/equipment/detail/?equipment_number=${equipmentNumber}`;
+                window.close();
+            } else {
+                alert('설비 번호를 입력하세요.');
+            }
+        }
+    </script>
+</body>
+</html>

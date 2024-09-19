@@ -1,0 +1,30 @@
+<!-- D:/web/midbizsolution/pfcstandard/templates/pfcstandard/pfcs_detail.html -->
+
+<table>
+    <thead>
+        <tr>
+            <th>문서 번호</th>
+            <th>설비 번호</th>
+            <th>설비명</th>
+            <th>관리부서</th>
+            <th>작성일자</th>
+            <th>설비등급</th>         
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+        <tr>
+            <td>{{ documents.document_number }}</td>
+            <td>{{ documents.document_number }}</td>
+            <td>{{ documents.name }}</td>
+            <td>{{ documents.management_team }}</td>
+            <td>{{ documents.date_written }}</td>
+            <td>{{ documents.rating }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비 점검 기준서가 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

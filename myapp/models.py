@@ -1,3 +1,5 @@
+#!-- D:/web/midbizsolution/myapp/models.py
+
 from django.db import models, transaction
 
 class Equipment(models.Model):

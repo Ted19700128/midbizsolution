@@ -1,0 +1,58 @@
+<!-- D:/web/midbizsolution/pfcstandard/templates/pfcstandard/update_pfcs.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}설비 정보 수정{% endblock %}
+
+{% block content %}
+
+<h2>설비 정보 수정</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
+    <div class="form-group">
+        {{ form.date_written.label_tag }}
+        {{ form.date_written }}
+        {{ form.date_written.errors }}  <!-- 필드별 오류 표시 -->
+    </div>
+    <div class="form-group">
+        {{ form.rating.label_tag }}
+        {{ form.rating }}
+        {{ form.rating.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.insp_point.label_tag }}
+        {{ form.insp_point }}
+        {{ form.insp_point.errors }}
+    </div>   
+    <div class="form-group">
+        {{ form.insp_item.label_tag }}
+        {{ form.insp_item }}
+        {{ form.insp_item.errors }}
+    </div>    
+    <div class="form-group">
+        {{ form.insp_int_rating.label_tag }}
+        {{ form.insp_int_rating }}
+        {{ form.insp_int_rating.errors }}
+    </div>    
+    <div class="form-group">
+        {{ form.insp_method.label_tag }}
+        {{ form.insp_method }}
+        {{ form.insp_method.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.judge_criteria.label_tag }}
+        {{ form.judge_criteria }}
+        {{ form.judge_criteria.errors }}
+    </div> 
+    <div class="form-group">
+        {{ form.actions_required.label_tag }}
+        {{ form.actions_required }}
+        {{ form.actions_required.errors }}
+    </div>
+    <button type="submit" name="confirm_update">완료</button>
+    <button type="button" onclick="window.history.back();">취소</button>
+</form>
+
+{% endblock %}
