@@ -30,7 +30,7 @@ def pfcs_menu(request):
             return redirect('pfcs_menu')
     
     context = {
-        'create_document': reverse('create_document'),
+        'create_pfcs': reverse('create_pfcs'),
         'mode': mode,
         'show_table': show_table,
         'documents': documents,
