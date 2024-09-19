@@ -160,7 +160,7 @@ def export_to_excel(request):
     # 엑셀 파일을 메모리에 생성
     output = BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='Equipments')  # 'Equipments'라는 시트 이름으로 저장
+        df.to_excel(writer, index=False, sheet_name='Equipments', startrow=2)  # 'Equipments'라는 시트 이름으로 저장
     
         # 현재 워크북과 시트를 가져옴
         workbook = writer.book
@@ -188,7 +188,7 @@ def export_to_excel(request):
 
         # 2행부터 데이터가 들어가므로, 데이터 셀의 스타일 설정
         # 모든 셀 세로 중간 맞춤, H열을 제외한 모든 열 가로 중간 맞춤
-        for row in worksheet.iter_rows(min_row=1, max_row=worksheet.max_row, min_col=1, max_col=8):
+        for row in worksheet.iter_rows(min_row=3, max_row=worksheet.max_row, min_col=1, max_col=8):
             for cell in row:
                 # 세로 가운데 맞춤
                 cell.alignment = Alignment(vertical='center')
