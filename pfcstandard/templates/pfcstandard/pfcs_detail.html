@@ -14,12 +14,12 @@
     <tbody>
         {% for document in documents %}
         <tr>
-            <td>{{ documents.document_number }}</td>
-            <td>{{ documents.document_number }}</td>
-            <td>{{ documents.name }}</td>
-            <td>{{ documents.management_team }}</td>
-            <td>{{ documents.date_written }}</td>
-            <td>{{ documents.rating }}</td>
+            <td>{{ document.document_number }}</td>
+            <td>{{ document.equipment_number }}</td>
+            <td>{{ document.name }}</td>
+            <td>{{ document.management_team }}</td>
+            <td>{{ document.date_written }}</td>
+            <td>{{ document.rating }}</td>
         </tr>
         {% empty %}
         <tr>
