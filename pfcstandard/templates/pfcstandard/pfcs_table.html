@@ -8,7 +8,8 @@
             <th>설비명</th>
             <th>관리부서</th>
             <th>작성일자</th>
-            <th>설비등급</th>         
+            <th>설비등급</th>
+            <th>작업</th> <!-- 수정 및 삭제 버튼 열 추가 -->
         </tr>
     </thead>
     <tbody>
@@ -20,6 +21,10 @@
             <td>{{ document.management_team }}</td>
             <td>{{ document.date_written }}</td>
             <td>{{ document.rating }}</td>
+            <td>
+                <a href="{% url 'update_pfcs' document.id %}" class="btn btn-primary">수정</a>
+                <a href="{% url 'delete_pfcs' document.id %}" class="btn btn-danger">삭제</a>
+            </td>
         </tr>
         {% empty %}
         <tr>

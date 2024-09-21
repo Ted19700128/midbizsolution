@@ -20,14 +20,16 @@
 </div>
 
 {% if mode == 'edit' %}
+{% for document in documents %}
 <form method="post" action="">
     {% csrf_token %}
     {% include 'pfcstandard/pfcs_table.html' %}
     <div style="margin-top: 10px;">
-        <button class="btn btn-primary" type="submit" formaction="{% url 'update_pfcs' %}">수정</button>
-        <button class="btn btn-danger" type="submit" formaction="{% url 'delete_pfcs' %}">삭제</button>
+        <button class="btn btn-primary" type="submit" formaction="{% url 'update_pfcs' document.id %}">수정</button>
+        <button class="btn btn-danger" type="submit" formaction="{% url 'delete_pfcs' document.id %}">삭제</button>
     </div>
 </form>
+{% endfor %}
 {% else %}
 {% include 'pfcstandard/pfcs_table.html' %}
 {% endif %}

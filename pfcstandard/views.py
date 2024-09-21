@@ -11,7 +11,15 @@ from django.contrib import messages
 def pfcs_menu(request):
     mode = request.GET.get('mode', 'view')
     documents = PFCS.objects.all()
-
+    
+    if mode == 'edit':
+        document_id = request.GET.get('document_id')  # GET 파라미터에서 가져오기
+        if document_id:
+            update_url = reverse('update_pfcs', args=[document_id])
+            return redirect(update_url)
+        else:
+            return redirect('pfcs_menu')  # document_id가 없으면 메뉴로 리다이렉트
+    
     context = {
         'create_pfcs': reverse('create_pfcs'),
         'mode': mode,
