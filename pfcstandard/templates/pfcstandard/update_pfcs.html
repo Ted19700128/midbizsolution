@@ -2,13 +2,13 @@
 
 {% extends 'base.html' %}
 
-{% block title %}설비 정보 수정{% endblock %}
+{% block title %}설비 점검 기준서 수정{% endblock %}
 
 {% block content %}
 
-<h2>설비 정보 수정</h2>
+<h2>설비 점검 기준서 정보 수정1</h2>
 
-<form method="post">
+<form method="post" action="{% url 'update_pfcs' document.id %}">
     {% csrf_token %}
     {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
     <div class="form-group">

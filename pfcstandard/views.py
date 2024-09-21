@@ -45,6 +45,9 @@ def update_pfcs(request, document_id):
         if form.is_valid():
             form.save()
             return redirect('pfcs_menu')
+        else:
+            messages.error(request, f"입력한 정보에 오류가 있습니다: {form.errors}")
+            return render(request, 'pfcstandard/update_pfcs.html', {'form': form, 'document': document})
     else:
         form = DocumentForm(instance=document)
     return render(request, 'pfcstandard/update_pfcs.html', {'form': form, 'document': document})
