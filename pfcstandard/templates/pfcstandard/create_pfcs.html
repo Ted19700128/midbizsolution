@@ -5,14 +5,13 @@
 {% block title %}설비 점검 기준서 생성{% endblock %}
 
 {% block content %}
-
 <h2>설비 점검 기준서 생성</h2>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}  
-    <button type="submit">완료</button>
-    <button type="button" onclick="history.back()">취소</button>
+    <button type="submit" class="btn btn-primary">완료</button>
+    <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
 </form>
 
 {% endblock %}
