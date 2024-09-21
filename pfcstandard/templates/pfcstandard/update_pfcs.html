@@ -8,52 +8,9 @@
 
 <h2>설비 점검 기준서 정보 수정1</h2>
 
-<form method="post" action="{% url 'update_pfcs' document.id %}">
+<form method="post">
     {% csrf_token %}
-    {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
-
-    <div class="form-group">
-        {{ form.rating.label_tag }}
-        {{ form.rating }}
-        {{ form.rating.errors }}
-    </div>
-
-    <div class="form-group">
-        {{ form.insp_point.label_tag }}
-        {{ form.insp_point }}
-        {{ form.insp_point.errors }}
-    </div>   
-
-    <div class="form-group">
-        {{ form.insp_item.label_tag }}
-        {{ form.insp_item }}
-        {{ form.insp_item.errors }}
-    </div>    
-
-    <div class="form-group">
-        {{ form.insp_int_rating.label_tag }}
-        {{ form.insp_int_rating }}
-        {{ form.insp_int_rating.errors }}
-    </div>    
-
-    <div class="form-group">
-        {{ form.insp_method.label_tag }}
-        {{ form.insp_method }}
-        {{ form.insp_method.errors }}
-    </div>
-
-    <div class="form-group">
-        {{ form.judge_criteria.label_tag }}
-        {{ form.judge_criteria }}
-        {{ form.judge_criteria.errors }}
-    </div> 
-
-    <div class="form-group">
-        {{ form.actions_required.label_tag }}
-        {{ form.actions_required }}
-        {{ form.actions_required.errors }}
-    </div>
-
+    {{ form.as_p }}  <!-- 필드가 자동으로 렌더링됨 -->
     <button type="submit" name="confirm_update">완료</button>
     <button type="button" onclick="window.history.back();">취소</button>
 </form>

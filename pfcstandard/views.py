@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.db import transaction
 from .models import PFCS
-from .forms import DocumentForm
+from .forms import CreateDocumentForm, UpdateDocumentForm
 from django.contrib import messages
 
 def pfcs_menu(request):
@@ -30,19 +30,19 @@ def pfcs_menu(request):
 
 def create_pfcs(request):
     if request.method == 'POST':
-        form = DocumentForm(request.POST)
+        form = CreateDocumentForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('pfcs_menu')
     else:
-        form = DocumentForm()
+        form = CreateDocumentForm()
     return render(request, 'pfcstandard/create_pfcs.html', {'form': form})
 
 def update_pfcs(request, document_id):
     document = get_object_or_404(PFCS, id=document_id)
 
     if request.method == 'POST':
-        form = DocumentForm(request.POST, instance=document)
+        form = UpdateDocumentForm(request.POST, instance=document)
         print(request.POST)  # POST 데이터를 출력하여 확인
         if form.is_valid():
             form.save()
@@ -52,7 +52,7 @@ def update_pfcs(request, document_id):
             print(form.errors)  # 오류 출력
             messages.error(request, f"입력한 정보에 오류가 있습니다: {form.errors}")
     else:
-        form = DocumentForm(instance=document)
+        form = UpdateDocumentForm(instance=document)
     return render(request, 'pfcstandard/update_pfcs.html', {'form': form, 'document': document})
 
 def delete_pfcs(request, document_id):
