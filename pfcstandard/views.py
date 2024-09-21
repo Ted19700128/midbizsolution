@@ -8,6 +8,19 @@ from .models import PFCS
 from .forms import CreateDocumentForm, UpdateDocumentForm
 from django.contrib import messages
 
+def bring_managementTeam(request):
+    # 쿼리스트링에서 'management_team' 값을 가져옴
+    management_team = request.GET.get('management_team')
+    if management_team:
+        # management_team 값으로 필터링된 문서들만 가져옴
+        documents = PFCS.objects.filter(management_team=management_team)
+    else:
+        # 모든 문서를 가져옴
+        documents = PFCS.objects.all()
+    
+    context = {'documents': documents}
+    return render(request, 'myapp/equipment_table.html', context)
+
 def show_search_popup(request):
     return render(request, 'pfcstandard/searchpopup.html')
 

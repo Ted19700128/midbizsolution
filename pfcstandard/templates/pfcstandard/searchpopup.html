@@ -62,7 +62,7 @@
         function searchManagementTeam() {
             const managementTeam = document.getElementById('managementTeam').value;
             if (managementTeam) {
-                window.opener.location.href = `/equipment/menu/?management_team=${managementTeam}`;
+                window.opener.location.href = `/myapp/menu/?management_team=${managementTeam}`;
                 closePopup();
             } else {
                 alert('관리부서를 입력하세요.');

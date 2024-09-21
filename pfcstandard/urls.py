@@ -10,5 +10,6 @@ urlpatterns = [
     path('detail/<int:document_id>/', views.pfcs_detail, name='pfcs_detail'),
     path('update/<int:document_id>/', views.update_pfcs, name='update_pfcs'),
     path('delete/<int:document_id>/', views.delete_pfcs, name='delete_pfcs'), 
-    path('searchpopup/', views.show_search_popup, name='show_search_popup'),       
+    path('pfcstandard/searchpopup/', views.show_search_popup, name='show_search_popup'),   
+    path('myapp/menu/', views.bring_managementTeam, name='bring_managementTeam'),    
 ]
