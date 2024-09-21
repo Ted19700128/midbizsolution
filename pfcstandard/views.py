@@ -40,14 +40,17 @@ def create_pfcs(request):
 
 def update_pfcs(request, document_id):
     document = get_object_or_404(PFCS, id=document_id)
+
     if request.method == 'POST':
         form = DocumentForm(request.POST, instance=document)
+        print(request.POST)  # POST 데이터를 출력하여 확인
         if form.is_valid():
             form.save()
+            messages.success(request, "문서가 성공적으로 업데이트되었습니다.")
             return redirect('pfcs_menu')
         else:
+            print(form.errors)  # 오류 출력
             messages.error(request, f"입력한 정보에 오류가 있습니다: {form.errors}")
-            return render(request, 'pfcstandard/update_pfcs.html', {'form': form, 'document': document})
     else:
         form = DocumentForm(instance=document)
     return render(request, 'pfcstandard/update_pfcs.html', {'form': form, 'document': document})
@@ -65,3 +68,8 @@ def delete_pfcs(request, document_id):
             return redirect('pfcs_menu')  # '아니오' 버튼 클릭 시 메뉴 페이지로 리디렉션
     
     return render(request, 'pfcstandard/delete_pfcs.html', {'documents': [document]})
+
+def pfcs_detail(request, document_id):
+    # document_id를 사용하여 PFCS 객체를 가져옴
+    document = get_object_or_404(PFCS, id=document_id)
+    return render(request, 'pfcstandard/pfcs_detail.html', {'document': document})

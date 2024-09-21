@@ -34,7 +34,13 @@
                 <th>제조년월</th>
                 <th>제조번호</th>
                 <th>형식</th>
-                <th>사양</th>                
+                <th>사양</th>
+                <th>최초설치시점</th>
+                <th>최초양산적용</th>
+                <th>현 운영장소</th>
+                <th>관리부서</th>
+                <th>전면 정비</th>
+                <th>상태</th>
             </tr>
         </thead>
         <tbody>
@@ -51,6 +57,12 @@
                 <td>{{ equipment.mfg_number }}</td>
                 <td>{{ equipment.equipment_type }}</td>
                 <td>{{ equipment.specs }}</td>
+                <td>{{ equipment.first_install }}</td>
+                <td>{{ equipment.first_implement }}</td>
+                <td>{{ equipment.current_operation_place }}</td>
+                <td>{{ equipment.management_team }}</td>
+                <td>{{ equipment.overall }}</td>
+                <td>{{ equipment.current_status }}</td>
                 </td>
             </tr>
             {% empty %}

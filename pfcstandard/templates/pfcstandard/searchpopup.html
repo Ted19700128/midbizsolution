@@ -8,9 +8,11 @@
     <meta charset="UTF-8">
     <title>설비 조회</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Bootstrap 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        #equipmentPopup {
-            display: block;
+        #managementteamPopup {
+            display: none;  /* 처음에는 팝업을 숨김 */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -22,7 +24,7 @@
         }
 
         #popupBackground {
-            display: block;
+            display: none;  /* 처음에는 배경을 숨김 */
             position: fixed;
             top: 0;
             left: 0;
@@ -41,30 +43,44 @@
 </head>
 <body>
     <div id="popupBackground"></div>
-    <div id="equipmentPopup">
+    <div id="managementteamPopup">
         <div id="popupHeader">
-            설비 번호 조회
+            관리부서 조회
         </div>
         <div style="margin-top: 20px;">
-            <label for="equipmentNumber">설비번호를 입력하세요.</label>
+            <label for="managementTeam">관리부서를 입력하세요.</label>
             <br>
-            <input type="text" id="equipmentNumber" maxlength="20" style="width: 100%; padding: 10px; margin-top: 10px;">
+            <input type="text" id="managementTeam" maxlength="20" style="width: 100%; padding: 10px; margin-top: 10px;">
         </div>
         <div style="text-align: right; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="searchEquipment()">확인</button>
-            <button class="btn btn-secondary" onclick="window.close();">취소</button>
+            <button class="btn btn-primary" onclick="searchManagementTeam()">확인</button>
+            <button class="btn btn-secondary" onclick="closePopup()">취소</button>
         </div>
     </div>
 
     <script>
-        function searchEquipment() {
-            const equipmentNumber = document.getElementById('equipmentNumber').value;
-            if (equipmentNumber) {
-                window.opener.location.href = `/equipment/detail/?equipment_number=${equipmentNumber}`;
+        function searchManagementTeam() {
+            const managementTeam = document.getElementById('managementTeam').value;
+            if (managementTeam) {
+                window.opener.location.href = `/equipment/menu/?management_team=${managementTeam}`;
+                closePopup();
+            } else {
+                alert('관리부서를 입력하세요.');
+            }
+        }
+
+        function closePopup() {
+            if (window.opener) {
                 window.close();
             } else {
-                alert('설비 번호를 입력하세요.');
+                alert('이 창을 닫을 수 없습니다. 브라우저의 닫기 버튼을 사용하세요.');
             }
+        }
+
+        // 팝업을 여는 함수 예시
+        function showPopup() {
+            document.getElementById('managementteamPopup').style.display = 'block';
+            document.getElementById('popupBackground').style.display = 'block';
         }
     </script>
 </body>

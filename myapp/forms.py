@@ -6,7 +6,8 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs']
+        fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
+                  'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overall', 'current_status']
         widgets = {
             'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -15,7 +16,13 @@ class EquipmentForm(forms.ModelForm):
             'mfg_date': forms.TextInput(attrs={'class': 'form-control'}),
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'equipment_type': forms.TextInput(attrs={'class': 'form-control'}),
-            'specs': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'specs': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_install': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_implement': forms.TextInput(attrs={'class': 'form-control'}),
+            'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
+            'management_team': forms.TextInput(attrs={'class': 'form-control'}),
+            'overall': forms.TextInput(attrs={'class': 'form-control'}),
+            'current_status': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
         labels = {
@@ -27,6 +34,12 @@ class EquipmentForm(forms.ModelForm):
             'mfg_number': '제조 번호',
             'equipment_type': '형식',
             'specs': '사양',
+            'first_install': '최초설치시점',
+            'first_implement': '최초양산적용',
+            'current_operation_place': '현 운영장소',
+            'management_team': '관리부서',
+            'overall': '전면 정비',
+            'current_status': '상태',
         }
 
 

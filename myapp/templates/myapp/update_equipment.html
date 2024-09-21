@@ -52,6 +52,36 @@
         {{ form.specs }}
         {{ form.specs.errors }}
     </div>
+    <div class="form-group">
+        {{ form.first_install.label_tag }}
+        {{ form.first_install }}
+        {{ form.first_install.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.first_implement.label_tag }}
+        {{ form.first_implement }}
+        {{ form.first_implement.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.current_operation_place.label_tag }}
+        {{ form.current_operation_place }}
+        {{ form.current_operation_place.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.management_team.label_tag }}
+        {{ form.management_team }}
+        {{ form.management_team.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.overall.label_tag }}
+        {{ form.overall }}
+        {{ form.overall.errors }}
+    </div>
+    <div class="form-group">
+        {{ form.current_status.label_tag }}
+        {{ form.current_status }}
+        {{ form.current_status.errors }}
+    </div>
     <button type="submit" name="confirm_update">완료</button>
     <button type="button" onclick="window.history.back();">취소</button>
 </form>

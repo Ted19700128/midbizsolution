@@ -11,8 +11,7 @@
     <div>
         <a href="{% url 'solutions' %}" class="btn btn-primary">메인</a>
         <a href="{{ create_pfcs }}" class="btn btn-primary">신규</a>
-        <button class="btn btn-primary" onclick="location.href='?mode=edit'">변경</button>
-        <button class="btn btn-primary" onclick="showEquipmentNumberPopup()">조회</button>
+        <button class="btn btn-primary" onclick="showEquipmentNumberPopup()">관리부서로 조회</button>
     </div>
     <div>
         <button class="btn btn-primary" onclick="exportToExcel()">엑셀로 내보내기</button>
@@ -25,6 +24,7 @@
     {% csrf_token %}
     {% include 'pfcstandard/pfcs_table.html' %}
     <div style="margin-top: 10px;">
+        <button class="btn btn-danger" type="submit" formaction="{% url 'pfcs_detail' document.id %}">상세</button>
         <button class="btn btn-primary" type="submit" formaction="{% url 'update_pfcs' document.id %}">수정</button>
         <button class="btn btn-danger" type="submit" formaction="{% url 'delete_pfcs' document.id %}">삭제</button>
     </div>

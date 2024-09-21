@@ -24,7 +24,7 @@
 
 <!-- 테이블을 항상 표시 -->
 {% if mode == 'edit' %}
-<!-- 변경 모드: 체크박스가 포함된 테이블 -->
+<!-- 변경 모드 -->
 <form method="post" action="">
     {% csrf_token %}
     {% include 'myapp/equipment_table.html' %}
@@ -42,21 +42,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{% if mode == 'edit' %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('select_all');
-    if (selectAllCheckbox) {
-        const checkboxes = document.querySelectorAll('input[name="equipment_ids"]');
-        selectAllCheckbox.addEventListener('change', function() {
-            checkboxes.forEach(function(checkbox) {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        });
-    }
-});
-</script>
-{% endif %}
 <script>
 function exportToExcel() {
     window.location.href = "{% url 'export_to_excel' %}";

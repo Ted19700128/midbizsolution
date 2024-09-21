@@ -19,7 +19,7 @@ class DocumentForm(forms.ModelForm):
             'insp_interval': forms.Select(attrs={'class': 'form-control'}),
             'order': forms.NumberInput(attrs={'class': 'form-control'}),
             'insp_point': forms.TextInput(attrs={'class': 'form-control'}),
-            'insp_item': forms.Textarea(attrs={'class': 'form-control'}),
+            'insp_item': forms.TextInput(attrs={'class': 'form-control'}),
             'insp_int_rating': forms.TextInput(attrs={'class': 'form-control'}),
             'insp_method': forms.TextInput(attrs={'class': 'form-control'}),
             'judge_criteria': forms.TextInput(attrs={'class': 'form-control'}),
