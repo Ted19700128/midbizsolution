@@ -70,11 +70,7 @@
         }
 
         function closePopup() {
-            if (window.opener) {
-                window.close();
-            } else {
-                alert('이 창을 닫을 수 없습니다. 브라우저의 닫기 버튼을 사용하세요.');
-            }
+            window.close();  // 단순히 창을 닫음
         }
 
         // 팝업을 여는 함수 예시

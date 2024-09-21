@@ -8,22 +8,17 @@ from .models import PFCS
 from .forms import CreateDocumentForm, UpdateDocumentForm
 from django.contrib import messages
 
+def show_search_popup(request):
+    return render(request, 'pfcstandard/searchpopup.html')
+
 def pfcs_menu(request):
-    mode = request.GET.get('mode', 'view')
+    # 모든 PFCS 문서를 가져옵니다.
     documents = PFCS.objects.all()
     
-    if mode == 'edit':
-        document_id = request.GET.get('document_id')  # GET 파라미터에서 가져오기
-        if document_id:
-            update_url = reverse('update_pfcs', args=[document_id])
-            return redirect(update_url)
-        else:
-            return redirect('pfcs_menu')  # document_id가 없으면 메뉴로 리다이렉트
-    
+    # 템플릿으로 전달할 컨텍스트 데이터
     context = {
         'create_pfcs': reverse('create_pfcs'),
-        'mode': mode,
-        'documents': documents,
+        'documents': documents,  # 문서 목록을 템플릿에 전달
     }
 
     return render(request, 'pfcstandard/pfcs_menu.html', context)
