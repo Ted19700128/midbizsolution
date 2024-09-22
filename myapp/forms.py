@@ -7,16 +7,20 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
         
+        fields = [
+            'equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
+            'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul', 'current_status'
+        ]
         # widgets와 labels를 Meta 클래스 안에 정의
         widgets = {
-            'equipment_number': forms.HiddenInput(),  # 설비번호는 히든 필드로 설정
+            'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manufacturer': forms.TextInput(attrs={'class': 'form-control'}),
             'mfg_date': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'equipment_type': forms.TextInput(attrs={'class': 'form-control'}),
-            'specs': forms.Textarea(attrs={'class': 'form-control'}),  # 사양을 textarea로 변경
+            'specs': forms.TextInput(attrs={'class': 'form-control'}), 
             'first_install': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'first_implement': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
@@ -26,7 +30,7 @@ class EquipmentForm(forms.ModelForm):
         }
 
         labels = {
-            'equipment_number': '설비번호',
+            'euipment_number': '설비번호',
             'name': '설비명',
             'model_name': '모델명',
             'manufacturer': '제조사',
