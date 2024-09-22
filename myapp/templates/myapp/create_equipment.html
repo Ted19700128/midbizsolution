@@ -10,7 +10,67 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}  <!-- equipment_number 필드를 제외하고 나머지 필드 출력 -->
+    <table>
+        <!-- 1행 : 설비번호, 설비이름, 모델명 -->
+        <tr>
+            <th>설비번호</th>
+            <th>설비명</th>
+            <th>모델명</th>
+        </tr>
+        <tr>
+            <td>{{ form.equipment_number }}</td>
+            <td>{{ form.name }}</td>
+            <td>{{ form.model_name }}</td>
+        </tr>
+
+        <!-- 2행 : 제조사, 제조일자, 제조번호 -->
+        <tr>
+            <th>제조사</th>
+            <th>제조일자</th>
+            <th>제조번호</th>
+        </tr>
+        <tr>
+            <td>{{ form.manufacturer }}</td>
+            <td>{{ form.mfg_date }}</td>
+            <td>{{ form.mfg_number }}</td>
+        </tr>
+
+        <!-- 3행 : 형식, 사양 -->
+        <tr>
+            <th>형식</th>
+            <th colspan="2">사양</th>
+        </tr>
+        <tr>
+            <td>{{ form.equipment_type }}</td>
+            <td colspan="2">{{ form.specs }}</td>
+        </tr>
+
+        <!-- 4행 : 최초 설치 시점, 최초 양산 적용, 현 운영 장소 -->
+        <tr>
+            <th>최초설치시점</th>
+            <th>최초양산적용</th>
+            <th>현 운영 장소</th>
+        </tr>
+        <tr>
+            <td>{{ form.first_install }}</td>
+            <td>{{ form.first_implement }}</td>
+            <td>{{ form.current_operation_place }}</td>
+        </tr>
+
+        <!-- 5행 : 관리부서, 전면 정비, 상태 -->
+        <tr>
+            <th>관리부서</th>
+            <th>오버홀</th>
+            <th>상태</th>
+        </tr>
+        <tr>
+            <td>{{ form.management_team }}</td>
+            <td>{{ form.overall }}</td>
+            <td>{{ form.current_status }}</td>
+        </tr>
+    </table>
+
+    <br>
     <button type="submit">완료</button>
     <button type="button" onclick="history.back()">취소</button>
 </form>

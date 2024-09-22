@@ -26,19 +26,19 @@ class EquipmentForm(forms.ModelForm):
         }
 
         labels = {
-            'equipment_number': '설비 번호',
-            'name': '설비 이름',
+            'equipment_number': '설비번호',
+            'name': '설비명',
             'model_name': '모델명',
             'manufacturer': '제조사',
-            'mfg_date': '제조 일자',
-            'mfg_number': '제조 번호',
+            'mfg_date': '제조일자',
+            'mfg_number': '제조번호',
             'equipment_type': '형식',
             'specs': '사양',
             'first_install': '최초설치시점',
             'first_implement': '최초양산적용',
             'current_operation_place': '현 운영장소',
             'management_team': '관리부서',
-            'overall': '전면 정비',
+            'overhaul': '오버홀',
             'current_status': '상태',
         }
 
