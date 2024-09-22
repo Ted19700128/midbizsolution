@@ -143,14 +143,20 @@ def export_to_excel(request):
     # 데이터프레임 생성
     data = [
         {
-            '설비 번호': equipment.equipment_number,
+            '설비번호': equipment.equipment_number,
             '설비명': equipment.name,
             '모델명': equipment.model_name,
             '제조사': equipment.manufacturer,
             '제조년월': equipment.mfg_date,
             '제조번호': equipment.mfg_number,
             '형식': equipment.equipment_type,
-            '설비 사양': equipment.specs,
+            '사양': equipment.specs,
+            '최초설치시점': equipment.first_install,
+            '최초양산적용': equipment.first_implement,
+            '현 운영장소': equipment.current_operation_place,
+            '관리부서': equipment.management_team,
+            '오버홀': equipment.overhaul,
+            '상태': equipment.current_status,
         }
         for equipment in equipments
     ]
@@ -175,9 +181,15 @@ def export_to_excel(request):
         worksheet.column_dimensions['F'].width = 10
         worksheet.column_dimensions['G'].width = 10
         worksheet.column_dimensions['H'].width = 20
+        worksheet.column_dimensions['I'].width = 10
+        worksheet.column_dimensions['J'].width = 10
+        worksheet.column_dimensions['K'].width = 10
+        worksheet.column_dimensions['L'].width = 10
+        worksheet.column_dimensions['M'].width = 10
+        worksheet.column_dimensions['N'].width = 10
     
         # 첫 번째 행 병합 및 제목 삽입
-        worksheet.merge_cells('A1:H1')  # A1부터 H1까지 병합
+        worksheet.merge_cells('A1:N1')  # A1부터 H1까지 병합
         title_cell = worksheet['A1']
         title_cell.value = '설비관리대장'  # 제목 설정
         title_cell.font = Font(name='맑은 고딕', size=22, bold=True)  # 폰트 설정
@@ -188,7 +200,7 @@ def export_to_excel(request):
 
         # 2행부터 데이터가 들어가므로, 데이터 셀의 스타일 설정
         # 모든 셀 세로 중간 맞춤, H열을 제외한 모든 열 가로 중간 맞춤
-        for row in worksheet.iter_rows(min_row=3, max_row=worksheet.max_row, min_col=1, max_col=8):
+        for row in worksheet.iter_rows(min_row=3, max_row=worksheet.max_row, min_col=1, max_col=14):
             for cell in row:
                 # 세로 가운데 맞춤
                 cell.alignment = Alignment(vertical='center')
