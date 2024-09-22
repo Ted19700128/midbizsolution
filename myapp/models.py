@@ -15,7 +15,7 @@ class Equipment(models.Model):
     first_implement = models.CharField(max_length=10, blank=True, null=True)
     current_operation_place = models.CharField(max_length=10)
     management_team = models.CharField(max_length=10)
-    overall = models.CharField(max_length=10)
+    overhaul = models.CharField(max_length=10)
     current_status = models.CharField(max_length=10)
 
     def save(self, *args, **kwargs):

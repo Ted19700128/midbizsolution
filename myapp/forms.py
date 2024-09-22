@@ -7,7 +7,7 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
         fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
-                  'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overall', 'current_status']
+                  'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul', 'current_status']
         widgets = {
             'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -21,7 +21,7 @@ class EquipmentForm(forms.ModelForm):
             'first_implement': forms.TextInput(attrs={'class': 'form-control'}),
             'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
             'management_team': forms.TextInput(attrs={'class': 'form-control'}),
-            'overall': forms.TextInput(attrs={'class': 'form-control'}),
+            'overhaul': forms.TextInput(attrs={'class': 'form-control'}),
             'current_status': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
