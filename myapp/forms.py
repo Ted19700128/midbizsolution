@@ -6,19 +6,20 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = ['equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
-                  'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul', 'current_status']
+        fields = '__all__'  # 모델의 모든 필드를 사용
+        
+        # widgets와 labels를 Meta 클래스 안에 정의
         widgets = {
-            'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'equipment_number': forms.HiddenInput(),  # 설비번호는 히든 필드로 설정
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manufacturer': forms.TextInput(attrs={'class': 'form-control'}),
-            'mfg_date': forms.TextInput(attrs={'class': 'form-control'}),
+            'mfg_date': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'equipment_type': forms.TextInput(attrs={'class': 'form-control'}),
-            'specs': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_install': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_implement': forms.TextInput(attrs={'class': 'form-control'}),
+            'specs': forms.Textarea(attrs={'class': 'form-control'}),  # 사양을 textarea로 변경
+            'first_install': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
+            'first_implement': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
             'management_team': forms.TextInput(attrs={'class': 'form-control'}),
             'overhaul': forms.TextInput(attrs={'class': 'form-control'}),
@@ -42,6 +43,10 @@ class EquipmentForm(forms.ModelForm):
             'current_status': '상태',
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # equipment_number 필드는 히든 필드로 설정, 만약 widgets에서 처리되지 않는 경우 대비
+        self.fields['equipment_number'].widget = forms.HiddenInput()
 
     def as_custom(self, exclude_fields=None):
         if exclude_fields is None:
@@ -49,5 +54,9 @@ class EquipmentForm(forms.ModelForm):
         output = []
         for field in self:
             if field.name not in exclude_fields:
-                output.append(f'<div class="form-group">{field.label_tag()} {field} {field} {field.errors}</div>')
+                output.append(
+                    f'<div class="form-group">'
+                    f'{field.label_tag()} {field} {field.errors}'
+                    f'</div>'
+                )
         return '\n'.join(output)

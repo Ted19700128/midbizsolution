@@ -18,7 +18,7 @@
             <th>모델명</th>
         </tr>
         <tr>
-            <td>{{ form.equipment_number }}</td>
+            <td>{{ form.equipment_number }}</td> <!-- 자동 생성이므로 hidden 처리 -->
             <td>{{ form.name }}</td>
             <td>{{ form.model_name }}</td>
         </tr>
@@ -65,7 +65,7 @@
         </tr>
         <tr>
             <td>{{ form.management_team }}</td>
-            <td>{{ form.overall }}</td>
+            <td>{{ form.overhaul }}</td>
             <td>{{ form.current_status }}</td>
         </tr>
     </table>
@@ -79,16 +79,34 @@
 
 {% block extra_css %}
 <style>
+    /* 전체 레이아웃 중앙 배치 및 배경색 */
+    body, html {
+        height: 100%; /* 화면 전체 높이를 설정하여 중앙 배치를 가능하게 함 */
+        margin: 0; /* 기본 마진 제거 */
+        display: flex; /* Flexbox 사용 */
+        justify-content: center; /* 가로 중앙 정렬 */
+        align-items: center; /* 세로 중앙 정렬 */
+        background-color: #f0f0f0; /* 전체 배경색 */
+    }
+
+    form {
+        width: 50%; /* 폼의 너비를 50%로 설정 */
+        background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
+        padding: 20px; /* 폼 안쪽 여백 설정 */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        border-radius: 10px; /* 모서리 둥글게 설정 */
+    }
+
     /* 테이블 열 폭 조정 스타일 */
     table {
-        width: 50%; /* 테이블 전체 너비 */
+        width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
         border-collapse: collapse; /* 경계선 겹침 방지 */
         table-layout: fixed; /* 고정된 테이블 레이아웃 */
     }
     th, td {
-        font-size: 14px; /* 헤더와 데이터 셀의 글자 크기를 14px로 설정 */
+        font-size: 14px; /* 글자 크기 설정 */
         border: 1px solid #dddddd; /* 테두리 스타일 */
-        padding: 4px; /* 패딩 */
+        padding: 8px; /* 패딩 */
         text-align: center; /* 텍스트 중앙 정렬 */
         word-wrap: break-word; /* 긴 단어 줄바꿈 */
         overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
@@ -96,15 +114,6 @@
     th {
         background-color: #f2f2f2; /* 헤더 배경색 */
     }
-    /* 열 폭 조정 */
-    th.col-small, td.col-small {
-        width: 5%; /* 작은 열 너비 */
-    }
-    th.col-medium, td.col-medium {
-        width: 8%; /* 중간 열 너비 */
-    }
-    th.col-large, td.col-large {
-        width: 13%; /* 큰 열 너비 */
-    }
 </style>
 {% endblock %}
+
