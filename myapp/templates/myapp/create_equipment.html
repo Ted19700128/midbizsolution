@@ -16,10 +16,8 @@
             <th>설비번호</th>
             <th>설비명</th>
             <th>모델명</th>
-            <th>제조사</th>
         </tr>
         <tr>
-            <td>{{ form.equipment_number }}</td>
             <td>{{ form.name }}</td>
             <td>{{ form.model_name }}</td>
             <td>{{ form.manufacturer }}</td>
@@ -27,22 +25,24 @@
 
         <!-- 2행 : 제조사, 제조일자, 제조번호 -->
         <tr>
+            <th>제조사</th>
             <th>제조일자</th>
             <th>제조번호</th>
-            <th>형식</th>
         </tr>
         <tr>
+            <td>{{ form.equipment_number }}</td>
             <td>{{ form.mfg_date }}</td>
             <td>{{ form.mfg_number }}</td>
-            <td>{{ form.equipment_type }}</td>
         </tr>
 
         <!-- 3행 : 형식, 사양 -->
         <tr>
-            <th colspan="3">사양</th>
+            <th>형식</th>
+            <th colspan="2">사양</th>
         </tr>
         <tr>
-            <td colspan="3">{{ form.specs }}</td>
+            <td>{{ form.equipment_type }}</td>
+            <td colspan="2">{{ form.specs }}</td>
         </tr>
 
         <!-- 4행 : 최초 설치 시점, 최초 양산 적용, 현 운영 장소 -->
@@ -79,6 +79,24 @@
 
 {% block extra_css %}
 <style>
+    /* 전체 페이지를 Flexbox로 설정하여 중앙 배치 */
+    body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center; /* 가로 중앙 정렬 */
+        align-items: center; /* 세로 중앙 정렬 */
+        background-color: #f0f0f0; /* 전체 배경색 */
+    }
+
+    /* 폼을 감싸는 컨테이너를 추가하여 중앙 정렬 */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%; /* 컨테이너의 너비를 전체 화면으로 설정 */
+    }
+
     form {
         width: 50%; /* 폼의 너비를 50%로 설정 */
         background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
@@ -93,6 +111,7 @@
         border-collapse: collapse; /* 경계선 겹침 방지 */
         table-layout: fixed; /* 고정된 테이블 레이아웃 */
     }
+
     th, td {
         font-size: 14px; /* 글자 크기 설정 */
         border: 1px solid #dddddd; /* 테두리 스타일 */
@@ -101,9 +120,11 @@
         word-wrap: break-word; /* 긴 단어 줄바꿈 */
         overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
     }
+
     th {
-        background-color: #f2f2f2; /* 헤더 배경색 */
+        background-color: rgb(64, 64, 64); /* 헤더 배경색을 rgb(64, 64, 64)로 설정 */
+        color: #ffffff; /* 헤더 텍스트를 흰색으로 설정 */
+
     }
 </style>
 {% endblock %}
-

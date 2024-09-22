@@ -6,7 +6,7 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        
+        fields = '__all__'
         fields = [
             'equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
             'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul', 'current_status'
@@ -17,15 +17,15 @@ class EquipmentForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manufacturer': forms.TextInput(attrs={'class': 'form-control'}),
-            'mfg_date': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
+            'mfg_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'mfg_number': forms.TextInput(attrs={'class': 'form-control'}),
             'equipment_type': forms.TextInput(attrs={'class': 'form-control'}),
-            'specs': forms.TextInput(attrs={'class': 'form-control'}), 
-            'first_install': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
-            'first_implement': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
+            'specs': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_install': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
+            'first_implement': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
             'management_team': forms.TextInput(attrs={'class': 'form-control'}),
-            'overhaul': forms.TextInput(attrs={'class': 'form-control'}),
+            'overall': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'current_status': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
@@ -46,15 +46,13 @@ class EquipmentForm(forms.ModelForm):
             'current_status': '상태',
         }
 
-    def as_custom(self, exclude_fields=None):
-        if exclude_fields is None:
-            exclude_fields = []
-        output = []
-        for field in self:
-            if field.name not in exclude_fields:
-                output.append(
-                    f'<div class="form-group">'
-                    f'{field.label_tag()} {field} {field.errors}'
-                    f'</div>'
-                )
-        return '\n'.join(output)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 필수 입력이 아닌 필드에 대해 required 속성 비활성화
+        self.fields['mfg_date'].required = False
+        self.fields['mfg_number'].required = False
+        self.fields['equipment_type'].required = False
+        self.fields['specs'].required = False
+        self.fields['first_implement'].required = False
+        self.fields['overhaul'].required = False

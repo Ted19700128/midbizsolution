@@ -7,15 +7,15 @@ class Equipment(models.Model):
     name = models.CharField(max_length=10)
     model_name = models.CharField(max_length=15)
     manufacturer = models.CharField(max_length=10)
-    mfg_date = models.CharField(max_length=10)
-    mfg_number = models.CharField(max_length=10)
-    equipment_type = models.CharField(max_length=10)
+    mfg_date = models.DateField(blank=True, null=True)  # 필수 입력이 아닌 경우
+    mfg_number = models.CharField(max_length=10, blank=True, null=True)  # 필수 입력이 아닌 경우
+    equipment_type = models.CharField(max_length=15, blank=True, null=True)
     specs = models.TextField(blank=True, null=True)
-    first_install = models.CharField(max_length=10, blank=True, null=True)
-    first_implement = models.CharField(max_length=10, blank=True, null=True)
+    first_install = models.DateField()
+    first_implement = models.DateField(blank=True, null=True)
     current_operation_place = models.CharField(max_length=10)
     management_team = models.CharField(max_length=10)
-    overhaul = models.CharField(max_length=10)
+    overhaul = models.DateField(blank=True, null=True)
     current_status = models.CharField(max_length=10)
 
     def save(self, *args, **kwargs):
