@@ -26,21 +26,21 @@
     <table>
         <thead>
             <tr>
-                <th class="col-medium">작업</th> <!-- 수정 / 삭제 버튼 열 추가 -->
-                <th class="col-medium">설비번호</th>
-                <th class="col-medium">설비명</th>
-                <th class="col-medium">모델명</th>
-                <th class="col-medium">제조사</th>
-                <th class="col-medium">제조년월</th>
-                <th class="col-medium">제조번호</th>
-                <th class="col-medium">형식</th>
-                <th class="col-large">사양</th>
-                <th class="col-medium">최초설치시점</th>
-                <th class="col-medium">최초양산적용</th>
-                <th class="col-medium">현 운영장소</th>
-                <th class="col-medium">관리부서</th>
-                <th class="col-small">오버홀</th>
-                <th class="col-small">상태</th>
+                <th class="col-13">작업</th> <!-- 수정 / 삭제 버튼 열 추가 -->
+                <th class="col-5">설비번호</th>
+                <th class="col-7">설비명</th>
+                <th class="col-7">모델명</th>
+                <th class="col-7">제조사</th>
+                <th class="col-7">제조년월</th>
+                <th class="col-7">제조번호</th>
+                <th class="col-10">형식</th>
+                <th class="col-13">사양</th>
+                <th class="col-7">최초설치시점</th>
+                <th class="col-7">최초양산적용</th>
+                <th class="col-7">현 운영장소</th>
+                <th class="col-7">관리부서</th>
+                <th class="col-5">오버홀</th>
+                <th class="col-5">상태</th>
             </tr>
         </thead>
         <tbody>
@@ -50,20 +50,20 @@
                     <a href="{% url 'update_equipment' equipment.id %}" class="btn btn-primary">수정</a>
                     <a href="{% url 'delete_confirmation' equipment.id %}" class="btn btn-primary">삭제</a>
                 </td>
-                <td class="col-small">{{ equipment.equipment_number }}</td>
-                <td class="col-small">{{ equipment.name }}</td>
-                <td class="col-medium">{{ equipment.model_name }}</td>
-                <td class="col-medium">{{ equipment.manufacturer }}</td>
-                <td class="col-medium">{{ equipment.mfg_date }}</td>
-                <td class="col-medium">{{ equipment.mfg_number }}</td>
-                <td class="col-medium">{{ equipment.equipment_type }}</td>
-                <td class="col-large">{{ equipment.specs }}</td>
-                <td class="col-medium">{{ equipment.first_install }}</td>
-                <td class="col-medium">{{ equipment.first_implement }}</td>
-                <td class="col-small">{{ equipment.current_operation_place }}</td>
-                <td class="col-small">{{ equipment.management_team }}</td>
-                <td class="col-small">{{ equipment.overhaul }}</td>
-                <td class="col-small">{{ equipment.current_status }}</td>
+                <td class="col-5">{{ equipment.equipment_number }}</td>
+                <td class="col-5">{{ equipment.name }}</td>
+                <td class="col-7">{{ equipment.model_name }}</td>
+                <td class="col-7">{{ equipment.manufacturer }}</td>
+                <td class="col-7">{{ equipment.mfg_date }}</td>
+                <td class="col-7">{{ equipment.mfg_number }}</td>
+                <td class="col-10">{{ equipment.equipment_type }}</td>
+                <td class="col-13">{{ equipment.specs }}</td>
+                <td class="col-7">{{ equipment.first_install }}</td>
+                <td class="col-7">{{ equipment.first_implement }}</td>
+                <td class="col-7">{{ equipment.current_operation_place }}</td>
+                <td class="col-7">{{ equipment.management_team }}</td>
+                <td class="col-5">{{ equipment.overhaul }}</td>
+                <td class="col-5">{{ equipment.current_status }}</td>
             </tr>
             {% empty %}
             <tr>
@@ -83,7 +83,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 150%; /* 컨테이너 너비 설정 */
+        width: 200%; /* 컨테이너 너비 설정 */
     }
 
 /* 버튼 크기 최소화 */
@@ -113,13 +113,16 @@
 
     }
     /* 열 폭 조정 */
-    th.col-small, td.col-small {
+    th.col-5, td.col-5 {
         width: 5%; /* 작은 열 너비 */
     }
-    th.col-medium, td.col-medium {
-        width: 8%; /* 중간 열 너비 */
+    th.col-7, td.col-7 {
+        width: 7%; /* 중간 열 너비 */
     }
-    th.col-large, td.col-large {
+    th.col-10, td.col-10 {
+        width: 10%; /* 중간 열 너비 */
+    }
+    th.col-13, td.col-13 {
         width: 13%; /* 큰 열 너비 */
     }
 </style>

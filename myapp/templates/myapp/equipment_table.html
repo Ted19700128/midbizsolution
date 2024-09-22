@@ -3,39 +3,39 @@
 <table>
     <thead>
         <tr>
-            <th class="col-medium">설비번호</th>
-            <th class="col-medium">설비명</th>
-            <th class="col-medium">모델명</th>
-            <th class="col-medium">제조사</th>
-            <th class="col-medium">제조년월</th>
-            <th class="col-medium">제조번호</th>
-            <th class="col-large">형식</th>
-            <th class="col-large">사양</th>
-            <th class="col-medium">최초설치시점</th>
-            <th class="col-medium">최초양산적용</th>
-            <th class="col-medium">현 운영장소</th>
-            <th class="col-medium">관리부서</th>
-            <th class="col-small">오버홀</th>
-            <th class="col-small">상태</th>                    
+            <th class="col-5">설비번호</th>
+            <th class="col-5">설비명</th>
+            <th class="col-7">모델명</th>
+            <th class="col-7">제조사</th>
+            <th class="col-7">제조년월</th>
+            <th class="col-7">제조번호</th>
+            <th class="col-10">형식</th>
+            <th class="col-13">사양</th>
+            <th class="col-7">최초설치시점</th>
+            <th class="col-7">최초양산적용</th>
+            <th class="col-7">현 운영장소</th>
+            <th class="col-7">관리부서</th>
+            <th class="col-5">오버홀</th>
+            <th class="col-5">상태</th>                    
         </tr>
     </thead>
     <tbody>
         {% for equipment in equipments %}
         <tr>
-            <td class="col-small">{{ equipment.equipment_number }}</td>
-            <td class="col-small">{{ equipment.name }}</td>
-            <td class="col-medium">{{ equipment.model_name }}</td>
-            <td class="col-medium">{{ equipment.manufacturer }}</td>
-            <td class="col-medium">{{ equipment.mfg_date }}</td>
-            <td class="col-medium">{{ equipment.mfg_number }}</td>
-            <td class="col-large">{{ equipment.equipment_type }}</td>
-            <td class="col-large">{{ equipment.specs }}</td>
-            <td class="col-medium">{{ equipment.first_install }}</td>
-            <td class="col-medium">{{ equipment.first_implement }}</td>
-            <td class="col-small">{{ equipment.current_operation_place }}</td>
-            <td class="col-small">{{ equipment.management_team }}</td>
-            <td class="col-small">{{ equipment.overhaul }}</td>
-            <td class="col-small">{{ equipment.current_status }}</td>
+            <td class="col-5">{{ equipment.equipment_number }}</td>
+            <td class="col-5">{{ equipment.name }}</td>
+            <td class="col-7">{{ equipment.model_name }}</td>
+            <td class="col-7">{{ equipment.manufacturer }}</td>
+            <td class="col-7">{{ equipment.mfg_date }}</td>
+            <td class="col-7">{{ equipment.mfg_number }}</td>
+            <td class="col-10">{{ equipment.equipment_type }}</td>
+            <td class="col-13">{{ equipment.specs }}</td>
+            <td class="col-7">{{ equipment.first_install }}</td>
+            <td class="col-7">{{ equipment.first_implement }}</td>
+            <td class="col-7">{{ equipment.current_operation_place }}</td>
+            <td class="col-7">{{ equipment.management_team }}</td>
+            <td class="col-5">{{ equipment.overhaul }}</td>
+            <td class="col-5">{{ equipment.current_status }}</td>
         </tr>
         {% empty %}
         <tr>
