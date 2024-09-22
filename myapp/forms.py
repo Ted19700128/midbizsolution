@@ -6,7 +6,6 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = '__all__'  # 모델의 모든 필드를 사용
         
         # widgets와 labels를 Meta 클래스 안에 정의
         widgets = {
@@ -42,11 +41,6 @@ class EquipmentForm(forms.ModelForm):
             'overhaul': '오버홀',
             'current_status': '상태',
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # equipment_number 필드는 히든 필드로 설정, 만약 widgets에서 처리되지 않는 경우 대비
-        self.fields['equipment_number'].widget = forms.HiddenInput()
 
     def as_custom(self, exclude_fields=None):
         if exclude_fields is None:

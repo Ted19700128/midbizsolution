@@ -18,7 +18,7 @@
             <th>모델명</th>
         </tr>
         <tr>
-            <td>{{ form.equipment_number }}</td> <!-- 자동 생성이므로 hidden 처리 -->
+            <td>{{ form.equipment_number }}</td> 
             <td>{{ form.name }}</td>
             <td>{{ form.model_name }}</td>
         </tr>
@@ -79,16 +79,6 @@
 
 {% block extra_css %}
 <style>
-    /* 전체 레이아웃 중앙 배치 및 배경색 */
-    body, html {
-        height: 100%; /* 화면 전체 높이를 설정하여 중앙 배치를 가능하게 함 */
-        margin: 0; /* 기본 마진 제거 */
-        display: flex; /* Flexbox 사용 */
-        justify-content: center; /* 가로 중앙 정렬 */
-        align-items: center; /* 세로 중앙 정렬 */
-        background-color: #f0f0f0; /* 전체 배경색 */
-    }
-
     form {
         width: 50%; /* 폼의 너비를 50%로 설정 */
         background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
