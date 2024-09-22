@@ -25,7 +25,7 @@ class EquipmentForm(forms.ModelForm):
             'first_implement': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
             'current_operation_place': forms.TextInput(attrs={'class': 'form-control'}),
             'management_team': forms.TextInput(attrs={'class': 'form-control'}),
-            'overall': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),  # 날짜 필드에 date 타입 추가
+            'overhaul': forms.TextInput(attrs={'class': 'form-control'}),  
             'current_status': forms.TextInput(attrs={'class': 'form-control'}),
         }
 

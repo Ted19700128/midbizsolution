@@ -79,24 +79,6 @@
 
 {% block extra_css %}
 <style>
-    /* 전체 페이지를 Flexbox로 설정하여 중앙 배치 */
-    body, html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        justify-content: center; /* 가로 중앙 정렬 */
-        align-items: center; /* 세로 중앙 정렬 */
-        background-color: #f0f0f0; /* 전체 배경색 */
-    }
-
-    /* 폼을 감싸는 컨테이너를 추가하여 중앙 정렬 */
-    .form-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* 컨테이너의 너비를 전체 화면으로 설정 */
-    }
-
     form {
         width: 50%; /* 폼의 너비를 50%로 설정 */
         background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
@@ -121,10 +103,5 @@
         overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
     }
 
-    th {
-        background-color: rgb(64, 64, 64); /* 헤더 배경색을 rgb(64, 64, 64)로 설정 */
-        color: #ffffff; /* 헤더 텍스트를 흰색으로 설정 */
-
-    }
 </style>
 {% endblock %}
