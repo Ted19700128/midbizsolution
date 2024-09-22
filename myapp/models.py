@@ -3,20 +3,20 @@
 from django.db import models, transaction
 
 class Equipment(models.Model):
-    equipment_number = models.CharField(max_length=10, unique=True)
-    name = models.CharField(max_length=20)
-    model_name = models.CharField(max_length=20)
-    manufacturer = models.CharField(max_length=20)
-    mfg_date = models.CharField(max_length=20)
-    mfg_number = models.CharField(max_length=20)
-    equipment_type = models.CharField(max_length=20)
-    specs = models.CharField(max_length=20)
-    first_install = models.CharField(max_length=20)
-    first_implement = models.CharField(max_length=20)
-    current_operation_place = models.CharField(max_length=20)
-    management_team = models.CharField(max_length=20)
-    overall = models.CharField(max_length=20)
-    current_status = models.CharField(max_length=20)
+    equipment_number = models.CharField(max_length=5, unique=True)
+    name = models.CharField(max_length=10)
+    model_name = models.CharField(max_length=15)
+    manufacturer = models.CharField(max_length=10)
+    mfg_date = models.CharField(max_length=10)
+    mfg_number = models.CharField(max_length=10)
+    equipment_type = models.CharField(max_length=10)
+    specs = models.TextField(blank=True, Null=True)
+    first_install = models.CharField(max_length=10, blank=True, Null=True)
+    first_implement = models.CharField(max_length=10, blank=True, Null=True)
+    current_operation_place = models.CharField(max_length=10)
+    management_team = models.CharField(max_length=10)
+    overall = models.CharField(max_length=10)
+    current_status = models.CharField(max_length=5)
 
     def save(self, *args, **kwargs):
         # 장비 번호가 없는 경우 새로 생성

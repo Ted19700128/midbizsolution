@@ -47,24 +47,27 @@
     table {
         width: 100%; /* 테이블 전체 너비 */
         border-collapse: collapse; /* 경계선 겹침 방지 */
+        table-layout: fixed; /* 고정된 테이블 레이아웃 */
     }
     th, td {
         border: 1px solid #dddddd; /* 테두리 스타일 */
         padding: 8px; /* 패딩 */
-        text-align: left; /* 텍스트 왼쪽 정렬 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        word-wrap: break-word; /* 긴 단어 줄바꿈 */
+        overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
     }
     th {
         background-color: #f2f2f2; /* 헤더 배경색 */
     }
     /* 열 폭 조정 */
     th.col-small, td.col-small {
-        width: 10%; /* 작은 열 너비 */
+        width: 5%; /* 작은 열 너비 */
     }
     th.col-medium, td.col-medium {
-        width: 20%; /* 중간 열 너비 */
+        width: 7%; /* 중간 열 너비 */
     }
     th.col-large, td.col-large {
-        width: 30%; /* 큰 열 너비 */
+        width: 21%; /* 큰 열 너비 */
     }
 </style>
 {% endblock %}
