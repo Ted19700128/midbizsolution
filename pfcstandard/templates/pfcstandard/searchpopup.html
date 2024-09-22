@@ -1,15 +1,10 @@
 <!-- D:\web\midbizsolution\pfcstandard\templates\pfcstandard\searchpopup.html -->
 
-{% load static %} <!-- static 태그를 사용하기 위해 추가 -->
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>설비 조회</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <!-- Bootstrap 추가 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>관리부서 조회</title>
     <style>
         #managementteamPopup {
             display: none;  /* 처음에는 팝업을 숨김 */
@@ -42,42 +37,53 @@
     </style>
 </head>
 <body>
+    <!-- 팝업 배경 -->
     <div id="popupBackground"></div>
+    
+    <!-- 팝업 내용 -->
     <div id="managementteamPopup">
         <div id="popupHeader">
             관리부서 조회
         </div>
         <div style="margin-top: 20px;">
-            <label for="managementTeam">관리부서를 입력하세요.</label>
-            <br>
+            <label for="managementTeam">관리부서를 입력하세요:</label>
             <input type="text" id="managementTeam" maxlength="20" style="width: 100%; padding: 10px; margin-top: 10px;">
         </div>
         <div style="text-align: right; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="searchManagementTeam()">확인</button>
-            <button class="btn btn-secondary" onclick="closePopup()">취소</button>
+            <button onclick="searchManagementTeam()">확인</button>
+            <button onclick="closePopup()">취소</button>
         </div>
     </div>
 
     <script>
+        // 팝업 열기
+        function showPopup() {
+            document.getElementById('managementteamPopup').style.display = 'block';
+            document.getElementById('popupBackground').style.display = 'block';
+        }
+
+        // 팝업 닫기
+        function closePopup() {
+            document.getElementById('managementteamPopup').style.display = 'none';
+            document.getElementById('popupBackground').style.display = 'none';
+        }
+
+        // 관리부서 검색 예제 함수
         function searchManagementTeam() {
             const managementTeam = document.getElementById('managementTeam').value;
             if (managementTeam) {
-                window.opener.location.href = `/myapp/menu/?management_team=${managementTeam}`;
-                closePopup();
+                alert('검색된 관리부서: ' + managementTeam);
+                // 부모 창에서 값을 사용할 경우 window.opener.location.href = '...';
+                closePopup();  // 검색 후 팝업 닫기
             } else {
                 alert('관리부서를 입력하세요.');
             }
         }
 
-        function closePopup() {
-            window.close();  // 단순히 창을 닫음
-        }
-
-        // 팝업을 여는 함수 예시
-        function showPopup() {
-            document.getElementById('managementteamPopup').style.display = 'block';
-            document.getElementById('popupBackground').style.display = 'block';
-        }
+        // 페이지 로드 후 팝업 표시 (테스트용)
+        window.onload = function() {
+            showPopup();
+        };
     </script>
 </body>
 </html>

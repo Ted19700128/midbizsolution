@@ -10,9 +10,68 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}  
+    <label for="document_number">문서 번호:</label>
+    <input type="text" id="document_number" name="document_number">
+
+    <label for="equipment_number">설비 번호:</label>
+    <input type="text" id="equipment_number" name="equipment_number" onblur="fetchManagementTeam()">
+    
+    <label for="management_team">관리부서:</label>
+    <input type="text" id="management_team" name="management_team" readonly> <!-- 자동으로 채울 필드 -->
+
+    <label for="rating">설비등급:</label>
+    <input type="text" id="rating" name="rating">
+    
+    <label for="order">번호:</label>
+    <input type="number" id="order" name="order">
+    
+    <label for="insp_point">점검개소:</label>
+    <input type="text" id="insp_point" name="insp_point">
+
+    <label for="insp_item">점검항목:</label>
+    <input type="text" id="insp_item" name="insp_item">
+
+    <label for="insp_method">설비등급:</label>
+    <input type="text" id="insp_method" name="insp_method">
+
+    <label for="judge_criteria">설비등급:</label>
+    <input type="text" id="judge_criteria" name="judge_criteria">
+
+    <label for="actions_required">설비등급:</label>
+    <input type="text" id="actions_required" name="actions_required">
+  
     <button type="submit" class="btn btn-primary">완료</button>
     <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
 </form>
+
+<script>
+    function fetchManagementTeam() {
+        const equipmentNumber = document.getElementById('equipment_number').value;
+        
+        if (equipmentNumber) {
+            fetch(`/pfcstandard/api/get-management-team/?equipment_number=${equipmentNumber}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('관리부서 정보를 가져올 수 없습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.management_team) {
+                        document.getElementById('management_team').value = data.management_team;
+                    } else {
+                        alert('해당 설비 번호에 대한 관리부서 정보가 없습니다.');
+                        document.getElementById('management_team').value = '';
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                    document.getElementById('management_team').value = '';
+                });
+        } else {
+            alert('설비 번호를 입력하세요.');
+        }
+    }
+</script>
 
 {% endblock %}

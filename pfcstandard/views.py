@@ -7,22 +7,35 @@ from django.db import transaction
 from .models import PFCS
 from .forms import CreateDocumentForm, UpdateDocumentForm
 from django.contrib import messages
+from myapp.models import ManagementTeam    # <== 새로 추가됨(0922)
+from django.http import JsonResponse
+from myapp.models import Equipment  # Equipment 모델이 myapp에 있다고 가정
 
-def bring_managementTeam(request):
-    # 쿼리스트링에서 'management_team' 값을 가져옴
-    management_team = request.GET.get('management_team')
-    if management_team:
-        # management_team 값으로 필터링된 문서들만 가져옴
-        documents = PFCS.objects.filter(management_team=management_team)
+def show_management_teams(request):        # <== 새로 추가됨(0922)
+    management_teams = ManagementTeam.objects.all()
+    return render(request, 'pfcstandard/management_team_list.html', {'management_teams': management_teams})
+
+def filter_by_management_team(request):    # <== 새로 추가됨(0922)
+    management_team_id = request.GET.get('management_team')
+    if management_team_id:
+        documents = PFCS.objects.filter(management_team_id=management_team_id)
     else:
-        # 모든 문서를 가져옴
         documents = PFCS.objects.all()
-    
-    context = {'documents': documents}
-    return render(request, 'myapp/equipment_table.html', context)
+
+    return render(request, 'pfcstandard/pfcs_menu.html', {'documents': documents})
+
+def get_management_team(request):
+    equipment_number = request.GET.get('equipment_number')
+    if equipment_number:
+        # equipment_number를 사용하여 myapp의 Equipment 모델에서 관련 정보를 가져옴
+        equipment = get_object_or_404(Equipment, equipment_number=equipment_number)
+        management_team = equipment.management_team.name  # management_team 필드가 Equipment에 있다고 가정
+        return JsonResponse({'management_team': management_team})
+    return JsonResponse({'error': 'Invalid equipment number'}, status=400)
 
 def show_search_popup(request):
-    return render(request, 'pfcstandard/searchpopup.html')
+    management_teams = ManagementTeam.objects.all()  # 모든 관리부서 가져오기  # <== 수정됨(0922)
+    return render(request, 'pfcstandard/searchpopup.html', {'management_teams': management_teams})
 
 def pfcs_menu(request):
     # 모든 PFCS 문서를 가져옵니다.

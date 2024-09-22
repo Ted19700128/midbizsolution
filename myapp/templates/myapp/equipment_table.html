@@ -4,7 +4,7 @@
     <thead>
         <tr>
             <th class="col-5">설비번호</th>
-            <th class="col-5">설비명</th>
+            <th class="col-7">설비명</th>
             <th class="col-7">모델명</th>
             <th class="col-7">제조사</th>
             <th class="col-7">제조년월</th>
@@ -14,7 +14,7 @@
             <th class="col-7">최초설치시점</th>
             <th class="col-7">최초양산적용</th>
             <th class="col-7">현 운영장소</th>
-            <th class="col-7">관리부서</th>
+            <th class="col-5">관리부서</th>
             <th class="col-5">오버홀</th>
             <th class="col-5">상태</th>                    
         </tr>
@@ -23,7 +23,7 @@
         {% for equipment in equipments %}
         <tr>
             <td class="col-5">{{ equipment.equipment_number }}</td>
-            <td class="col-5">{{ equipment.name }}</td>
+            <td class="col-7">{{ equipment.name }}</td>
             <td class="col-7">{{ equipment.model_name }}</td>
             <td class="col-7">{{ equipment.manufacturer }}</td>
             <td class="col-7">{{ equipment.mfg_date }}</td>
@@ -33,7 +33,7 @@
             <td class="col-7">{{ equipment.first_install }}</td>
             <td class="col-7">{{ equipment.first_implement }}</td>
             <td class="col-7">{{ equipment.current_operation_place }}</td>
-            <td class="col-7">{{ equipment.management_team }}</td>
+            <td class="col-5">{{ equipment.management_team }}</td>
             <td class="col-5">{{ equipment.overhaul }}</td>
             <td class="col-5">{{ equipment.current_status }}</td>
         </tr>
