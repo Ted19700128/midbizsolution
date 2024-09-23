@@ -32,7 +32,7 @@ def pemledger_all_main(request):
             update_url = reverse('pemledger_change_table', args=[equipment.id])
             return redirect(update_url)
         else:
-            return redirect('pemledger_change_main')  # 적절한 URL 이름으로 변경
+            return redirect('pemledger_change_main_mode')  # 적절한 URL 이름으로 변경
     
     context = {
         'create_pemledger': reverse('create_pemledger'),
