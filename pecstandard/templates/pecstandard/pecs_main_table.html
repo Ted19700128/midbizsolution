@@ -1,0 +1,30 @@
+<!-- D:/web/midbizsolution/pecstandard/templates/pecstandard/pecs_main_table.html -->
+
+<table>
+    <thead>
+        <tr>
+            <th>문서 번호</th>
+            <th>설비 번호</th>
+            <th>설비명</th>
+            <th>관리부서</th>
+            <th>작성일자</th>
+            <th>설비등급</th>         
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+        <tr>
+            <td>{{ document.document_number }}</td>
+            <td>{{ document.equipment_number }}</td>
+            <td>{{ document.name }}</td>
+            <td>{{ document.management_team }}</td>
+            <td>{{ document.date_written }}</td>
+            <td>{{ document.rating }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="{% if mode == 'edit' %}5{% else %}4{% endif %}">등록된 설비 점검 기준서가 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

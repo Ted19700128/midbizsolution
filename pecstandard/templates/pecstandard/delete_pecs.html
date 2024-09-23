@@ -1,0 +1,28 @@
+<!-- D:/web/midbizsolution/pecstandard/templates/pecstandard/delete_pecs.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}삭제 확인{% endblock %}
+
+{% block content %}
+
+<h2>삭제 확인</h2>
+
+<p>정말 삭제하시겠습니까?</p>
+
+<ul>
+    {% for document in documents %}
+    <li>{{ document.document_number }} - {{ document.name }}</li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    {% for document in documents %}
+    <input type="hidden" name="document_ids" value="{{ document.id }}">
+    {% endfor %}
+    <button type="submit" name="confirm_delete">예</button>
+    <button type="button" onclick="window.history.back();">아니오</button>
+</form>
+
+{% endblock %}
