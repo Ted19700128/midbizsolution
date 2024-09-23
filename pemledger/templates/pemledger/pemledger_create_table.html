@@ -51,9 +51,9 @@
     <table>
         <!-- 1행 : 설비번호, 설비이름, 모델명 -->
         <tr>
-            <th>설비번호</th>
             <th>설비명</th>
             <th>모델명</th>
+            <th>제조사</th>
         </tr>
         <tr>
             <td>{{ form.name }}</td>
@@ -63,24 +63,22 @@
 
         <!-- 2행 : 제조사, 제조일자, 제조번호 -->
         <tr>
-            <th>제조사</th>
             <th>제조일자</th>
             <th>제조번호</th>
+            <th>형식</th>
         </tr>
         <tr>
-            <td>{{ form.equipment_number }}</td>
             <td>{{ form.mfg_date }}</td>
             <td>{{ form.mfg_number }}</td>
+            <td>{{ form.equipment_type }}</td>
         </tr>
 
         <!-- 3행 : 형식, 사양 -->
         <tr>
-            <th>형식</th>
-            <th colspan="2">사양</th>
+            <th colspan="3">사양</th>
         </tr>
         <tr>
-            <td>{{ form.equipment_type }}</td>
-            <td colspan="2">{{ form.specs }}</td>
+            <td colspan="3">{{ form.specs }}</td>
         </tr>
 
         <!-- 4행 : 최초 설치 시점, 최초 양산 적용, 현 운영 장소 -->
