@@ -16,9 +16,9 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, Font
 
 
-#def pemledger_change_main(request):
-#    equipments = Equipment.objects.all()
-#    return render(request, 'pemledger/pemledger_change_main.html', {'equipments': equipments})
+def pemledger_change_main(request):
+    equipments = Equipment.objects.all()
+    return render(request, 'pemledger/pemledger_change_main.html', {'equipments': equipments})
 
 def pemledger_all_main(request):
     mode = request.GET.get('mode', 'view')
