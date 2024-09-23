@@ -64,7 +64,7 @@ def create_pemledger(request):
     else:
         form = EquipmentForm()
     
-    return render(request, 'pemledger/pemledger_creat_table.html', {'form': form})
+    return render(request, 'pemledger/pemledger_create_table.html', {'form': form})
 
 def change_pemledger(request, equipment_id):
     equipment = get_object_or_404(Equipment, id=equipment_id)
