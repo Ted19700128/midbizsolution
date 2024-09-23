@@ -196,7 +196,7 @@ def pemledger_change_main_mode(request):
         else:
             messages.error(request, "수정할 장비를 선택하세요.")
     
-    return render(request, 'pemledger_change_main.html', {'equipments': equipments})
+    return render(request, 'pemledger/pemledger_change_main.html', {'equipments': equipments})
 
 def health_check(request):
     return HttpResponse("OK", content_type="text/plain")
