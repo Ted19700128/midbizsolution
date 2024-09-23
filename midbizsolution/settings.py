@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'myapp',
     'pfcstandard',
+    'pemledger'
 ]
 
 MIDDLEWARE = [

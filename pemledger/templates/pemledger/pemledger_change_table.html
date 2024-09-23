@@ -1,0 +1,208 @@
+<!-- D:/web/midbizsolution/pemledger/templates/pemledger/pemledger_change_table.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}설비 정보 수정{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    /* 폼을 감싸는 컨테이너 */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%; /* 컨테이너 너비 설정 */
+    }
+
+    /* 폼 스타일 */
+    form {
+        width: 50%; /* 폼의 너비를 50%로 설정 */
+        background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
+        padding: 20px; /* 폼 안쪽 여백 설정 */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        border-radius: 10px; /* 모서리 둥글게 설정 */
+    }
+
+    /* 테이블 스타일 */
+    table {
+        width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
+        border-collapse: collapse; /* 테두리 겹침 방지 */
+    }
+
+    th, td {
+        padding: 10px; /* 셀의 패딩 */
+        text-align: left; /* 텍스트 왼쪽 정렬 */
+        vertical-align: top; /* 상단 정렬 */
+    }
+
+    label {
+        font-weight: bold; /* 레이블 폰트 두껍게 설정 */
+    }
+
+    input[type="text"], input[type="date"], textarea {
+        width: 100%; /* 입력 필드의 너비를 100%로 설정 */
+        padding: 8px; /* 입력 필드의 안쪽 여백 설정 */
+        margin-top: 5px; /* 레이블과 입력 필드 사이의 여백 설정 */
+        box-sizing: border-box; /* 박스 크기 계산 */
+        border: 1px solid #cccccc; /* 입력 필드의 테두리 */
+        border-radius: 4px; /* 입력 필드의 모서리 둥글게 */
+    }
+
+    .btn-minimal {
+        margin-right: 10px; /* 버튼 사이 간격 설정 */
+        padding: 2px 5px; /* 버튼 크기 설정 */
+        font-size: 12px; /* 글자 크기 줄이기 */
+        border: none; /* 버튼 테두리 제거 */
+        border-radius: 3px; /* 버튼 모서리 둥글게 */
+        cursor: pointer; /* 커서 모양 변경 */
+    }
+
+    button[type="submit"] {
+        background-color: #4CAF50; /* 제출 버튼 배경색 */
+        color: white; /* 제출 버튼 텍스트 색상 */
+    }
+
+    button[type="button"] {
+        background-color: #f44336; /* 취소 버튼 배경색 */
+        color: white; /* 취소 버튼 텍스트 색상 */
+    }
+
+    button[type="button"]:hover, button[type="submit"]:hover {
+        opacity: 0.8; /* 마우스 오버 시 투명도 효과 */
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}  <!-- 폼의 전역 오류 표시 -->
+        
+        <table>
+            <!-- 1행: 설비번호, 설비명, 모델명 -->
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form.equipment_number.label_tag }}
+                        {{ form.equipment_number }}
+                        {{ form.equipment_number.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.model_name.label_tag }}
+                        {{ form.model_name }}
+                        {{ form.model_name.errors }}
+                    </div>
+                </td>
+            </tr>
+            
+            <!-- 2행: 제조사, 제조일자, 제조번호 -->
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form.manufacturer.label_tag }}
+                        {{ form.manufacturer }}
+                        {{ form.manufacturer.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.mfg_date.label_tag }}
+                        {{ form.mfg_date }}
+                        {{ form.mfg_date.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.mfg_number.label_tag }}
+                        {{ form.mfg_number }}
+                        {{ form.mfg_number.errors }}
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 3행: 형식, 사양(span=2) -->
+            <tr>
+                <td> 
+                    <div class="form-group">
+                        {{ form.equipment_type.label_tag }}
+                        {{ form.equipment_type }}
+                        {{ form.equipment_type.errors }}
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div class="form-group">
+                        {{ form.specs.label_tag }}
+                        {{ form.specs }}
+                        {{ form.specs.errors }}
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 4행: 최초설치시점, 최초양산적용, 현 운영 장소 -->
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form.first_install.label_tag }}
+                        {{ form.first_install }}
+                        {{ form.first_install.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.first_implement.label_tag }}
+                        {{ form.first_implement }}
+                        {{ form.first_implement.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.current_operation_place.label_tag }}
+                        {{ form.current_operation_place }}
+                        {{ form.current_operation_place.errors }}
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 5행: 관리부서, 전면 정비, 상태 -->
+            <tr>
+                <td>
+                    <div class="form-group">
+                        {{ form.management_team.label_tag }}
+                        {{ form.management_team }}
+                        {{ form.management_team.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.overhaul.label_tag }}
+                        {{ form.overhaul }}
+                        {{ form.overhaul.errors }}
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        {{ form.current_status.label_tag }}
+                        {{ form.current_status }}
+                        {{ form.current_status.errors }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <button type="submit" name="confirm_update">완료</button>
+        <button type="button" onclick="window.history.back();">취소</button>
+    </form>
+</div>
+{% endblock %}

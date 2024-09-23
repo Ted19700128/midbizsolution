@@ -1,0 +1,117 @@
+<!-- D:/web/midbizsolution/pemledger/templates/pemledger/pemledger_create_table.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}설비 생성{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    /* 폼을 감싸는 컨테이너 */
+    .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%; /* 컨테이너 너비 설정 */
+    }
+    
+    form {
+        width: 50%; /* 폼의 너비를 50%로 설정 */
+        background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
+        padding: 8px; /* 폼 안쪽 여백 설정 */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        border-radius: 10px; /* 모서리 둥글게 설정 */
+    }
+
+    /* 테이블 열 폭 조정 스타일 */
+    table {
+        width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
+        border-collapse: collapse; /* 경계선 겹침 방지 */
+        table-layout: fixed; /* 고정된 테이블 레이아웃 */
+    }
+
+    th, td {
+        font-size: 12px; /* 글자 크기 설정 */
+        border: 1px solid #dddddd; /* 테두리 스타일 */
+        padding: 8px; /* 패딩 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        word-wrap: break-word; /* 긴 단어 줄바꿈 */
+        overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h2>설비 생성</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <!-- 1행 : 설비번호, 설비이름, 모델명 -->
+        <tr>
+            <th>설비번호</th>
+            <th>설비명</th>
+            <th>모델명</th>
+        </tr>
+        <tr>
+            <td>{{ form.name }}</td>
+            <td>{{ form.model_name }}</td>
+            <td>{{ form.manufacturer }}</td>
+        </tr>
+
+        <!-- 2행 : 제조사, 제조일자, 제조번호 -->
+        <tr>
+            <th>제조사</th>
+            <th>제조일자</th>
+            <th>제조번호</th>
+        </tr>
+        <tr>
+            <td>{{ form.equipment_number }}</td>
+            <td>{{ form.mfg_date }}</td>
+            <td>{{ form.mfg_number }}</td>
+        </tr>
+
+        <!-- 3행 : 형식, 사양 -->
+        <tr>
+            <th>형식</th>
+            <th colspan="2">사양</th>
+        </tr>
+        <tr>
+            <td>{{ form.equipment_type }}</td>
+            <td colspan="2">{{ form.specs }}</td>
+        </tr>
+
+        <!-- 4행 : 최초 설치 시점, 최초 양산 적용, 현 운영 장소 -->
+        <tr>
+            <th>최초설치</th>
+            <th>최초양산</th>
+            <th>현 운영 장소</th>
+        </tr>
+        <tr>
+            <td>{{ form.first_install }}</td>
+            <td>{{ form.first_implement }}</td>
+            <td>{{ form.current_operation_place }}</td>
+        </tr>
+
+        <!-- 5행 : 관리부서, 전면 정비, 상태 -->
+        <tr>
+            <th>관리부서</th>
+            <th>오버홀</th>
+            <th>상태</th>
+        </tr>
+        <tr>
+            <td>{{ form.management_team }}</td>
+            <td>{{ form.overhaul }}</td>
+            <td>{{ form.current_status }}</td>
+        </tr>
+    </table>
+
+    <br>
+    <button type="submit">완료</button>
+    <button type="button" onclick="history.back()">취소</button>
+</form>
+
+{% endblock %}
+
