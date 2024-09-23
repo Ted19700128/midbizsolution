@@ -15,6 +15,9 @@ from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, Font
 
+def home(request):
+    return render(request, 'base.html')
+
 def landing_page(request):
     return render(request, 'landing_page.html')
 

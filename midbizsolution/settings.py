@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-secret-key')
 
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'False'
 
 ALLOWED_HOSTS = ['port-0-midbizsolution-m12xvpzt0e7e6518.sel4.cloudtype.app','localhost']
 CSRF_TRUSTED_ORIGINS = [
