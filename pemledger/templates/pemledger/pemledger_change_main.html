@@ -47,8 +47,8 @@
             {% for equipment in equipments %}
             <tr>
                 <td>
-                    <a href="{% url 'pemledger_change_table' equipment.id %}" class="btn btn-primary">수정</a>
-                    <a href="{% url 'pemledger_change_delete' equipment.id %}" class="btn btn-primary">삭제</a>
+                    <a href="{% url 'change_pemledger' equipment.id %}" class="btn btn-primary">수정</a>
+                    <a href="{% url 'delete_pemledger' equipment.id %}" class="btn btn-primary">삭제</a>
                 </td>
                 <td class="col-5">{{ equipment.equipment_number }}</td>
                 <td class="col-7">{{ equipment.name }}</td>
