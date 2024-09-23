@@ -15,23 +15,6 @@ from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, Font
 
-def home(request):
-    return render(request, 'base.html')
-
-def landing_page(request):
-    return render(request, 'landing_page.html')
-
-def greetings(request):
-    return render(request, 'greetings.html')
-
-def checkpoint(request):
-    return render(request, 'checkpoint.html')
-
-def doc_index(request):
-    return render(request, 'doc_index.html')
-
-def solutions(request):
-    return render(request, 'solutions.html')
 
 #def pemledger_change_main(request):
 #    equipments = Equipment.objects.all()

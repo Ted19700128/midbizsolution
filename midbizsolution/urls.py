@@ -1,12 +1,14 @@
-#!-- D:/web/midbizsolution/midbizsolution/urls.py
+# D:\web\midbizsolution\midbizsolution\urls.py
 
 from django.contrib import admin
-from django.urls import path, include  # include를 추가하여 각 앱의 urls.py를 포함할 수 있도록 함
-from pemledger import views as pem_views
+from django.urls import path
+from . import views  # views.py 파일에서 함수들을 import
 
 urlpatterns = [
-    path('secure-admin/', admin.site.urls),  # Django 관리자 페이지 URL
-    path('pemledger/', include('pemledger.urls')),  # 설비 점검 기준서 관련 URL
-    path('pecstandard/', include('pecstandard.urls')),  # 설비 점검 기준서 관련 URL
-    path('', pem_views.home, name='home'),  # home 뷰를 루트 URL에 연결
+    path('secure-admin/', admin.site.urls),
+    path('', views.home, name='home'),  # 루트 URL에 'home' 뷰 함수 연결, base.html 렌더링
+    path('greetings/', views.greetings, name='greetings'),  # greetings.html 렌더링
+    path('checkpoint/', views.checkpoint, name='checkpoint'),  # checkpoint.html 렌더링
+    path('doc-index/', views.doc_index, name='doc_index'),  # doc_index.html 렌더링
+    path('solutions/', views.solutions, name='solutions'),  # solutions.html 렌더링
 ]
