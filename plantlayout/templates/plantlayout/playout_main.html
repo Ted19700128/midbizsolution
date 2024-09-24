@@ -8,12 +8,28 @@
 
 <!-- 헤더 버튼들 -->
 <nav>
-    <a href="{% url 'plantlayout:playout_main' %}">메인</a>
-    <a href="{% url 'plantlayout:create_playout' %}">생성</a>
-    <a href="{% url 'plantlayout:add_playout' %}">추가</a>
-    
-    <a href="{% url 'plantlayout:search_playout' %}">조회</a>
+    <a href="{% url 'plantlayout:playout_main' %}" class="btn">메인</a>
+    <a href="{% url 'plantlayout:create_playout' %}" class="btn">생성</a>
+    <a href="{% url 'plantlayout:add_playout' %}" class="btn">추가</a>
+    <a href="{% url 'plantlayout:search_playout' %}" class="btn">조회</a>
 </nav>
+
+<style>
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
 
 <div id="layout-container" style="display: flex;">
     <!-- 좌측 레이아웃 표시 영역 -->
