@@ -6,8 +6,8 @@ from . import views
 app_name = 'plantlayout'
 
 urlpatterns = [
-    path('', views.playout_all_main, name='playout_all_main'),
-    path('', views.playout_main, name='playout_main'),
+    path('all/', views.playout_all_main, name='playout_all_main'),
+    path('main/', views.playout_main, name='playout_main'),
     path('create/', views.create_playout, name='create_playout'),
     path('add/', views.add_playout, name='add_playout'),
     path('update/<int:equipment_id>/', views.update_playout, name='update_playout'),
