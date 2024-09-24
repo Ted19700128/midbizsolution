@@ -7,6 +7,10 @@ from .forms import CreatePlayoutForm, AddPlayoutForm, UpdatePlayoutForm, SearchP
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
+def playout_all_main(request):
+    # 공장 레이아웃 메인 페이지 렌더링
+    return render(request, 'plantlayout/playout_main.html')
+
 def playout_main(request):
     # 레이아웃 작성 이력 가져오기
     history = Plant.objects.all().order_by('-id')
