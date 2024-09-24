@@ -6,6 +6,7 @@ from .models import Plant, Unit, Line, Equipment
 from .forms import CreatePlayoutForm, AddPlayoutForm, UpdatePlayoutForm, SearchPlayoutForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 def playout_all_main(request):
     # 공장 레이아웃 메인 페이지 렌더링
@@ -17,11 +18,11 @@ def playout_main(request):
 
     # 레이아웃 데이터 직렬화
     plants = Plant.objects.all()
-    layout_data = serialize_layout_data(plants)
-
+    layout_data = serialize_layout_data(plants) 
+    layout_data_json = json.dumps(layout_data)  # JSON 문자열로 직렬화
     context = {
         'history': history,
-        'layout_data': layout_data,
+        'layout_data': layout_data_json,
     }
     return render(request, 'plantlayout/playout_main.html', context)
 

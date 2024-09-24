@@ -1,6 +1,8 @@
 // plantlayout/static/plantlayout/js/layout.js
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log(layoutData);  // 데이터 확인
+    
     const canvas = document.getElementById('layoutCanvas');
     const context = canvas.getContext('2d');
 

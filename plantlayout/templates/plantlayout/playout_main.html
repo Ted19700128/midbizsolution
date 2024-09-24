@@ -11,6 +11,7 @@
     <a href="{% url 'plantlayout:playout_main' %}" class="btn">메인</a>
     <a href="{% url 'plantlayout:create_playout' %}" class="btn">생성</a>
     <a href="{% url 'plantlayout:add_playout' %}" class="btn">추가</a>
+    <a href="{% url 'plantlayout:update_playout' %}">변경</a>
     <a href="{% url 'plantlayout:search_playout' %}" class="btn">조회</a>
 </nav>
 
@@ -58,7 +59,8 @@
 
 <!-- 전역 변수로 layoutData 정의 -->
 <script>
-    var layoutData = JSON.parse('{{ layout_data|escapejs }}');
+    var layoutData = {{ layout_data|safe }};
+    console.log(layoutData);  // 데이터 확인용
 </script>
 <script src="{% static 'plantlayout/js/layout.js' %}"></script>
 {% endblock %}
