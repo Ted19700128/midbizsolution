@@ -1,0 +1,17 @@
+<!-- plantlayout/templates/plantlayout/add_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 추가</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit" id="add_confirm">확인</button>
+    <a href="{% url 'plantlayout:playout_main' %}" id="add_cancel">취소</a>
+</form>
+
+<script src="{% static 'plantlayout/js/add_playout.js' %}"></script>
+{% endblock %}

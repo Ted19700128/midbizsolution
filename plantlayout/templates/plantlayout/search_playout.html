@@ -1,0 +1,28 @@
+<!-- plantlayout/templates/plantlayout/search_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 조회</h1>
+
+<form method="get">
+    {{ form.as_table }}
+    <button type="submit" id="search_confirm">조회</button>
+    <a href="{% url 'plantlayout:playout_main' %}" id="search_cancel">취소</a>
+</form>
+{% endblock %}
+<!-- plantlayout/templates/plantlayout/search_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 조회</h1>
+
+<form method="get">
+    {{ form.as_table }}
+    <button type="submit" id="search_confirm">조회</button>
+    <a href="{% url 'plantlayout:playout_main' %}" id="search_cancel">취소</a>
+</form>
+{% endblock %}

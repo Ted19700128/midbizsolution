@@ -1,0 +1,48 @@
+><!-- plantlayout/templates/plantlayout/playout_main.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃</h1>
+
+<!-- 헤더 버튼들 -->
+<nav>
+    <a href="{% url 'plantlayout:playout_main' %}">메인</a>
+    <a href="{% url 'plantlayout:create_playout' %}">생성</a>
+    <a href="{% url 'plantlayout:add_playout' %}">추가</a>
+    <a href="{% url 'plantlayout:update_playout' %}">변경</a>
+    <a href="{% url 'plantlayout:search_playout' %}">조회</a>
+</nav>
+
+<div id="layout-container" style="display: flex;">
+    <!-- 좌측 레이아웃 표시 영역 -->
+    <div id="plant_layout_view" style="width: 70%;">
+        <!-- 레이아웃을 그리는 Canvas 요소 -->
+        <canvas id="layoutCanvas" width="800" height="600" style="border:1px solid #000000;"></canvas>
+    </div>
+
+    <!-- 우측 레이아웃 작성 이력 -->
+    <div id="plant_layout_history" style="width: 30%; margin-left: 20px;">
+        <h2>레이아웃 작성 이력</h2>
+        <table border="1">
+            <tr>
+                <th>일자</th>
+                <th>이력 내용</th>
+            </tr>
+            {% for item in history %}
+            <tr>
+                <td>{{ item.created_at }}</td>
+                <td>{{ item.name }} 생성됨</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<!-- 전역 변수로 layoutData 정의 -->
+<script>
+    var layoutData = JSON.parse('{{ layout_data|escapejs }}');
+</script>
+<script src="{% static 'plantlayout/js/layout.js' %}"></script>
+{% endblock %}

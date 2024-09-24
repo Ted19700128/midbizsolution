@@ -1,0 +1,36 @@
+<!-- plantlayout/templates/plantlayout/update_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 변경</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit" id="update_confirm">확인</button>
+    <a href="{% url 'plantlayout:playout_main' %}" id="update_cancel">취소</a>
+</form>
+
+<!-- 설비 위치를 마우스로 변경할 수 있도록 JavaScript 코드 추가 -->
+<script src="{% static 'plantlayout/js/update_playout.js' %}"></script>
+{% endblock %}
+<!-- plantlayout/templates/plantlayout/update_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 변경</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+    <button type="submit" id="update_confirm">확인</button>
+    <a href="{% url 'plantlayout:playout_main' %}" id="update_cancel">취소</a>
+</form>
+
+<!-- 설비 위치를 마우스로 변경할 수 있도록 JavaScript 코드 추가 -->
+<script src="{% static 'plantlayout/js/update_playout.js' %}"></script>
+{% endblock %}

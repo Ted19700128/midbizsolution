@@ -1,0 +1,29 @@
+<!-- plantlayout/templates/plantlayout/search>>_results.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>검색 결과</h1>
+
+<table border="1">
+    <tr>
+        <th>공장명</th>
+        <th>층</th>
+        <th>구역명</th>
+        <th>라인명</th>
+        <th>설비번호</th>
+    </tr>
+    {% for equipment in equipments %}
+    <tr>
+        <td>{{ equipment.line.unit.plant.name }}</td>
+        <td>{{ equipment.line.unit.plant.floor }}</td>
+        <td>{{ equipment.line.unit.name }}</td>
+        <td>{{ equipment.line.name }}</td>
+        <td>{{ equipment.equipment_number }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'plantlayout:playout_main' %}">메인으로 돌아가기</a>
+{% endblock %}

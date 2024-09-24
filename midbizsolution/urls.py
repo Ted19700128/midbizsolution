@@ -6,6 +6,7 @@ from . import views  # views.py 파일에서 함수들을 import
 
 urlpatterns = [
     path('secure-admin/', admin.site.urls),
+    path('plantlayout/', include('plantlayout.urls')),
     path('pemledger/', include('pemledger.urls')),
     path('pecstandard/', include('pecstandard.urls')),
     path('', views.home, name='home'),  # 루트 URL에 'home' 뷰 함수 연결, base.html 렌더링
