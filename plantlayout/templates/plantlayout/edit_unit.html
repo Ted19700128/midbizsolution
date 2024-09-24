@@ -1,0 +1,17 @@
+<!-- plantlayout/templates/plantlayout/edit_unit.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>구역 정보 수정</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ unit_form.as_table }}
+    <button type="submit">구역 정보 수정</button>
+</form>
+
+<a href="{% url 'plantlayout:edit_playout' %}">뒤로 가기</a>
+
+{% endblock %}

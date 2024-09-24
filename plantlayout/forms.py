@@ -49,3 +49,23 @@ class SearchPlayoutForm(forms.Form):
     unit_name = forms.CharField(label='구역명', required=False)
     line_name = forms.CharField(label='라인명', required=False)
     equipment_number = forms.CharField(label='설비번호', required=False)
+
+class EditPlantForm(forms.ModelForm):
+    class Meta:
+        model = Plant
+        fields = ['name', 'width', 'length', 'floor']
+
+class EditUnitForm(forms.ModelForm):
+    class Meta:
+        model = Unit
+        fields = ['name', 'start_point_x', 'start_point_y', 'end_point_x', 'end_point_y']
+
+class EditLineForm(forms.ModelForm):
+    class Meta:
+        model = Line
+        fields = ['name', 'start_point_x', 'start_point_y', 'end_point_x', 'end_point_y']
+
+class EditEquipmentForm(forms.ModelForm):
+    class Meta:
+        model = Equipment
+        fields = ['process_number', 'position_x', 'position_y', 'size_width', 'size_length']

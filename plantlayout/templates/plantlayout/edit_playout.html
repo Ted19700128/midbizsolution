@@ -1,0 +1,26 @@
+<!-- plantlayout/templates/plantlayout/edit_playout.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>공장 레이아웃 수정</h1>
+
+<h2>공장 정보 수정</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ plant_form.as_table }}
+    <button type="submit">공장 정보 수정</button>
+</form>
+
+<h2>구역 정보 수정</h2>
+{% for unit_form in unit_forms %}
+    <form method="post" action="{% url 'plantlayout:edit_unit' unit_form.instance.id %}">
+        {% csrf_token %}
+        {{ unit_form.as_table }}
+        <button type="submit">구역 정보 수정</button>
+    </form>
+    <hr>
+{% endfor %}
+
+{% endblock %}

@@ -2,15 +2,20 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from .models import Plant, Unit, Line, Equipment
-from .forms import CreatePlayoutForm, AddPlayoutForm, UpdatePlayoutForm, SearchPlayoutForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from .models import Plant, Unit, Line, Equipment
+from .forms import (
+    CreatePlayoutForm,
+    AddPlayoutForm,
+    UpdatePlayoutForm,
+    SearchPlayoutForm,
+    EditPlantForm,
+    EditUnitForm,
+    EditLineForm,
+    EditEquipmentForm,
+)
 import json
-
-def playout_all_main(request):
-    # 공장 레이아웃 메인 페이지 렌더링
-    return render(request, 'plantlayout/playout_main.html')
 
 def playout_main(request):
     # 레이아웃 작성 이력 가져오기
@@ -18,8 +23,9 @@ def playout_main(request):
 
     # 레이아웃 데이터 직렬화
     plants = Plant.objects.all()
-    layout_data = serialize_layout_data(plants) 
+    layout_data = serialize_layout_data(plants)
     layout_data_json = json.dumps(layout_data)  # JSON 문자열로 직렬화
+
     context = {
         'history': history,
         'layout_data': layout_data_json,
@@ -76,8 +82,7 @@ def add_playout(request):
         form = AddPlayoutForm(request.POST)
         if form.is_valid():
             # 데이터 저장 로직
-            plant_id = form.cleaned_data['plant']
-            plant = get_object_or_404(Plant, id=plant_id)
+            plant = form.cleaned_data['plant']
 
             # 필요한 데이터 저장 (예시로 Unit 추가)
             unit = Unit.objects.create(
@@ -89,16 +94,78 @@ def add_playout(request):
                 end_point_y=form.cleaned_data['unit_end_point_y']
             )
 
-            # 전체 레이아웃 데이터 직렬화
-            plants = Plant.objects.all()
-            layout_data = serialize_layout_data(plants)
-
-            return JsonResponse({'status': 'success', 'layoutData': layout_data})
+            messages.success(request, '공장 레이아웃에 요소가 추가되었습니다.')
+            return redirect('plantlayout:playout_main')
         else:
-            return JsonResponse({'status': 'error', 'message': '유효하지 않은 폼 데이터입니다.'})
+            messages.error(request, '유효하지 않은 폼 데이터입니다.')
     else:
         form = AddPlayoutForm()
     return render(request, 'plantlayout/add_playout.html', {'form': form})
+
+def edit_playout(request):
+    # 기존 레이아웃이 있는지 확인
+    plants = Plant.objects.all()
+    if not plants.exists():
+        messages.info(request, '기존에 생성된 레이아웃이 없습니다.')
+        return redirect('plantlayout:playout_main')
+    
+    plant = plants.first()  # 여러 개의 공장이 있다면 선택할 수 있도록 수정 가능
+
+    if request.method == 'POST':
+        plant_form = EditPlantForm(request.POST, instance=plant)
+        if plant_form.is_valid():
+            plant_form.save()
+            messages.success(request, '공장 정보가 수정되었습니다.')
+            return redirect('plantlayout:edit_playout')
+    else:
+        plant_form = EditPlantForm(instance=plant)
+    
+    # 관련된 Unit 정보를 가져옵니다.
+    units = Unit.objects.filter(plant=plant)
+    unit_forms = [EditUnitForm(instance=unit, prefix=f'unit_{unit.id}') for unit in units]
+
+    context = {
+        'plant_form': plant_form,
+        'units': units,
+        'unit_forms': unit_forms,
+    }
+    return render(request, 'plantlayout/edit_playout.html', context)
+
+def edit_unit(request, unit_id):
+    unit = get_object_or_404(Unit, id=unit_id)
+    if request.method == 'POST':
+        unit_form = EditUnitForm(request.POST, instance=unit)
+        if unit_form.is_valid():
+            unit_form.save()
+            messages.success(request, '구역 정보가 수정되었습니다.')
+            return redirect('plantlayout:edit_playout')
+    else:
+        unit_form = EditUnitForm(instance=unit)
+    return render(request, 'plantlayout/edit_unit.html', {'unit_form': unit_form})
+
+def edit_line(request, line_id):
+    line = get_object_or_404(Line, id=line_id)
+    if request.method == 'POST':
+        line_form = EditLineForm(request.POST, instance=line)
+        if line_form.is_valid():
+            line_form.save()
+            messages.success(request, '라인 정보가 수정되었습니다.')
+            return redirect('plantlayout:edit_playout')
+    else:
+        line_form = EditLineForm(instance=line)
+    return render(request, 'plantlayout/edit_line.html', {'line_form': line_form})
+
+def edit_equipment(request, equipment_id):
+    equipment = get_object_or_404(Equipment, id=equipment_id)
+    if request.method == 'POST':
+        equipment_form = EditEquipmentForm(request.POST, instance=equipment)
+        if equipment_form.is_valid():
+            equipment_form.save()
+            messages.success(request, '설비 정보가 수정되었습니다.')
+            return redirect('plantlayout:edit_playout')
+    else:
+        equipment_form = EditEquipmentForm(instance=equipment)
+    return render(request, 'plantlayout/edit_equipment.html', {'equipment_form': equipment_form})
 
 def update_playout(request, equipment_id=None):
     equipment = get_object_or_404(Equipment, id=equipment_id)
@@ -106,11 +173,11 @@ def update_playout(request, equipment_id=None):
         form = UpdatePlayoutForm(request.POST, instance=equipment)
         if form.is_valid():
             form.save()
-            messages.success(request, '레이아웃이 변경되었습니다.')
+            messages.success(request, '설비 정보가 변경되었습니다.')
             return redirect('plantlayout:playout_main')
     else:
         form = UpdatePlayoutForm(instance=equipment)
-    return render(request, 'plantlayout/update_playout.html', {'form': form})
+    return render(request, 'plantlayout/update_playout.html', {'form': form, 'equipment': equipment})
 
 def search_playout(request):
     if request.method == 'GET':
@@ -137,7 +204,6 @@ def search_playout(request):
 @csrf_exempt
 def update_equipment_position(request):
     if request.method == 'POST':
-        import json
         data = json.loads(request.body)
         equipment_id = data.get('equipment_id')
         new_x = data.get('new_x')
