@@ -1,8 +1,16 @@
 // plantlayout/static/plantlayout/js/layout.js
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log(layoutData);  // 데이터 확인
+    
     const canvas = document.getElementById('layoutCanvas');
     const context = canvas.getContext('2d');
+
+    // 레이아웃 데이터가 있는지 확인
+    if (!layoutData || !layoutData.plants || layoutData.plants.length === 0) {
+        console.error('레이아웃 데이터가 없습니다.');
+        return;
+    }
 
     // 줌 기능 변수
     let zoomScale = 1;
@@ -20,6 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (plant.width > maxPlantWidth) maxPlantWidth = plant.width;
         if (plant.length > maxPlantLength) maxPlantLength = plant.length;
     });
+
+    // 공장 크기가 0인 경우 예외 처리
+    if (maxPlantWidth === 0 || maxPlantLength === 0) {
+        console.error('공장 크기가 올바르지 않습니다.');
+        return;
+    }
 
     // 픽셀당 할당 길이 계산
     const scaleX = (canvasWidth * 0.8) / maxPlantWidth;
