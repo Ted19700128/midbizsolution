@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [    
+    path('pemledger/equipment/', views.equipment_layout_main, name='equipment_layout_main'),  # 레이아웃 메인 페이지
     path('pemledger/all/', views.pemledger_all_main, name='pemledger_all_main'),  # 전체 설비 관리 메인 페이지
     path('pemledger/delete/<int:equipment_id>/', views.delete_pemledger, name='delete_pemledger'),  # 설비 삭제 (테이블 형식)
     path('pemledger/create/', views.create_pemledger, name='create_pemledger'),  # 설비 신규 생성 페이지
