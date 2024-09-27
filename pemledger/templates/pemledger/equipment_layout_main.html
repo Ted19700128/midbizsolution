@@ -18,6 +18,29 @@
             align-items: center;
         }
 
+        header {
+            background-color: transparent;
+            padding: 10px 0;
+            text-align: center;
+            color: rgb(43,43,43);
+            margin-bottom: 20px;
+            position: relative; /* 추가: 자식 요소의 절대 위치를 기준으로 사용하기 위해 설정 */
+        }
+
+        .title {
+            color: rgb(0, 0, 0); /* 검정색 글자 */
+            position: absolute; /* 부모 요소(header)를 기준으로 위치를 설정 */
+            left: 100px; /* 왼쪽 끝에서 100px 떨어진 위치 */
+            top: 18px; /* 필요에 따라 위쪽 여백 설정 */
+            font-size: 30px; /* 제목 크기 */
+            font-weight: bold; /* 굵은 글씨 */
+        }
+
+        .italic-text {
+            font-style: italic; /* 글자 기울이기 */
+            color: rgb(43, 43, 43); /* 글자색 변경 */
+        }
+        
         /* 컨테이너: 전체 내용을 감싸는 영역 */
         .container {
             width: 70%;
@@ -226,6 +249,8 @@
     </style>
 </head>
 <body>
+    <header>
+        <div class="title">Hanon management <span class="italic-text">solutions</span></div> <!-- 타이틀 수정 -->
     <div class="container">
         <!-- 영역 1: 상단 헤더 -->
         <div class="header">
