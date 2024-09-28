@@ -6,20 +6,324 @@
 
 {% block head %}
     {{ block.super }}
+    <style>
+        /* 컨테이너: 전체 내용을 감싸는 영역 */
+        .container {
+            margin-top: 20px; /* 고정된 헤더 높이만큼 상단 여백 추가 */
+            width: 50%;
+            height: 70%;
+            background-color: #fff;
+            position: relative;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            margin-right: 40px;
+        }
+
+        /* 영역 1: 상단 헤더 */
+        .header {
+            width: 100%;
+            height: 60px;
+            background-color: rgb(100, 100, 100);
+            position: relative;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .title {
+            color: rgb(0, 0, 0); /* 검정색 글자 */
+            position: absolute; /* 부모 요소(header)를 기준으로 위치를 설정 */
+            left: 100px; /* 왼쪽 끝에서 100px 떨어진 위치 */
+            top: 18px; /* 필요에 따라 위쪽 여백 설정 */
+            font-size: 22px; /* 제목 크기 */
+            font-weight: bold; /* 굵은 글씨 */
+        }
+
+        /* 맞춤, 회전, 삽입 버튼 위치 */
+        .header-buttons {
+            position: absolute;
+            bottom: 5px;
+
+            display: flex;
+            align-items: center;
+            margin-left: 70%;
+        }
+
+        .function-button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            background-color: #bbb;
+            border: none;
+            cursor: pointer;
+            color: black;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .function-button:hover {
+            background-color: #ddd;
+        }
+
+        /* 영역 2: 좌측 패널 */
+        .left-panel {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 120px;
+            bottom: 0;
+            background-color: rgb(64,64,64);
+            padding-top: 10px;
+            box-sizing: border-box;
+        }
+
+        .left-panel button {
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 12px;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .left-panel button:hover {
+            background-color: #777;
+        }
+
+        .left-panel button.active {
+            background-color: white;
+            color: black;
+        }
+
+        /* 영역 3: 도형 그리기 영역 */
+        .drawing-area {
+            position: absolute;
+            top: 60px;
+            left: 120px;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            overflow: hidden;
+        }
+
+        /* 작은 사각형 */
+        .small-rectangle {
+            background-color: rgb(64,64,64);
+            position: absolute;
+            border: 2px solid rgb(64,64,64);
+            cursor: pointer;
+        }
+
+        /* 화살표 본체 스타일 */
+        .arrow-shape {
+            position: absolute;
+            display: flex; /* 자식 요소 정렬을 위한 플렉스 사용 */
+            align-items: center; /* 자식 요소 수직 중앙 정렬 */
+        }
+
+        /* 화살표 끝부분 스타일 */
+        .arrow-head {
+            width: 0;
+            height: 0;
+            border-left: 10px solid black; /* 화살표 끝부분 색상 */
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            margin-left: -1px; /* 화살표 본체와 연결 부위 조정 */
+        }
+
+        /* 화살표 본체 스타일 */
+        .arrow-body {
+            width: 30px; /* 화살표 본체 길이 */
+            height: 5px; /* 화살표 본체 높이 */
+            background-color: black; /* 화살표 본체 색상 */
+        }
+
+        /* 점선 사각형 */
+        .dashed-rectangle {
+            width: 50px;
+            height: 30px;
+            border: 2px dashed red;
+            position: absolute;
+            cursor: pointer;
+            box-sizing: border-box; /* 리사이즈 핸들러가 영역을 벗어나지 않도록 함 */
+        }
+
+        /* 리사이즈 핸들러 */
+        .resize-handle {
+            width: 8px;
+            height: 8px;
+            background-color: blue;
+            position: absolute;
+            display: none; /* 초기에는 숨김 */
+        }
+
+        .top-left {
+            top: -4px;
+            left: -4px;
+            cursor: nwse-resize;
+        }
+
+        .top-right {
+            top: -4px;
+            right: -4px;
+            cursor: nesw-resize;
+        }
+
+        .bottom-left {
+            bottom: -4px;
+            left: -4px;
+            cursor: nesw-resize;
+        }
+
+        .bottom-right {
+            bottom: -4px;
+            right: -4px;
+            cursor: nwse-resize;
+        }
+
+        /* 선택된 도형 스타일 */
+        .selected {
+            outline: 2px solid green;
+        }
+
+        /* 선택 박스 */
+        .selection-box {
+            position: absolute;
+            border: 1px dashed black;
+            background-color: rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        /* 회전 입력 상자 */
+        .rotate-input {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 3;
+            font-size: 12px;
+        }
+
+        .rotate-input input {
+            width: 50px;
+            font-size: 12px;
+        }
+
+        /* Alt 드래그 미리보기 */
+        .preview-rectangle {
+            position: absolute;
+            border: 1px dashed blue;
+            background-color: rgba(0, 0, 255, 0.1);
+            pointer-events: none;
+        }
+
+        /* 폼을 감싸는 컨테이너 */
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30%; /* 컨테이너 너비 설정 */
+            margin-left: 40px;
+        }
+
+        /* 표: 상단 헤더 */
+        .form-header {
+            width: 100%;
+            height: 40px;
+            background-color: transparent;
+            position: relative;
+            color: black;
+            display: flex;
+            align-items: left;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold; /* 굵은 글씨 */
+            margin-bottom: 10px;
+        }        
+        form {
+            width: 30%; /* 폼의 너비를 50%로 설정 */
+            background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
+            padding: 8px; /* 폼 안쪽 여백 설정 */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            border-radius: 10px; /* 모서리 둥글게 설정 */
+        }
+
+        /* 테이블 열 폭 조정 스타일 */
+        table {
+            width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
+            border-collapse: collapse; /* 경계선 겹침 방지 */
+            table-layout: fixed; /* 고정된 테이블 레이아웃 */
+        }
+
+        th, td {
+            font-size: 14px; /* 글자 크기 설정 */
+            border: 1px solid #dddddd; /* 테두리 스타일 */
+            padding: 8px; /* 패딩 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            word-wrap: break-word; /* 긴 단어 줄바꿈 */
+            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+        }
+
+        /* 버튼 컨테이너 스타일 */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* 폼 버튼 스타일 */
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .form-buttons button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* 도형 내 레이블 스타일 */
+        .shape-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+        }        
+    </style>
+
+
     <!-- 추가적인 스타일이 필요하면 여기에 추가 -->
 {% endblock %}
 
 {% block content %}
-<div class="layout-container">
+<div class="container">
     <!-- 영역 1: 상단 헤더 -->
-    <div class="layout-header">
+    <div class="header">
         <!-- 타이틀 추가 -->
         <span>공정 레이아웃</span>
-        <div class="layout-header-buttons">
+        <div class="header-buttons">
 
-            <button class="layout-function-button" id="rotateButton">회전</button>
+            <button class="function-button" id="rotateButton">회전</button>
             <!-- 맞춤 옵션 드롭다운 -->                
-            <select class="layout-function-button" id="alignSelect">
+            <select class="function-button" id="alignSelect">
                 <option value="">맞춤</option>
                 <option value="left">왼쪽 맞춤</option>
                 <option value="center">가운데 맞춤</option>
@@ -32,7 +336,7 @@
             </select>
 
             <!-- 삽입 버튼 추가 -->
-            <select class="layout-function-button" id="insertSelect">
+            <select class="function-button" id="insertSelect">
                 <option value="">삽입</option>
                 <option value="arrow">화살표</option>
                 <option value="dashedRectangle">사각형(점선)</option>
