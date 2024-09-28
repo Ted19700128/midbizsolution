@@ -1,16 +1,82 @@
-<!-- D:/web/midbizsolution/pemledger/templates/pemledger/equipment_layout_main.html -->
-
-{% extends 'base.html' %}
-
-{% block title %}레이아웃 작성 윈도우{% endblock %}
-
-{% block head %}
-    {{ block.super }}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레이아웃 작성 윈도우</title>
     <style>
-        /* 컨테이너: 전체 내용을 감싸는 영역 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .global-header-container {
+            width: 100%;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .global-title {
+            color: rgb(43, 43, 43);
+            font-size: 24px;
+            font-weight: bold;
+            margin: 150;
+        }
+
+        .global-title-italic {
+            font-style: italic;
+            color: rgb(0, 0, 0);
+        }
+
+        .global-nav {
+            display: flex;
+            justify-content: center;
+            margin-right: 10%;
+        }
+
+        .global-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .global-nav li {
+            margin-left: 20px;
+        }
+
+        .global-nav a {
+            color: black;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .global-nav a:hover {
+            border-bottom: 2px solid black;
+        }
+
         .container {
-            margin-top: 20px; /* 고정된 헤더 높이만큼 상단 여백 추가 */
-            width: 50%;
+            margin-top: 80px;
+            width: 80%;
             height: 70%;
             background-color: #fff;
             position: relative;
@@ -18,10 +84,8 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            margin-right: 40px;
         }
 
-        /* 영역 1: 상단 헤더 */
         .header {
             width: 100%;
             height: 60px;
@@ -33,21 +97,10 @@
             justify-content: center;
             font-size: 24px;
         }
-        
-        .title {
-            color: rgb(0, 0, 0); /* 검정색 글자 */
-            position: absolute; /* 부모 요소(header)를 기준으로 위치를 설정 */
-            left: 100px; /* 왼쪽 끝에서 100px 떨어진 위치 */
-            top: 18px; /* 필요에 따라 위쪽 여백 설정 */
-            font-size: 22px; /* 제목 크기 */
-            font-weight: bold; /* 굵은 글씨 */
-        }
 
-        /* 맞춤, 회전, 삽입 버튼 위치 */
         .header-buttons {
             position: absolute;
             bottom: 5px;
-
             display: flex;
             align-items: center;
             margin-left: 70%;
@@ -68,7 +121,6 @@
             background-color: #ddd;
         }
 
-        /* 영역 2: 좌측 패널 */
         .left-panel {
             position: absolute;
             top: 60px;
@@ -102,7 +154,6 @@
             color: black;
         }
 
-        /* 영역 3: 도형 그리기 영역 */
         .drawing-area {
             position: absolute;
             top: 60px;
@@ -113,7 +164,6 @@
             overflow: hidden;
         }
 
-        /* 작은 사각형 */
         .small-rectangle {
             background-color: rgb(64,64,64);
             position: absolute;
@@ -121,47 +171,42 @@
             cursor: pointer;
         }
 
-        /* 화살표 본체 스타일 */
         .arrow-shape {
             position: absolute;
-            display: flex; /* 자식 요소 정렬을 위한 플렉스 사용 */
-            align-items: center; /* 자식 요소 수직 중앙 정렬 */
+            display: flex;
+            align-items: center;
         }
 
-        /* 화살표 끝부분 스타일 */
         .arrow-head {
             width: 0;
             height: 0;
-            border-left: 10px solid black; /* 화살표 끝부분 색상 */
+            border-left: 10px solid black;
             border-top: 5px solid transparent;
             border-bottom: 5px solid transparent;
-            margin-left: -1px; /* 화살표 본체와 연결 부위 조정 */
+            margin-left: -1px;
         }
 
-        /* 화살표 본체 스타일 */
         .arrow-body {
-            width: 30px; /* 화살표 본체 길이 */
-            height: 5px; /* 화살표 본체 높이 */
-            background-color: black; /* 화살표 본체 색상 */
+            width: 30px;
+            height: 5px;
+            background-color: black;
         }
 
-        /* 점선 사각형 */
         .dashed-rectangle {
             width: 50px;
             height: 30px;
             border: 2px dashed red;
             position: absolute;
             cursor: pointer;
-            box-sizing: border-box; /* 리사이즈 핸들러가 영역을 벗어나지 않도록 함 */
+            box-sizing: border-box;
         }
 
-        /* 리사이즈 핸들러 */
         .resize-handle {
             width: 8px;
             height: 8px;
             background-color: blue;
             position: absolute;
-            display: none; /* 초기에는 숨김 */
+            display: none;
         }
 
         .top-left {
@@ -188,12 +233,10 @@
             cursor: nwse-resize;
         }
 
-        /* 선택된 도형 스타일 */
         .selected {
             outline: 2px solid green;
         }
 
-        /* 선택 박스 */
         .selection-box {
             position: absolute;
             border: 1px dashed black;
@@ -201,7 +244,6 @@
             pointer-events: none;
         }
 
-        /* 회전 입력 상자 */
         .rotate-input {
             display: none;
             position: absolute;
@@ -217,7 +259,6 @@
             font-size: 12px;
         }
 
-        /* Alt 드래그 미리보기 */
         .preview-rectangle {
             position: absolute;
             border: 1px dashed blue;
@@ -225,16 +266,14 @@
             pointer-events: none;
         }
 
-        /* 폼을 감싸는 컨테이너 */
         .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 30%; /* 컨테이너 너비 설정 */
+            width: 30%;
             margin-left: 40px;
         }
 
-        /* 표: 상단 헤더 */
         .form-header {
             width: 100%;
             height: 40px;
@@ -245,34 +284,33 @@
             align-items: left;
             justify-content: center;
             font-size: 24px;
-            font-weight: bold; /* 굵은 글씨 */
+            font-weight: bold;
             margin-bottom: 10px;
-        }        
-        form {
-            width: 30%; /* 폼의 너비를 50%로 설정 */
-            background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
-            padding: 8px; /* 폼 안쪽 여백 설정 */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-            border-radius: 10px; /* 모서리 둥글게 설정 */
         }
 
-        /* 테이블 열 폭 조정 스타일 */
+        form {
+            width: 50%;
+            background-color: #ffffff;
+            padding: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
         table {
-            width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
-            border-collapse: collapse; /* 경계선 겹침 방지 */
-            table-layout: fixed; /* 고정된 테이블 레이아웃 */
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
         }
 
         th, td {
-            font-size: 14px; /* 글자 크기 설정 */
-            border: 1px solid #dddddd; /* 테두리 스타일 */
-            padding: 8px; /* 패딩 */
-            text-align: center; /* 텍스트 중앙 정렬 */
-            word-wrap: break-word; /* 긴 단어 줄바꿈 */
-            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
+            font-size: 14px;
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        /* 버튼 컨테이너 스타일 */
         .button-container {
             display: flex;
             justify-content: center;
@@ -285,7 +323,6 @@
             font-size: 14px;
         }
 
-        /* 폼 버튼 스타일 */
         .form-buttons {
             display: flex;
             justify-content: center;
@@ -298,7 +335,6 @@
             font-size: 14px;
         }
 
-        /* 도형 내 레이블 스타일 */
         .shape-label {
             position: absolute;
             top: 50%;
@@ -306,1055 +342,1047 @@
             transform: translate(-50%, -50%);
             color: white;
             font-weight: bold;
-        }        
+        }
     </style>
+</head>
+<body>
+    <!-- 공통 헤더 -->
+    <header class="global-header-container">
+        <h1 class="global-title">Hanon management <span class="global-title-italic">solutions</span></h1>
+        <nav class="global-nav">
+            <ul class="global-nav-ul">
+                <li><a href="{% url 'home' %}">홈</a></li>
+                <li><a href="{% url 'greetings' %}">인사말</a></li>
+                <li><a href="{% url 'checkpoint' %}">점검포인트</a></li>
+                <li><a href="{% url 'doc_index' %}">문서 목록</a></li>
+                <li><a href="{% url 'solutions' %}">설비 종합 관리</a></li>                    
+            </ul>
+        </nav>
+    </header>
 
+    <div class="container">
+        <!-- 상단 헤더 -->
+        <div class="header">
+            <span>공정 레이아웃</span>
+            <div class="header-buttons">
+                <button class="function-button" id="rotateButton">회전</button>
+                <select class="function-button" id="alignSelect">
+                    <option value="">맞춤</option>
+                    <option value="left">왼쪽 맞춤</option>
+                    <option value="center">가운데 맞춤</option>
+                    <option value="right">오른쪽 맞춤</option>
+                    <option value="top">위쪽 맞춤</option>
+                    <option value="middle">중간 맞춤</option>
+                    <option value="bottom">아래쪽 맞춤</option>
+                    <option value="horizontal">가로 간격 동일</option>
+                    <option value="vertical">세로 간격 동일</option>
+                </select>
+                <select class="function-button" id="insertSelect">
+                    <option value="">삽입</option>
+                    <option value="arrow">화살표</option>
+                    <option value="dashedRectangle">사각형(점선)</option>
+                </select>
+            </div>
+        </div>
 
-    <!-- 추가적인 스타일이 필요하면 여기에 추가 -->
-{% endblock %}
+        <!-- 회전 입력 상자 -->
+        <div class="rotate-input" id="rotateInput">
+            <label for="rotateDegree">각도 입력:</label>
+            <input type="number" id="rotateDegree" min="0" max="360" value="0">
+            <button id="applyRotation">적용</button>
+        </div>
 
-{% block content %}
-<div class="container">
-    <!-- 영역 1: 상단 헤더 -->
-    <div class="header">
-        <!-- 타이틀 추가 -->
-        <span>공정 레이아웃</span>
-        <div class="header-buttons">
+        <!-- 좌측 패널 -->
+        <div class="left-panel" id="leftPanel">
+            <button id="addButton">추가</button>
+        </div>
 
-            <button class="function-button" id="rotateButton">회전</button>
-            <!-- 맞춤 옵션 드롭다운 -->                
-            <select class="function-button" id="alignSelect">
-                <option value="">맞춤</option>
-                <option value="left">왼쪽 맞춤</option>
-                <option value="center">가운데 맞춤</option>
-                <option value="right">오른쪽 맞춤</option>
-                <option value="top">위쪽 맞춤</option>
-                <option value="middle">중간 맞춤</option>
-                <option value="bottom">아래쪽 맞춤</option>
-                <option value="horizontal">가로 간격 동일</option>
-                <option value="vertical">세로 간격 동일</option>
-            </select>
+        <!-- 도형 그리기 영역 -->
+        <div class="drawing-area" id="drawingArea"></div>
 
-            <!-- 삽입 버튼 추가 -->
-            <select class="function-button" id="insertSelect">
-                <option value="">삽입</option>
-                <option value="arrow">화살표</option>
-                <option value="dashedRectangle">사각형(점선)</option>
-            </select>
+        <!-- 추가 입력 창 -->
+        <div class="rotate-input" id="addMachineInput">
+            <label for="machineName">이름:</label><br>
+            <input type="text" id="machineName"><br>
+            <label for="machineWidth">가로(px):</label><br>
+            <input type="number" id="machineWidth"><br>
+            <label for="machineHeight">세로(px):</label><br>
+            <input type="number" id="machineHeight"><br>
+            <button id="confirmAddMachine">확인</button>
         </div>
     </div>
 
-    <!-- 회전 입력 상자 -->
-    <div class="rotate-input" id="rotateInput">
-        <label for="rotateDegree">각도 입력:</label>
-        <input type="number" id="rotateDegree" min="0" max="360" value="0">
-        <button id="applyRotation">적용</button>
+    <!-- 우측 설비관리대장 영역 -->
+    <div class="form-container">
+        <form method="post" id="equipmentForm" class="hidden">
+            {% csrf_token %}
+            <div class="form-header">
+                <span>설비관리대장</span>
+            </div>
+
+            <div class="button-container">
+                <button type="button" id="lookupButton">조회</button>
+                <button type="button" id="createButton">생성</button>
+                <button type="button" id="updateButton">변경</button>
+                <button type="button" id="processAddButton">공정추가</button>
+            </div>
+
+            <!-- 조회 폼 -->
+            <div id="lookupForm" class="hidden">
+                <table id="layout_view_table">
+                    <tr>
+                        <th>업체명</th>
+                        <th>위치</th>
+                        <th>공장명</th>
+                        <th>층</th>
+                        <th>라인명</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="supplier_name" id="supplier_name"></td>
+                        <td><input type="text" name="plant_location" id="plant_location"></td>
+                        <td><input type="text" name="plant_name" id="plant_name"></td>
+                        <td><input type="text" name="floor" id="floor"></td>
+                        <td><input type="text" name="line_name" id="line_name"></td>
+                    </tr>
+                </table>
+                <div class="form-buttons">
+                    <button type="button" id="searchButton">조회하기</button>
+                    <button type="button" id="reFillButton">다시 채우기</button>
+                </div>
+            </div>
+
+            <!-- 변경 폼 -->
+            <div id="updateForm" class="hidden">
+                <table id="layout_update_table">
+                    {% for field in form %}
+                    <tr>
+                        <th>{{ field.label_tag }}</th>
+                        <td>{{ field }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="form-buttons">
+                    <button type="button" id="updateConfirmButton">변경 확인</button>
+                    <button type="button" id="cancelUpdateButton">취소</button>
+                </div>
+            </div>
+
+            <!-- 공정추가 폼 -->
+            <div id="processAddForm" class="hidden">
+                <table id="process_add_table">
+                    {% for field in form %}
+                    <tr>
+                        <th>{{ field.label_tag }}</th>
+                        <td>{{ field }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="form-buttons">
+                    <button type="button" id="addProcessButton">추가하기</button>
+                    <button type="button" id="cancelProcessAddButton">취소</button>
+                </div>
+            </div>
+
+            <!-- 생성 폼 -->
+            <div id="createForm" class="hidden">
+                <table>
+                    {% for field in form %}
+                    <tr>
+                        <th>{{ field.label_tag }}</th>
+                        <td>{{ field }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <div class="form-buttons">
+                    <button type="button" id="saveButton">저장</button>
+                    <button type="button" id="sendButton">전송</button>
+                    <button type="button" id="cancelButton">취소</button>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <!-- 영역 2: 좌측 패널 -->
-    <div class="left-panel" id="leftPanel">
-        <!-- 추가 버튼 -->
-        <button id="addButton">추가</button>
-        <!-- 기계 장비 버튼들 -->
-        <!-- 버튼들은 JavaScript에서 동적으로 생성됩니다 -->
-    </div>
+    <script>
+        // 사각형을 생성할 때마다 카운트를 위한 변수
+        let rectangleCount = 0;
 
-    <!-- 도형 그리기 영역 -->
-    <div class="drawing-area" id="drawingArea"></div>
+        // 요소 선택
+        const drawingArea = document.getElementById('drawingArea');
+        const rotateInput = document.getElementById('rotateInput');
+        const rotateButton = document.getElementById('rotateButton');
+        const applyRotation = document.getElementById('applyRotation');
+        const rotateDegreeInput = document.getElementById('rotateDegree');
+        const alignSelect = document.getElementById('alignSelect');
+        const insertSelect = document.getElementById('insertSelect');
+        const leftPanel = document.getElementById('leftPanel');
+        const addButton = document.getElementById('addButton');
+        const addMachineInput = document.getElementById('addMachineInput');
+        const machineNameInput = document.getElementById('machineName');
+        const machineWidthInput = document.getElementById('machineWidth');
+        const machineHeightInput = document.getElementById('machineHeight');
+        const confirmAddMachine = document.getElementById('confirmAddMachine');
 
-    <!-- 추가 입력 창 -->
-    <div class="rotate-input" id="addMachineInput">
-        <label for="machineName">이름:</label><br>
-        <input type="text" id="machineName"><br>
-        <label for="machineWidth">가로(px):</label><br>
-        <input type="number" id="machineWidth"><br>
-        <label for="machineHeight">세로(px):</label><br>
-        <input type="number" id="machineHeight"><br>
-        <button id="confirmAddMachine">확인</button>
-    </div>
-</div>
+        // 여러 개의 선택된 도형을 관리할 배열
+        let selectedShapes = [];
 
-<!-- 우측 설비관리대장 영역 -->
-<div class="form-container">
-    <div class="form-header">
-        <span>설비관리대장</span>
-    </div>
+        // 선택 박스 관련 변수
+        let isSelecting = false;
+        let selectionBox = null;
+        let startX, startY;
 
-    <!-- 버튼 컨테이너 -->
-    <div class="button-container">
-        <button type="button" id="lookupButton">조회</button>
-        <button type="button" id="createButton">생성</button>
-        <button type="button" id="updateButton">변경</button>
-        <button type="button" id="processAddButton">공정추가</button>
-    </div>
+        // 현재 선택된 기계 장비를 저장할 변수
+        let selectedMachine = null;
 
-    <!-- 조회 폼 -->
-    <form id="lookupForm" class="hidden">
-        {% csrf_token %}
-        <table id="layout_view_table">
-            <tr>
-                <th>업체명</th>
-                <th>위치</th>
-                <th>공장명</th>
-                <th>층</th>
-                <th>라인명</th>
-            </tr>
-            <tr>
-                <td><input type="text" name="supplier_name" id="supplier_name"></td>
-                <td><input type="text" name="plant_location" id="plant_location"></td>
-                <td><input type="text" name="plant_name" id="plant_name"></td>
-                <td><input type="text" name="floor" id="floor"></td>
-                <td><input type="text" name="line_name" id="line_name"></td>
-            </tr>
-        </table>
-        <div class="form-buttons">
-            <button type="button" id="searchButton">조회하기</button>
-            <button type="button" id="reFillButton">다시 채우기</button>
-        </div>
-    </form>
+        // Alt 드래그 중 도형 미리보기
+        let previewRectangle = null;
 
-    <!-- 변경 폼 -->
-    <form id="updateForm" class="hidden">
-        {% csrf_token %}
-        <table id="layout_update_table">
-            <!-- 모든 필드를 포함하여 테이블 생성 -->
-            {% for field in form %}
-            <tr>
-                <th>{{ field.label_tag }}</th>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <div class="form-buttons">
-            <button type="button" id="updateConfirmButton">변경 확인</button>
-            <button type="button" id="cancelUpdateButton">취소</button>
-        </div>
-    </form>
+        // Undo, Redo 스택
+        let undoStack = [];
+        let redoStack = [];
 
-    <!-- 공정추가 폼 -->
-    <form id="processAddForm" class="hidden">
-        {% csrf_token %}
-        <table id="process_add_table">
-            <!-- 모든 필드를 포함하여 테이블 생성 -->
-            {% for field in form %}
-            <tr>
-                <th>{{ field.label_tag }}</th>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <div class="form-buttons">
-            <button type="button" id="addProcessButton">추가하기</button>
-            <button type="button" id="cancelProcessAddButton">취소</button>
-        </div>
-    </form>
+        // 기계 장비 목록과 크기
+        let machines = [
+            { name: '기본', width: 30, height: 20 },
+            { name: '선반', width: 25, height: 15 },
+            { name: '머시닝센터', width: 35, height: 25 },
+            { name: '탭핑센터', width: 20, height: 15 },
+            { name: '사출기(100t)', width: 30, height: 12 },
+            { name: '사출기(300t)', width: 45, height: 15 },
+            { name: '사출기(500t)', width: 60, height: 20 },
+            { name: '사출기(1000t)', width: 80, height: 25 },
+            { name: '프레스(150t)', width: 35, height: 18 },
+            { name: '프레스(300t)', width: 45, height: 20 },
+            { name: '프레스(450t)', width: 55, height: 25 },
+            { name: '프레스(600t)', width: 65, height: 30 },
+            { name: '프레스(850t)', width: 70, height: 75 },
+            { name: '프레스(1000t)', width: 80, height: 40 },
+            { name: '대형로', width: 100, height: 20 }
+        ];
 
-    <!-- 생성 폼 -->
-    <form id="equipmentForm" class="hidden">
-        {% csrf_token %}
-        <table>
-            <!-- 생성 폼의 모든 필드를 포함하여 테이블 생성 -->
-            {% for field in form %}
-            <tr>
-                <th>{{ field.label_tag }}</th>
-                <td>{{ field }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <div class="form-buttons">
-            <button type="button" id="saveButton">저장</button>
-            <button type="button" id="sendButton">전송</button>
-            <button type="button" id="cancelButton">취소</button>
-        </div>
-    </form>
-</div>
+        // 기계 장비 버튼 생성 함수
+        function createMachineButtons() {
+            // 기존 버튼 제거
+            const existingButtons = leftPanel.querySelectorAll('.machine-button');
+            existingButtons.forEach(btn => btn.remove());
 
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // 사각형을 생성할 때마다 카운트를 위한 변수
-    let rectangleCount = 0;
-
-    // 요소 선택
-    const drawingArea = document.getElementById('drawingArea');
-    const rotateInput = document.getElementById('rotateInput');
-    const rotateButton = document.getElementById('rotateButton');
-    const applyRotation = document.getElementById('applyRotation');
-    const rotateDegreeInput = document.getElementById('rotateDegree');
-    const alignSelect = document.getElementById('alignSelect');
-    const insertSelect = document.getElementById('insertSelect');
-    const leftPanel = document.getElementById('leftPanel');
-    const addButton = document.getElementById('addButton');
-    const addMachineInput = document.getElementById('addMachineInput');
-    const machineNameInput = document.getElementById('machineName');
-    const machineWidthInput = document.getElementById('machineWidth');
-    const machineHeightInput = document.getElementById('machineHeight');
-    const confirmAddMachine = document.getElementById('confirmAddMachine');
-
-    // 여러 개의 선택된 도형을 관리할 배열
-    let selectedShapes = [];
-
-    // 선택 박스 관련 변수
-    let isSelecting = false;
-    let selectionBox = null;
-    let startX, startY;
-
-    // 현재 선택된 기계 장비를 저장할 변수
-    let selectedMachine = null;
-
-    // Alt 드래그 중 도형 미리보기
-    let previewRectangle = null;
-
-    // Undo, Redo 스택
-    let undoStack = [];
-    let redoStack = [];
-
-    // 기계 장비 목록과 크기
-    let machines = [
-        { name: '기본', width: 30, height: 20 },
-        { name: '선반', width: 25, height: 15 },
-        { name: '머시닝센터', width: 35, height: 25 },
-        { name: '탭핑센터', width: 20, height: 15 },
-        { name: '사출기(100t)', width: 30, height: 12 },
-        { name: '사출기(300t)', width: 45, height: 15 },
-        { name: '사출기(500t)', width: 60, height: 20 },
-        { name: '사출기(1000t)', width: 80, height: 25 },
-        { name: '프레스(150t)', width: 35, height: 18 },
-        { name: '프레스(300t)', width: 45, height: 20 },
-        { name: '프레스(450t)', width: 55, height: 25 },
-        { name: '프레스(600t)', width: 65, height: 30 },
-        { name: '프레스(850t)', width: 70, height: 75 },
-        { name: '프레스(1000t)', width: 80, height: 40 },
-        { name: '대형로', width: 100, height: 20 }
-    ];
-
-    // 기계 장비 버튼 생성 함수
-    function createMachineButtons() {
-        // 기존 버튼 제거
-        const existingButtons = leftPanel.querySelectorAll('.machine-button');
-        existingButtons.forEach(btn => btn.remove());
-
-        // 버튼 생성
-        machines.forEach(machine => {
-            const button = document.createElement('button');
-            button.className = 'machine-button';
-            button.textContent = machine.name;
-            button.addEventListener('click', () => {
-                if (selectedMachine === machine) {
-                    // 이미 선택된 상태이면 선택 해제
-                    selectedMachine = null;
-                    button.classList.remove('active');
-                } else {
-                    // 다른 버튼 비활성화
-                    deactivateOtherButtons();
-                    // 선택된 기계 장비 설정
-                    selectedMachine = machine;
-                    button.classList.add('active');
-                }
+            // 버튼 생성
+            machines.forEach(machine => {
+                const button = document.createElement('button');
+                button.className = 'machine-button';
+                button.textContent = machine.name;
+                button.addEventListener('click', () => {
+                    if (selectedMachine === machine) {
+                        // 이미 선택된 상태이면 선택 해제
+                        selectedMachine = null;
+                        button.classList.remove('active');
+                    } else {
+                        // 다른 버튼 비활성화
+                        deactivateOtherButtons();
+                        // 선택된 기계 장비 설정
+                        selectedMachine = machine;
+                        button.classList.add('active');
+                    }
+                });
+                leftPanel.appendChild(button);
             });
-            leftPanel.appendChild(button);
-        });
-    }
-
-    // 초기 버튼 생성
-    createMachineButtons();
-
-    // 다른 버튼 비활성화 함수
-    function deactivateOtherButtons() {
-        const buttons = leftPanel.querySelectorAll('.machine-button');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        selectedMachine = null;
-    }
-
-    // 맞춤 옵션 변경 시 동작
-    alignSelect.addEventListener('change', () => {
-        const alignType = alignSelect.value;
-        if (alignType) {
-            alignShapes(alignType);
-            alignSelect.value = ""; // 초기화
         }
-    });
 
-    // 회전 버튼 클릭 시 입력창 표시
-    rotateButton.addEventListener('click', () => {
-        // 회전 버튼의 부모 요소 기준으로 위치를 계산
-        const rect = rotateButton.getBoundingClientRect();
-        const parentRect = rotateButton.parentElement.getBoundingClientRect();
+        // 초기 버튼 생성
+        createMachineButtons();
 
-        // 회전 입력창 위치 설정
-        rotateInput.style.left = `${rect.left - parentRect.left + 50}px`; // 부모 요소 기준 상대적인 x 위치
-        rotateInput.style.top = `${rect.bottom - parentRect.top + 35}px`; // 부모 요소 기준 상대적인 y 위치
-        rotateInput.style.display = 'block';
-    });
-
-    // 회전 각도 적용
-    applyRotation.addEventListener('click', () => {
-        const degree = parseInt(rotateDegreeInput.value) || 0;
-        selectedShapes.forEach(shape => {
-            shape.style.transform = `rotate(${degree}deg)`;
-            shape.dataset.rotation = degree;
-        });
-        rotateInput.style.display = 'none';
-        saveState(); // 상태 저장
-    });
-
-    // ESC 키를 눌러 선택 해제
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            clearSelection();
-            rotateInput.style.display = 'none';
-            addMachineInput.style.display = 'none';
+        // 다른 버튼 비활성화 함수
+        function deactivateOtherButtons() {
+            const buttons = leftPanel.querySelectorAll('.machine-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            selectedMachine = null;
         }
-    });
 
-    // 도형 생성 함수
-    function createRectangle(x, y, width, height) {
-        // 사각형이 그리기 영역의 범위를 벗어나지 않도록 보정
-        const maxLeft = drawingArea.clientWidth - width;
-        const maxTop = drawingArea.clientHeight - height;
-        const left = Math.min(x, maxLeft);
-        const top = Math.min(y, maxTop);
-
-        // 새로운 사각형 생성
-        const newRectangle = document.createElement('div');
-        rectangleCount++;
-        const rectangleName = `PF${String(rectangleCount).padStart(3, '0')}`; // 예: PF001
-        newRectangle.className = 'small-rectangle';
-        newRectangle.style.left = `${left}px`;
-        newRectangle.style.top = `${top}px`;
-        newRectangle.style.width = `${width}px`;
-        newRectangle.style.height = `${height}px`;
-        newRectangle.setAttribute('data-name', rectangleName);
-        newRectangle.setAttribute('id', rectangleName);
-
-        // 클릭 및 드래그 이벤트 추가
-        newRectangle.addEventListener('click', shapeClickHandler);
-        newRectangle.addEventListener('mousedown', shapeMouseDownHandler);
-
-        // 그리기 영역에 추가
-        drawingArea.appendChild(newRectangle);
-        saveState(); // 상태 저장
-    }
-
-    // 삽입 도형 생성 함수 (rectangleCount에 포함되지 않음)
-    function createInsertShape(type) {
-        const x = drawingArea.clientWidth / 2 - 25; // 중앙 위치
-        const y = drawingArea.clientHeight / 2 - 15;
-
-        if (type === 'arrow') {
-            createArrowShape(x, y);
-        } else if (type === 'dashedRectangle') {
-            createDashedRectangle(x, y);
-        }
-    }
-
-    // 점선 사각형 생성 함수
-    function createDashedRectangle(x, y) {
-        const dashedRect = document.createElement('div');
-        dashedRect.className = 'dashed-rectangle';
-        dashedRect.style.left = `${x}px`;
-        dashedRect.style.top = `${y}px`;
-
-        // 리사이즈 핸들 추가
-        addResizeHandles(dashedRect);
-
-        // 클릭 및 드래그 이벤트 추가
-        dashedRect.addEventListener('click', shapeClickHandler);
-        dashedRect.addEventListener('mousedown', shapeMouseDownHandler);
-
-        drawingArea.appendChild(dashedRect);
-        saveState(); // 상태 저장
-    }
-
-    // 리사이즈 핸들러 추가 함수
-    function addResizeHandles(element) {
-        const handles = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-        handles.forEach(handleClass => {
-            const handle = document.createElement('div');
-            handle.className = `resize-handle ${handleClass}`;
-            handle.style.display = 'none'; // 초기에는 숨김
-            handle.addEventListener('mousedown', initResize);
-            element.appendChild(handle);
-        });
-    }
-
-    // 선택 토글 함수 수정
-    function toggleShapeSelection(shape) {
-        if (selectedShapes.includes(shape)) {
-            shape.classList.remove('selected');
-            selectedShapes = selectedShapes.filter(s => s !== shape);
-
-            // 점선 사각형의 경우 리사이즈 핸들 숨기기
-            if (shape.classList.contains('dashed-rectangle')) {
-                const handles = shape.querySelectorAll('.resize-handle');
-                handles.forEach(handle => handle.style.display = 'none');
-            }
-        } else {
-            shape.classList.add('selected');
-            selectedShapes.push(shape);
-
-            // 점선 사각형의 경우 리사이즈 핸들 보이기
-            if (shape.classList.contains('dashed-rectangle')) {
-                const handles = shape.querySelectorAll('.resize-handle');
-                handles.forEach(handle => handle.style.display = 'block');
-            }
-        }
-    }
-
-    // 선택 해제 시 리사이즈 핸들 숨기기
-    function clearSelection() {
-        selectedShapes.forEach(shape => {
-            shape.classList.remove('selected');
-
-            if (shape.classList.contains('dashed-rectangle')) {
-                const handles = shape.querySelectorAll('.resize-handle');
-                handles.forEach(handle => handle.style.display = 'none');
+        // 맞춤 옵션 변경 시 동작
+        alignSelect.addEventListener('change', () => {
+            const alignType = alignSelect.value;
+            if (alignType) {
+                alignShapes(alignType);
+                alignSelect.value = ""; // 초기화
             }
         });
-        selectedShapes = [];
-    }
 
-    // 리사이즈 관련 변수
-    let isResizing = false;
-    let currentHandle = null;
-    let currentElement = null;
-    let initialMouseX = 0;
-    let initialMouseY = 0;
-    let initialElementX = 0;
-    let initialElementY = 0;
-    let initialElementWidth = 0;
-    let initialElementHeight = 0;
+        // 회전 버튼 클릭 시 입력창 표시
+        rotateButton.addEventListener('click', () => {
+            // 회전 버튼의 부모 요소 기준으로 위치를 계산
+            const rect = rotateButton.getBoundingClientRect();
+            const parentRect = rotateButton.parentElement.getBoundingClientRect();
 
-    // 리사이즈 초기화 함수
-    function initResize(e) {
-        e.stopPropagation();
-        isResizing = true;
-        currentHandle = e.target;
-        currentElement = currentHandle.parentElement;
-        initialMouseX = e.clientX;
-        initialMouseY = e.clientY;
-        initialElementX = parseInt(currentElement.style.left);
-        initialElementY = parseInt(currentElement.style.top);
-        initialElementWidth = currentElement.offsetWidth;
-        initialElementHeight = currentElement.offsetHeight;
+            // 회전 입력창 위치 설정
+            rotateInput.style.left = `${rect.left - parentRect.left + 50}px`; // 부모 요소 기준 상대적인 x 위치
+            rotateInput.style.top = `${rect.bottom - parentRect.top + 35}px`; // 부모 요소 기준 상대적인 y 위치
+            rotateInput.style.display = 'block';
+        });
 
-        document.addEventListener('mousemove', doResize);
-        document.addEventListener('mouseup', stopResize);
-    }
-
-    // 리사이즈 동작 함수
-    function doResize(e) {
-        if (!isResizing) return;
-        const dx = e.clientX - initialMouseX;
-        const dy = e.clientY - initialMouseY;
-
-        if (currentHandle.classList.contains('top-left')) {
-            const newWidth = initialElementWidth - dx;
-            const newHeight = initialElementHeight - dy;
-            const newX = initialElementX + dx;
-            const newY = initialElementY + dy;
-            if (newWidth > 20 && newHeight > 20) {
-                currentElement.style.width = `${newWidth}px`;
-                currentElement.style.height = `${newHeight}px`;
-                currentElement.style.left = `${newX}px`;
-                currentElement.style.top = `${newY}px`;
-            }
-        } else if (currentHandle.classList.contains('top-right')) {
-            const newWidth = initialElementWidth + dx;
-            const newHeight = initialElementHeight - dy;
-            const newY = initialElementY + dy;
-            if (newWidth > 20 && newHeight > 20) {
-                currentElement.style.width = `${newWidth}px`;
-                currentElement.style.height = `${newHeight}px`;
-                currentElement.style.top = `${newY}px`;
-            }
-        } else if (currentHandle.classList.contains('bottom-left')) {
-            const newWidth = initialElementWidth - dx;
-            const newHeight = initialElementHeight + dy;
-            const newX = initialElementX + dx;
-            if (newWidth > 20 && newHeight > 20) {
-                currentElement.style.width = `${newWidth}px`;
-                currentElement.style.height = `${newHeight}px`;
-                currentElement.style.left = `${newX}px`;
-            }
-        } else if (currentHandle.classList.contains('bottom-right')) {
-            const newWidth = initialElementWidth + dx;
-            const newHeight = initialElementHeight + dy;
-            if (newWidth > 20 && newHeight > 20) {
-                currentElement.style.width = `${newWidth}px`;
-                currentElement.style.height = `${newHeight}px`;
-            }
-        }
-    }
-
-    // 리사이즈 종료 함수
-    function stopResize(e) {
-        isResizing = false;
-        document.removeEventListener('mousemove', doResize);
-        document.removeEventListener('mouseup', stopResize);
-        saveState(); // 상태 저장
-    }
-
-    // 삽입 버튼 변경 시 동작
-    insertSelect.addEventListener('change', () => {
-        const insertType = insertSelect.value;
-        if (insertType) {
-            createInsertShape(insertType);
-            insertSelect.value = ""; // 초기화
-        }
-    });
-
-    // 마우스 드래그로 다중 선택 기능
-    drawingArea.addEventListener('mousedown', (e) => {
-        if (!e.target.classList.contains('small-rectangle') && !e.target.classList.contains('arrow-shape') && !e.target.classList.contains('dashed-rectangle')) {
-            isSelecting = true;
-            const rect = drawingArea.getBoundingClientRect();
-            startX = e.clientX - rect.left;
-            startY = e.clientY - rect.top;
-            selectionBox = document.createElement('div');
-            selectionBox.className = 'selection-box';
-            selectionBox.style.left = `${startX}px`;
-            selectionBox.style.top = `${startY}px`;
-            drawingArea.appendChild(selectionBox);
-        }
-    });
-
-    drawingArea.addEventListener('mousemove', (e) => {
-        if (isSelecting) {
-            const rect = drawingArea.getBoundingClientRect();
-            const currentX = e.clientX - rect.left;
-            const currentY = e.clientY - rect.top;
-            selectionBox.style.width = `${Math.abs(currentX - startX)}px`;
-            selectionBox.style.height = `${Math.abs(currentY - startY)}px`;
-            selectionBox.style.left = `${Math.min(currentX, startX)}px`;
-            selectionBox.style.top = `${Math.min(currentY, startY)}px`;
-        } else if (isDragging) {
-            const dx = e.clientX - offsetX;
-            const dy = e.clientY - offsetY;
-
+        // 회전 각도 적용
+        applyRotation.addEventListener('click', () => {
+            const degree = parseInt(rotateDegreeInput.value) || 0;
             selectedShapes.forEach(shape => {
-                let currentLeft = parseInt(shape.style.left) + dx;
-                let currentTop = parseInt(shape.style.top) + dy;
-
-                if (e.altKey) {
-                    // 눈금선에 맞추기 위해 10px 단위로 스냅 설정
-                    currentLeft = Math.round(currentLeft / 10) * 10;
-                    currentTop = Math.round(currentTop / 10) * 10;
-                }
-
-                shape.style.left = `${currentLeft}px`;
-                shape.style.top = `${currentTop}px`;
+                shape.style.transform = `rotate(${degree}deg)`;
+                shape.dataset.rotation = degree;
             });
+            rotateInput.style.display = 'none';
+            saveState(); // 상태 저장
+        });
 
-            offsetX = e.clientX;
-            offsetY = e.clientY;
+        // ESC 키를 눌러 선택 해제
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearSelection();
+                rotateInput.style.display = 'none';
+                addMachineInput.style.display = 'none';
+            }
+        });
+
+        // 도형 생성 함수
+        function createRectangle(x, y, width, height) {
+            // 사각형이 그리기 영역의 범위를 벗어나지 않도록 보정
+            const maxLeft = drawingArea.clientWidth - width;
+            const maxTop = drawingArea.clientHeight - height;
+            const left = Math.min(x, maxLeft);
+            const top = Math.min(y, maxTop);
+
+            // 새로운 사각형 생성
+            const newRectangle = document.createElement('div');
+            rectangleCount++;
+            const rectangleName = `PF${String(rectangleCount).padStart(3, '0')}`; // 예: PF001
+            newRectangle.className = 'small-rectangle';
+            newRectangle.style.left = `${left}px`;
+            newRectangle.style.top = `${top}px`;
+            newRectangle.style.width = `${width}px`;
+            newRectangle.style.height = `${height}px`;
+            newRectangle.setAttribute('data-name', rectangleName);
+            newRectangle.setAttribute('id', rectangleName);
+
+            // 클릭 및 드래그 이벤트 추가
+            newRectangle.addEventListener('click', shapeClickHandler);
+            newRectangle.addEventListener('mousedown', shapeMouseDownHandler);
+
+            // 그리기 영역에 추가
+            drawingArea.appendChild(newRectangle);
+            saveState(); // 상태 저장
         }
-    });
 
-    drawingArea.addEventListener('mouseup', (e) => {
-        if (isSelecting) {
-            isSelecting = false;
+        // 삽입 도형 생성 함수 (rectangleCount에 포함되지 않음)
+        function createInsertShape(type) {
+            const x = drawingArea.clientWidth / 2 - 25; // 중앙 위치
+            const y = drawingArea.clientHeight / 2 - 15;
 
-            // 선택 박스 범위 계산
-            const selectRect = selectionBox.getBoundingClientRect();
-            selectionBox.remove();
-            selectionBox = null;
+            if (type === 'arrow') {
+                createArrowShape(x, y);
+            } else if (type === 'dashedRectangle') {
+                createDashedRectangle(x, y);
+            }
+        }
 
-            const drawingRect = drawingArea.getBoundingClientRect();
-            const selectLeft = selectRect.left - drawingRect.left;
-            const selectTop = selectRect.top - drawingRect.top;
-            const selectRight = selectRect.right - drawingRect.left;
-            const selectBottom = selectRect.bottom - drawingRect.top;
+        // 점선 사각형 생성 함수
+        function createDashedRectangle(x, y) {
+            const dashedRect = document.createElement('div');
+            dashedRect.className = 'dashed-rectangle';
+            dashedRect.style.left = `${x}px`;
+            dashedRect.style.top = `${y}px`;
 
-            // 도형들 중에서 선택 박스 안에 있는 것 선택
+            // 리사이즈 핸들 추가
+            addResizeHandles(dashedRect);
+
+            // 클릭 및 드래그 이벤트 추가
+            dashedRect.addEventListener('click', shapeClickHandler);
+            dashedRect.addEventListener('mousedown', shapeMouseDownHandler);
+
+            drawingArea.appendChild(dashedRect);
+            saveState(); // 상태 저장
+        }
+
+        // 리사이즈 핸들러 추가 함수
+        function addResizeHandles(element) {
+            const handles = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+            handles.forEach(handleClass => {
+                const handle = document.createElement('div');
+                handle.className = `resize-handle ${handleClass}`;
+                handle.style.display = 'none'; // 초기에는 숨김
+                handle.addEventListener('mousedown', initResize);
+                element.appendChild(handle);
+            });
+        }
+
+        // 선택 토글 함수 수정
+        function toggleShapeSelection(shape) {
+            if (selectedShapes.includes(shape)) {
+                shape.classList.remove('selected');
+                selectedShapes = selectedShapes.filter(s => s !== shape);
+
+                // 점선 사각형의 경우 리사이즈 핸들 숨기기
+                if (shape.classList.contains('dashed-rectangle')) {
+                    const handles = shape.querySelectorAll('.resize-handle');
+                    handles.forEach(handle => handle.style.display = 'none');
+                }
+            } else {
+                shape.classList.add('selected');
+                selectedShapes.push(shape);
+
+                // 점선 사각형의 경우 리사이즈 핸들 보이기
+                if (shape.classList.contains('dashed-rectangle')) {
+                    const handles = shape.querySelectorAll('.resize-handle');
+                    handles.forEach(handle => handle.style.display = 'block');
+                }
+            }
+        }
+
+        // 선택 해제 시 리사이즈 핸들 숨기기
+        function clearSelection() {
+            selectedShapes.forEach(shape => {
+                shape.classList.remove('selected');
+
+                if (shape.classList.contains('dashed-rectangle')) {
+                    const handles = shape.querySelectorAll('.resize-handle');
+                    handles.forEach(handle => handle.style.display = 'none');
+                }
+            });
+            selectedShapes = [];
+        }
+
+        // 리사이즈 관련 변수
+        let isResizing = false;
+        let currentHandle = null;
+        let currentElement = null;
+        let initialMouseX = 0;
+        let initialMouseY = 0;
+        let initialElementX = 0;
+        let initialElementY = 0;
+        let initialElementWidth = 0;
+        let initialElementHeight = 0;
+
+        // 리사이즈 초기화 함수
+        function initResize(e) {
+            e.stopPropagation();
+            isResizing = true;
+            currentHandle = e.target;
+            currentElement = currentHandle.parentElement;
+            initialMouseX = e.clientX;
+            initialMouseY = e.clientY;
+            initialElementX = parseInt(currentElement.style.left);
+            initialElementY = parseInt(currentElement.style.top);
+            initialElementWidth = currentElement.offsetWidth;
+            initialElementHeight = currentElement.offsetHeight;
+
+            document.addEventListener('mousemove', doResize);
+            document.addEventListener('mouseup', stopResize);
+        }
+
+        // 리사이즈 동작 함수
+        function doResize(e) {
+            if (!isResizing) return;
+            const dx = e.clientX - initialMouseX;
+            const dy = e.clientY - initialMouseY;
+
+            if (currentHandle.classList.contains('top-left')) {
+                const newWidth = initialElementWidth - dx;
+                const newHeight = initialElementHeight - dy;
+                const newX = initialElementX + dx;
+                const newY = initialElementY + dy;
+                if (newWidth > 20 && newHeight > 20) {
+                    currentElement.style.width = `${newWidth}px`;
+                    currentElement.style.height = `${newHeight}px`;
+                    currentElement.style.left = `${newX}px`;
+                    currentElement.style.top = `${newY}px`;
+                }
+            } else if (currentHandle.classList.contains('top-right')) {
+                const newWidth = initialElementWidth + dx;
+                const newHeight = initialElementHeight - dy;
+                const newY = initialElementY + dy;
+                if (newWidth > 20 && newHeight > 20) {
+                    currentElement.style.width = `${newWidth}px`;
+                    currentElement.style.height = `${newHeight}px`;
+                    currentElement.style.top = `${newY}px`;
+                }
+            } else if (currentHandle.classList.contains('bottom-left')) {
+                const newWidth = initialElementWidth - dx;
+                const newHeight = initialElementHeight + dy;
+                const newX = initialElementX + dx;
+                if (newWidth > 20 && newHeight > 20) {
+                    currentElement.style.width = `${newWidth}px`;
+                    currentElement.style.height = `${newHeight}px`;
+                    currentElement.style.left = `${newX}px`;
+                }
+            } else if (currentHandle.classList.contains('bottom-right')) {
+                const newWidth = initialElementWidth + dx;
+                const newHeight = initialElementHeight + dy;
+                if (newWidth > 20 && newHeight > 20) {
+                    currentElement.style.width = `${newWidth}px`;
+                    currentElement.style.height = `${newHeight}px`;
+                }
+            }
+        }
+
+        // 리사이즈 종료 함수
+        function stopResize(e) {
+            isResizing = false;
+            document.removeEventListener('mousemove', doResize);
+            document.removeEventListener('mouseup', stopResize);
+            saveState(); // 상태 저장
+        }
+
+        // 삽입 버튼 변경 시 동작
+        insertSelect.addEventListener('change', () => {
+            const insertType = insertSelect.value;
+            if (insertType) {
+                createInsertShape(insertType);
+                insertSelect.value = ""; // 초기화
+            }
+        });
+
+        // 마우스 드래그로 다중 선택 기능
+        drawingArea.addEventListener('mousedown', (e) => {
+            if (!e.target.classList.contains('small-rectangle') && !e.target.classList.contains('arrow-shape') && !e.target.classList.contains('dashed-rectangle')) {
+                isSelecting = true;
+                const rect = drawingArea.getBoundingClientRect();
+                startX = e.clientX - rect.left;
+                startY = e.clientY - rect.top;
+                selectionBox = document.createElement('div');
+                selectionBox.className = 'selection-box';
+                selectionBox.style.left = `${startX}px`;
+                selectionBox.style.top = `${startY}px`;
+                drawingArea.appendChild(selectionBox);
+            }
+        });
+
+        drawingArea.addEventListener('mousemove', (e) => {
+            if (isSelecting) {
+                const rect = drawingArea.getBoundingClientRect();
+                const currentX = e.clientX - rect.left;
+                const currentY = e.clientY - rect.top;
+                selectionBox.style.width = `${Math.abs(currentX - startX)}px`;
+                selectionBox.style.height = `${Math.abs(currentY - startY)}px`;
+                selectionBox.style.left = `${Math.min(currentX, startX)}px`;
+                selectionBox.style.top = `${Math.min(currentY, startY)}px`;
+            } else if (isDragging) {
+                const dx = e.clientX - offsetX;
+                const dy = e.clientY - offsetY;
+
+                selectedShapes.forEach(shape => {
+                    let currentLeft = parseInt(shape.style.left) + dx;
+                    let currentTop = parseInt(shape.style.top) + dy;
+
+                    if (e.altKey) {
+                        // 눈금선에 맞추기 위해 10px 단위로 스냅 설정
+                        currentLeft = Math.round(currentLeft / 10) * 10;
+                        currentTop = Math.round(currentTop / 10) * 10;
+                    }
+
+                    shape.style.left = `${currentLeft}px`;
+                    shape.style.top = `${currentTop}px`;
+                });
+
+                offsetX = e.clientX;
+                offsetY = e.clientY;
+            }
+        });
+
+        drawingArea.addEventListener('mouseup', (e) => {
+            if (isSelecting) {
+                isSelecting = false;
+
+                // 선택 박스 범위 계산
+                const selectRect = selectionBox.getBoundingClientRect();
+                selectionBox.remove();
+                selectionBox = null;
+
+                const drawingRect = drawingArea.getBoundingClientRect();
+                const selectLeft = selectRect.left - drawingRect.left;
+                const selectTop = selectRect.top - drawingRect.top;
+                const selectRight = selectRect.right - drawingRect.left;
+                const selectBottom = selectRect.bottom - drawingRect.top;
+
+                // 도형들 중에서 선택 박스 안에 있는 것 선택
+                const shapes = drawingArea.querySelectorAll('.small-rectangle, .arrow-shape, .dashed-rectangle');
+                shapes.forEach(shape => {
+                    const rectBounds = shape.getBoundingClientRect();
+                    const rectLeft = rectBounds.left - drawingRect.left;
+                    const rectTop = rectBounds.top - drawingRect.top;
+                    const rectRight = rectBounds.right - drawingRect.left;
+                    const rectBottom = rectBounds.bottom - drawingRect.top;
+
+                    if (rectRight >= selectLeft && rectLeft <= selectRight && rectBottom >= selectTop && rectTop <= selectBottom) {
+                        if (!selectedShapes.includes(shape)) {
+                            shape.classList.add('selected');
+                            selectedShapes.push(shape);
+
+                            // 점선 사각형의 경우 리사이즈 핸들 보이기
+                            if (shape.classList.contains('dashed-rectangle')) {
+                                const handles = shape.querySelectorAll('.resize-handle');
+                                handles.forEach(handle => handle.style.display = 'block');
+                            }
+                        }
+                    }
+                });
+            } else if (isDragging) {
+                isDragging = false;
+                saveState(); // 상태 저장
+            }
+        });
+
+        // 도형 클릭 이벤트 핸들러
+        function shapeClickHandler(e) {
+            e.stopPropagation(); // 부모 요소로 이벤트 버블링 방지
+            if (e.ctrlKey) {
+                toggleShapeSelection(this);
+            } else {
+                clearSelection();
+                toggleShapeSelection(this);
+            }
+        }
+
+        // 도형 마우스 다운 이벤트 핸들러
+        function shapeMouseDownHandler(e) {
+            if (selectedShapes.includes(this)) {
+                isDragging = true;
+                offsetX = e.clientX;
+                offsetY = e.clientY;
+            }
+        }
+
+        // 도형 이동 시 눈금선 맞춤 기능
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        // 도형 그리기 윈도우 내에서 Alt + 마우스 드래그로 도형 생성
+        let isAltDrawing = false;
+        let altStartX, altStartY;
+
+        drawingArea.addEventListener('mousedown', (e) => {
+            if (e.altKey && !selectedMachine) {
+                isAltDrawing = true;
+                const rect = drawingArea.getBoundingClientRect();
+                altStartX = e.clientX - rect.left;
+                altStartY = e.clientY - rect.top;
+
+                // 미리보기 사각형 생성
+                previewRectangle = document.createElement('div');
+                previewRectangle.className = 'preview-rectangle';
+                previewRectangle.style.left = `${altStartX}px`;
+                previewRectangle.style.top = `${altStartY}px`;
+                drawingArea.appendChild(previewRectangle);
+            }
+        });
+
+        drawingArea.addEventListener('mousemove', (e) => {
+            if (isAltDrawing) {
+                const rect = drawingArea.getBoundingClientRect();
+                const currentX = e.clientX - rect.left;
+                const currentY = e.clientY - rect.top;
+                previewRectangle.style.width = `${Math.abs(currentX - altStartX)}px`;
+                previewRectangle.style.height = `${Math.abs(currentY - altStartY)}px`;
+                previewRectangle.style.left = `${Math.min(currentX, altStartX)}px`;
+                previewRectangle.style.top = `${Math.min(currentY, altStartY)}px`;
+            }
+        });
+
+        drawingArea.addEventListener('mouseup', (e) => {
+            if (isAltDrawing) {
+                isAltDrawing = false;
+                previewRectangle.remove();
+                previewRectangle = null;
+                const rect = drawingArea.getBoundingClientRect();
+                const endX = e.clientX - rect.left;
+                const endY = e.clientY - rect.top;
+                const width = Math.abs(endX - altStartX);
+                const height = Math.abs(endY - altStartY);
+                const left = Math.min(altStartX, endX);
+                const top = Math.min(altStartY, endY);
+                createRectangle(left, top, width, height);
+            }
+        });
+
+        // 정렬 함수 구현
+        function alignShapes(option) {
+            if (selectedShapes.length < 2) return;
+
+            let referenceShape = selectedShapes[0]; // 첫 번째 도형을 기준으로 사용
+
+            switch (option) {
+                case 'left':
+                    const left = referenceShape.offsetLeft;
+                    selectedShapes.forEach(shape => {
+                        shape.style.left = `${left}px`;
+                    });
+                    break;
+                case 'center':
+                    const centerX = referenceShape.offsetLeft + referenceShape.clientWidth / 2;
+                    selectedShapes.forEach(shape => {
+                        const newLeft = centerX - shape.clientWidth / 2;
+                        shape.style.left = `${newLeft}px`;
+                    });
+                    break;
+                case 'right':
+                    const right = referenceShape.offsetLeft + referenceShape.clientWidth;
+                    selectedShapes.forEach(shape => {
+                        const newLeft = right - shape.clientWidth;
+                        shape.style.left = `${newLeft}px`;
+                    });
+                    break;
+                case 'top':
+                    const top = referenceShape.offsetTop;
+                    selectedShapes.forEach(shape => {
+                        shape.style.top = `${top}px`;
+                    });
+                    break;
+                case 'middle':
+                    const centerY = referenceShape.offsetTop + referenceShape.clientHeight / 2;
+                    selectedShapes.forEach(shape => {
+                        const newTop = centerY - shape.clientHeight / 2;
+                        shape.style.top = `${newTop}px`;
+                    });
+                    break;
+                case 'bottom':
+                    const bottom = referenceShape.offsetTop + referenceShape.clientHeight;
+                    selectedShapes.forEach(shape => {
+                        const newTop = bottom - shape.clientHeight;
+                        shape.style.top = `${newTop}px`;
+                    });
+                    break;
+                case 'horizontal':
+                    if (selectedShapes.length < 3) return;
+
+                    selectedShapes.sort((a, b) => a.offsetLeft - b.offsetLeft);
+                    const firstShape = selectedShapes[0];
+                    const lastShape = selectedShapes[selectedShapes.length - 1];
+                    const totalSpace = lastShape.offsetLeft - firstShape.offsetLeft;
+                    const gap = totalSpace / (selectedShapes.length - 1);
+
+                    selectedShapes.forEach((shape, index) => {
+                        const newLeft = firstShape.offsetLeft + gap * index;
+                        shape.style.left = `${newLeft}px`;
+                    });
+                    break;
+                case 'vertical':
+                    if (selectedShapes.length < 3) return;
+
+                    selectedShapes.sort((a, b) => a.offsetTop - b.offsetTop);
+                    const firstShapeV = selectedShapes[0];
+                    const lastShapeV = selectedShapes[selectedShapes.length - 1];
+                    const totalSpaceV = lastShapeV.offsetTop - firstShapeV.offsetTop;
+                    const gapV = totalSpaceV / (selectedShapes.length - 1);
+
+                    selectedShapes.forEach((shape, index) => {
+                        const newTop = firstShapeV.offsetTop + gapV * index;
+                        shape.style.top = `${newTop}px`;
+                    });
+                    break;
+            }
+            saveState(); // 상태 저장
+        }
+
+        // 선택된 도형 삭제 (Delete 키)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Delete') {
+                selectedShapes.forEach(shape => shape.remove());
+                selectedShapes = [];
+                saveState(); // 상태 저장
+            }
+        });
+
+        // 상태 저장 함수
+        function saveState() {
+            const currentState = drawingArea.innerHTML;
+            undoStack.push(currentState);
+            redoStack = []; // Redo 스택 초기화
+        }
+
+        // 페이지 로드 시 초기 상태 저장
+        saveState();
+
+        // Undo 및 Redo 기능 구현
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'z') {
+                e.preventDefault(); // 기본 동작 방지
+                undoAction();
+            } else if (e.ctrlKey && e.key === 'y') {
+                e.preventDefault(); // 기본 동작 방지
+                redoAction();
+            }
+        });
+
+        function undoAction() {
+            if (undoStack.length > 1) {
+                const currentState = undoStack.pop();
+                redoStack.push(currentState);
+                const prevState = undoStack[undoStack.length - 1];
+                drawingArea.innerHTML = prevState;
+                reattachEventListeners();
+            }
+        }
+
+        function redoAction() {
+            if (redoStack.length > 0) {
+                const nextState = redoStack.pop();
+                drawingArea.innerHTML = nextState;
+                undoStack.push(nextState);
+                reattachEventListeners();
+            }
+        }
+
+        // 기존 이벤트 리스너 재등록 함수
+        function reattachEventListeners() {
+            selectedShapes = []; // 선택된 도형 초기화
             const shapes = drawingArea.querySelectorAll('.small-rectangle, .arrow-shape, .dashed-rectangle');
             shapes.forEach(shape => {
-                const rectBounds = shape.getBoundingClientRect();
-                const rectLeft = rectBounds.left - drawingRect.left;
-                const rectTop = rectBounds.top - drawingRect.top;
-                const rectRight = rectBounds.right - drawingRect.left;
-                const rectBottom = rectBounds.bottom - drawingRect.top;
+                shape.addEventListener('click', shapeClickHandler);
+                shape.addEventListener('mousedown', shapeMouseDownHandler);
 
-                if (rectRight >= selectLeft && rectLeft <= selectRight && rectBottom >= selectTop && rectTop <= selectBottom) {
-                    if (!selectedShapes.includes(shape)) {
-                        shape.classList.add('selected');
-                        selectedShapes.push(shape);
+                // 리사이즈 핸들러 이벤트 재등록
+                if (shape.classList.contains('dashed-rectangle')) {
+                    const handles = shape.querySelectorAll('.resize-handle');
+                    handles.forEach(handle => {
+                        handle.addEventListener('mousedown', initResize);
+                    });
+                }
+            });
+        }
 
-                        // 점선 사각형의 경우 리사이즈 핸들 보이기
-                        if (shape.classList.contains('dashed-rectangle')) {
-                            const handles = shape.querySelectorAll('.resize-handle');
-                            handles.forEach(handle => handle.style.display = 'block');
+        // 추가 버튼 기능
+        addButton.addEventListener('click', () => {
+            deactivateOtherButtons();
+            addMachineInput.style.display = 'block';
+            
+            // 부모 요소 기준으로 위치 계산
+            const rect = addButton.getBoundingClientRect();
+            const parentRect = addButton.parentElement.getBoundingClientRect(); // 부모 요소 기준
+
+            // 입력창 위치 설정
+            addMachineInput.style.left = `${rect.right - parentRect.left - 100}px`; // 부모 요소 기준 상대적인 x 위치
+            addMachineInput.style.top = `${rect.top - parentRect.top + 80}px`; // 부모 요소 기준 상대적인 y 위치
+        });
+
+        confirmAddMachine.addEventListener('click', () => {
+            const name = machineNameInput.value.trim();
+            const width = parseInt(machineWidthInput.value);
+            const height = parseInt(machineHeightInput.value);
+
+            if (name && width > 0 && height > 0) {
+                machines.push({ name, width, height });
+                createMachineButtons();
+                addMachineInput.style.display = 'none';
+                machineNameInput.value = '';
+                machineWidthInput.value = '';
+                machineHeightInput.value = '';
+            } else {
+                alert('올바른 값을 입력하세요.');
+            }
+        });
+
+        // 화살표 도형 생성 함수
+        function createArrowShape(x, y) {
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow-shape';
+            arrow.style.left = `${x}px`;
+            arrow.style.top = `${y}px`;
+
+            // 화살표 본체 추가
+            const arrowBody = document.createElement('div');
+            arrowBody.className = 'arrow-body';
+            arrow.appendChild(arrowBody);
+
+            // 화살표 끝 모양 추가 (꼭지점)
+            const arrowHead = document.createElement('div');
+            arrowHead.className = 'arrow-head';
+            arrow.appendChild(arrowHead);
+
+            // 클릭 및 드래그 이벤트 추가
+            arrow.addEventListener('click', shapeClickHandler);
+            arrow.addEventListener('mousedown', shapeMouseDownHandler);
+
+            drawingArea.appendChild(arrow);
+            saveState(); // 상태 저장
+        }
+
+        // 폼 관련 요소 선택
+        const lookupButton = document.getElementById('lookupButton');
+        const createButton = document.getElementById('createButton');
+        const updateButton = document.getElementById('updateButton');
+        const processAddButton = document.getElementById('processAddButton');
+
+        // 폼 요소 선택
+        const lookupForm = document.getElementById('lookupForm');
+        const createForm = document.getElementById('createForm');
+        const updateForm = document.getElementById('updateForm');
+        const processAddForm = document.getElementById('processAddForm');
+
+        // 조회 버튼 클릭 시
+        lookupButton.addEventListener('click', () => {
+            hideAllForms();
+            lookupForm.classList.remove('hidden');
+        });
+
+        // 생성 버튼 클릭 시
+        createButton.addEventListener('click', () => {
+            hideAllForms();
+            if (selectedShapes.length === 1) {
+                createForm.classList.remove('hidden');
+            } else {
+                alert('하나의 도형을 선택하세요.');
+            }
+        });
+
+        // 변경 버튼 클릭 시
+        updateButton.addEventListener('click', () => {
+            hideAllForms();
+            if (selectedShapes.length === 1) {
+                updateForm.classList.remove('hidden');
+            } else {
+                alert('하나의 도형을 선택하세요.');
+            }
+        });
+
+        // 공정추가 버튼 클릭 시
+        processAddButton.addEventListener('click', () => {
+            hideAllForms();
+            processAddForm.classList.remove('hidden');
+
+            // 조회 폼에서 입력된 값을 공정추가 폼에 채웁니다.
+            document.getElementById('process_add_table').querySelector('[name="supplier_name"]').value = document.getElementById('supplier_name').value;
+            document.getElementById('process_add_table').querySelector('[name="plant_location"]').value = document.getElementById('plant_location').value;
+            document.getElementById('process_add_table').querySelector('[name="plant_name"]').value = document.getElementById('plant_name').value;
+            document.getElementById('process_add_table').querySelector('[name="floor"]').value = document.getElementById('floor').value;
+            document.getElementById('process_add_table').querySelector('[name="line_name"]').value = document.getElementById('line_name').value;
+        });
+
+        // 폼 숨기기 함수
+        function hideAllForms() {
+            lookupForm.classList.add('hidden');
+            createForm.classList.add('hidden');
+            updateForm.classList.add('hidden');
+            processAddForm.classList.add('hidden');
+        }
+
+        // 조회하기 버튼 클릭 시
+        const searchButton = document.getElementById('searchButton');
+        searchButton.addEventListener('click', () => {
+            // 입력된 정보를 기반으로 서버에서 데이터를 가져와 레이아웃에 표시합니다.
+            // AJAX 요청 등을 통해 구현 필요
+        });
+
+        // 변경 확인 버튼 클릭 시
+        const updateConfirmButton = document.getElementById('updateConfirmButton');
+        updateConfirmButton.addEventListener('click', () => {
+            // 변경된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
+            // AJAX 요청 등을 통해 구현 필요
+        });
+
+        // 추가하기 버튼 클릭 시
+        const addProcessButton = document.getElementById('addProcessButton');
+        addProcessButton.addEventListener('click', () => {
+            // 추가된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
+            // AJAX 요청 등을 통해 구현 필요
+        });
+
+        // 취소 버튼들 클릭 시
+        const cancelButtons = document.querySelectorAll('button[id^="cancel"]');
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                hideAllForms();
+            });
+        });
+
+        // 저장된 equipment_number를 저장할 변수
+        let savedEquipmentNumber = '';
+
+        // "저장" 버튼 클릭 시
+        const saveButton = document.getElementById('saveButton');
+        saveButton.addEventListener('click', () => {
+            // 폼 데이터 수집
+            const formData = new FormData(equipmentForm);
+            formData.append('action', 'create');
+            // CSRF 토큰 가져오기
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
                         }
                     }
                 }
-            });
-        } else if (isDragging) {
-            isDragging = false;
-            saveState(); // 상태 저장
-        }
-    });
-
-    // 도형 클릭 이벤트 핸들러
-    function shapeClickHandler(e) {
-        e.stopPropagation(); // 부모 요소로 이벤트 버블링 방지
-        if (e.ctrlKey) {
-            toggleShapeSelection(this);
-        } else {
-            clearSelection();
-            toggleShapeSelection(this);
-        }
-    }
-
-    // 도형 마우스 다운 이벤트 핸들러
-    function shapeMouseDownHandler(e) {
-        if (selectedShapes.includes(this)) {
-            isDragging = true;
-            offsetX = e.clientX;
-            offsetY = e.clientY;
-        }
-    }
-
-    // 도형 이동 시 눈금선 맞춤 기능
-    let isDragging = false;
-    let offsetX, offsetY;
-
-    // 도형 그리기 윈도우 내에서 Alt + 마우스 드래그로 도형 생성
-    let isAltDrawing = false;
-    let altStartX, altStartY;
-
-    drawingArea.addEventListener('mousedown', (e) => {
-        if (e.altKey && !selectedMachine) {
-            isAltDrawing = true;
-            const rect = drawingArea.getBoundingClientRect();
-            altStartX = e.clientX - rect.left;
-            altStartY = e.clientY - rect.top;
-
-            // 미리보기 사각형 생성
-            previewRectangle = document.createElement('div');
-            previewRectangle.className = 'preview-rectangle';
-            previewRectangle.style.left = `${altStartX}px`;
-            previewRectangle.style.top = `${altStartY}px`;
-            drawingArea.appendChild(previewRectangle);
-        }
-    });
-
-    drawingArea.addEventListener('mousemove', (e) => {
-        if (isAltDrawing) {
-            const rect = drawingArea.getBoundingClientRect();
-            const currentX = e.clientX - rect.left;
-            const currentY = e.clientY - rect.top;
-            previewRectangle.style.width = `${Math.abs(currentX - altStartX)}px`;
-            previewRectangle.style.height = `${Math.abs(currentY - altStartY)}px`;
-            previewRectangle.style.left = `${Math.min(currentX, altStartX)}px`;
-            previewRectangle.style.top = `${Math.min(currentY, altStartY)}px`;
-        }
-    });
-
-    drawingArea.addEventListener('mouseup', (e) => {
-        if (isAltDrawing) {
-            isAltDrawing = false;
-            previewRectangle.remove();
-            previewRectangle = null;
-            const rect = drawingArea.getBoundingClientRect();
-            const endX = e.clientX - rect.left;
-            const endY = e.clientY - rect.top;
-            const width = Math.abs(endX - altStartX);
-            const height = Math.abs(endY - altStartY);
-            const left = Math.min(altStartX, endX);
-            const top = Math.min(altStartY, endY);
-            createRectangle(left, top, width, height);
-        }
-    });
-
-    // 정렬 함수 구현
-    function alignShapes(option) {
-        if (selectedShapes.length < 2) return;
-
-        let referenceShape = selectedShapes[0]; // 첫 번째 도형을 기준으로 사용
-
-        switch (option) {
-            case 'left':
-                const left = referenceShape.offsetLeft;
-                selectedShapes.forEach(shape => {
-                    shape.style.left = `${left}px`;
-                });
-                break;
-            case 'center':
-                const centerX = referenceShape.offsetLeft + referenceShape.clientWidth / 2;
-                selectedShapes.forEach(shape => {
-                    const newLeft = centerX - shape.clientWidth / 2;
-                    shape.style.left = `${newLeft}px`;
-                });
-                break;
-            case 'right':
-                const right = referenceShape.offsetLeft + referenceShape.clientWidth;
-                selectedShapes.forEach(shape => {
-                    const newLeft = right - shape.clientWidth;
-                    shape.style.left = `${newLeft}px`;
-                });
-                break;
-            case 'top':
-                const top = referenceShape.offsetTop;
-                selectedShapes.forEach(shape => {
-                    shape.style.top = `${top}px`;
-                });
-                break;
-            case 'middle':
-                const centerY = referenceShape.offsetTop + referenceShape.clientHeight / 2;
-                selectedShapes.forEach(shape => {
-                    const newTop = centerY - shape.clientHeight / 2;
-                    shape.style.top = `${newTop}px`;
-                });
-                break;
-            case 'bottom':
-                const bottom = referenceShape.offsetTop + referenceShape.clientHeight;
-                selectedShapes.forEach(shape => {
-                    const newTop = bottom - shape.clientHeight;
-                    shape.style.top = `${newTop}px`;
-                });
-                break;
-            case 'horizontal':
-                if (selectedShapes.length < 3) return;
-
-                selectedShapes.sort((a, b) => a.offsetLeft - b.offsetLeft);
-                const firstShape = selectedShapes[0];
-                const lastShape = selectedShapes[selectedShapes.length - 1];
-                const totalSpace = lastShape.offsetLeft - firstShape.offsetLeft;
-                const gap = totalSpace / (selectedShapes.length - 1);
-
-                selectedShapes.forEach((shape, index) => {
-                    const newLeft = firstShape.offsetLeft + gap * index;
-                    shape.style.left = `${newLeft}px`;
-                });
-                break;
-            case 'vertical':
-                if (selectedShapes.length < 3) return;
-
-                selectedShapes.sort((a, b) => a.offsetTop - b.offsetTop);
-                const firstShapeV = selectedShapes[0];
-                const lastShapeV = selectedShapes[selectedShapes.length - 1];
-                const totalSpaceV = lastShapeV.offsetTop - firstShapeV.offsetTop;
-                const gapV = totalSpaceV / (selectedShapes.length - 1);
-
-                selectedShapes.forEach((shape, index) => {
-                    const newTop = firstShapeV.offsetTop + gapV * index;
-                    shape.style.top = `${newTop}px`;
-                });
-                break;
-        }
-        saveState(); // 상태 저장
-    }
-
-    // 선택된 도형 삭제 (Delete 키)
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Delete') {
-            selectedShapes.forEach(shape => shape.remove());
-            selectedShapes = [];
-            saveState(); // 상태 저장
-        }
-    });
-
-    // 상태 저장 함수
-    function saveState() {
-        const currentState = drawingArea.innerHTML;
-        undoStack.push(currentState);
-        redoStack = []; // Redo 스택 초기화
-    }
-
-    // 페이지 로드 시 초기 상태 저장
-    saveState();
-
-    // Undo 및 Redo 기능 구현
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'z') {
-            e.preventDefault(); // 기본 동작 방지
-            undoAction();
-        } else if (e.ctrlKey && e.key === 'y') {
-            e.preventDefault(); // 기본 동작 방지
-            redoAction();
-        }
-    });
-
-    function undoAction() {
-        if (undoStack.length > 1) {
-            const currentState = undoStack.pop();
-            redoStack.push(currentState);
-            const prevState = undoStack[undoStack.length - 1];
-            drawingArea.innerHTML = prevState;
-            reattachEventListeners();
-        }
-    }
-
-    function redoAction() {
-        if (redoStack.length > 0) {
-            const nextState = redoStack.pop();
-            drawingArea.innerHTML = nextState;
-            undoStack.push(nextState);
-            reattachEventListeners();
-        }
-    }
-
-    // 기존 이벤트 리스너 재등록 함수
-    function reattachEventListeners() {
-        selectedShapes = []; // 선택된 도형 초기화
-        const shapes = drawingArea.querySelectorAll('.small-rectangle, .arrow-shape, .dashed-rectangle');
-        shapes.forEach(shape => {
-            shape.addEventListener('click', shapeClickHandler);
-            shape.addEventListener('mousedown', shapeMouseDownHandler);
-
-            // 리사이즈 핸들러 이벤트 재등록
-            if (shape.classList.contains('dashed-rectangle')) {
-                const handles = shape.querySelectorAll('.resize-handle');
-                handles.forEach(handle => {
-                    handle.addEventListener('mousedown', initResize);
-                });
+                return cookieValue;
             }
-        });
-    }
+            const csrftoken = getCookie('csrftoken');
 
-    // 추가 버튼 기능
-    addButton.addEventListener('click', () => {
-        deactivateOtherButtons();
-        addMachineInput.style.display = 'block';
-        
-        // 부모 요소 기준으로 위치 계산
-        const rect = addButton.getBoundingClientRect();
-        const parentRect = addButton.parentElement.getBoundingClientRect(); // 부모 요소 기준
-
-        // 입력창 위치 설정
-        addMachineInput.style.left = `${rect.right - parentRect.left - 100}px`; // 부모 요소 기준 상대적인 x 위치
-        addMachineInput.style.top = `${rect.top - parentRect.top + 80}px`; // 부모 요소 기준 상대적인 y 위치
-    });
-
-    confirmAddMachine.addEventListener('click', () => {
-        const name = machineNameInput.value.trim();
-        const width = parseInt(machineWidthInput.value);
-        const height = parseInt(machineHeightInput.value);
-
-        if (name && width > 0 && height > 0) {
-            machines.push({ name, width, height });
-            createMachineButtons();
-            addMachineInput.style.display = 'none';
-            machineNameInput.value = '';
-            machineWidthInput.value = '';
-            machineHeightInput.value = '';
-        } else {
-            alert('올바른 값을 입력하세요.');
-        }
-    });
-
-    // 화살표 도형 생성 함수
-    function createArrowShape(x, y) {
-        const arrow = document.createElement('div');
-        arrow.className = 'arrow-shape';
-        arrow.style.left = `${x}px`;
-        arrow.style.top = `${y}px`;
-
-        // 화살표 본체 추가
-        const arrowBody = document.createElement('div');
-        arrowBody.className = 'arrow-body';
-        arrow.appendChild(arrowBody);
-
-        // 화살표 끝 모양 추가 (꼭지점)
-        const arrowHead = document.createElement('div');
-        arrowHead.className = 'arrow-head';
-        arrow.appendChild(arrowHead);
-
-        // 클릭 및 드래그 이벤트 추가
-        arrow.addEventListener('click', shapeClickHandler);
-        arrow.addEventListener('mousedown', shapeMouseDownHandler);
-
-        drawingArea.appendChild(arrow);
-        saveState(); // 상태 저장
-    }
-
-    // 폼 관련 요소 선택
-    const lookupButton = document.getElementById('lookupButton');
-    const createButton = document.getElementById('createButton');
-    const updateButton = document.getElementById('updateButton');
-    const processAddButton = document.getElementById('processAddButton');
-
-    // 폼 요소 선택
-    const lookupForm = document.getElementById('lookupForm');
-    const equipmentForm = document.getElementById('equipmentForm');
-    const updateForm = document.getElementById('updateForm');
-    const processAddForm = document.getElementById('processAddForm');
-
-    // 조회 버튼 클릭 시
-    lookupButton.addEventListener('click', () => {
-        hideAllForms();
-        lookupForm.classList.remove('hidden');
-    });
-
-    // 생성 버튼 클릭 시
-    createButton.addEventListener('click', () => {
-        hideAllForms();
-        if (selectedShapes.length === 1) {
-            equipmentForm.classList.remove('hidden');
-        } else {
-            alert('하나의 도형을 선택하세요.');
-        }
-    });
-
-    // 변경 버튼 클릭 시
-    updateButton.addEventListener('click', () => {
-        hideAllForms();
-        if (selectedShapes.length === 1) {
-            updateForm.classList.remove('hidden');
-            // 선택된 도형의 정보를 가져와 폼에 채웁니다.
-            // AJAX 요청 등을 통해 구현 필요
-        } else {
-            alert('하나의 도형을 선택하세요.');
-        }
-    });
-
-    // 공정추가 버튼 클릭 시
-    processAddButton.addEventListener('click', () => {
-        hideAllForms();
-        processAddForm.classList.remove('hidden');
-
-        // 조회 폼에서 입력된 값을 공정추가 폼에 채웁니다.
-        document.getElementById('process_add_table').querySelector('[name="supplier_name"]').value = document.getElementById('supplier_name').value;
-        document.getElementById('process_add_table').querySelector('[name="plant_location"]').value = document.getElementById('plant_location').value;
-        document.getElementById('process_add_table').querySelector('[name="plant_name"]').value = document.getElementById('plant_name').value;
-        document.getElementById('process_add_table').querySelector('[name="floor"]').value = document.getElementById('floor').value;
-        document.getElementById('process_add_table').querySelector('[name="line_name"]').value = document.getElementById('line_name').value;
-        // 나머지 필드들도 동일하게 채웁니다.
-    });
-
-    // 폼 숨기기 함수
-    function hideAllForms() {
-        lookupForm.classList.add('hidden');
-        equipmentForm.classList.add('hidden');
-        updateForm.classList.add('hidden');
-        processAddForm.classList.add('hidden');
-    }
-
-    // 조회하기 버튼 클릭 시
-    const searchButton = document.getElementById('searchButton');
-    searchButton.addEventListener('click', () => {
-        // 입력된 정보를 기반으로 서버에서 데이터를 가져와 레이아웃에 표시합니다.
-        // AJAX 요청 등을 통해 구현 필요
-    });
-
-    // 변경 확인 버튼 클릭 시
-    const updateConfirmButton = document.getElementById('updateConfirmButton');
-    updateConfirmButton.addEventListener('click', () => {
-        // 변경된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
-        // AJAX 요청 등을 통해 구현 필요
-    });
-
-    // 추가하기 버튼 클릭 시
-    const addProcessButton = document.getElementById('addProcessButton');
-    addProcessButton.addEventListener('click', () => {
-        // 추가된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
-        // AJAX 요청 등을 통해 구현 필요
-    });
-
-    // 취소 버튼들 클릭 시
-    const cancelButtons = document.querySelectorAll('button[id^="cancel"]');
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            hideAllForms();
-        });
-    });
-
-    // 저장된 equipment_number를 저장할 변수
-    let savedEquipmentNumber = '';
-
-    // "저장" 버튼 클릭 시
-    const saveButton = document.getElementById('saveButton');
-    saveButton.addEventListener('click', () => {
-        // 폼 데이터 수집
-        const formData = new FormData(equipmentForm);
-        formData.append('action', 'create');
-        // CSRF 토큰 가져오기
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
+            // AJAX로 데이터 전송
+            fetch('', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest', // AJAX 요청임을 명시
+                },
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => {
+                        throw new Error(errData.error || 'Network response was not ok');
+                    });
                 }
-            }
-            return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
-
-        // AJAX로 데이터 전송
-        fetch('', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrftoken,
-                'X-Requested-With': 'XMLHttpRequest', // AJAX 요청임을 명시
-            },
-            body: formData,
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(errData => {
-                    throw new Error(errData.error || 'Network response was not ok');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert('데이터가 저장되었습니다.');
-                // equipment_number 저장
-                savedEquipmentNumber = data.equipment_number;
-                // 폼에 equipment_number 표시
-                const equipmentNumberField = equipmentForm.querySelector('[name="equipment_number"]');
-                equipmentNumberField.value = savedEquipmentNumber;
-            } else {
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('데이터가 저장되었습니다.');
+                    // equipment_number 저장
+                    savedEquipmentNumber = data.equipment_number;
+                    // 폼에 equipment_number 표시
+                    const equipmentNumberField = equipmentForm.querySelector('[name="equipment_number"]');
+                    equipmentNumberField.value = savedEquipmentNumber;
+                } else {
+                    alert('데이터 저장에 실패했습니다.');
+                    console.error('Form errors:', data.errors);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 alert('데이터 저장에 실패했습니다.');
-                console.error('Form errors:', data.errors);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('데이터 저장에 실패했습니다.');
+            });
         });
-    });
 
-    // "전송" 버튼 클릭 시
-    const sendButton = document.getElementById('sendButton');
-    sendButton.addEventListener('click', () => {
-        if (selectedShapes.length === 1) {
-            if (savedEquipmentNumber) {
-                const equipmentNumber = savedEquipmentNumber;
-                // 선택된 도형에 표시
-                const shape = selectedShapes[0];
-                let label = shape.querySelector('.shape-label');
-                if (!label) {
-                    label = document.createElement('div');
-                    label.className = 'shape-label';
-                    shape.appendChild(label);
+        // "전송" 버튼 클릭 시
+        const sendButton = document.getElementById('sendButton');
+        sendButton.addEventListener('click', () => {
+            if (selectedShapes.length === 1) {
+                if (savedEquipmentNumber) {
+                    const equipmentNumber = savedEquipmentNumber;
+                    // 선택된 도형에 표시
+                    const shape = selectedShapes[0];
+                    let label = shape.querySelector('.shape-label');
+                    if (!label) {
+                        label = document.createElement('div');
+                        label.className = 'shape-label';
+                        shape.appendChild(label);
+                    }
+                    label.textContent = equipmentNumber;
+                    // 폼 숨기기
+                    equipmentForm.classList.add('hidden');
+                } else {
+                    alert('저장된 equipment_number가 없습니다. 먼저 저장을 누르세요.');
                 }
-                label.textContent = equipmentNumber;
-                // 폼 숨기기
-                equipmentForm.classList.add('hidden');
             } else {
-                alert('저장된 equipment_number가 없습니다. 먼저 저장을 누르세요.');
+                alert('하나의 도형을 선택하세요.');
             }
-        } else {
-            alert('하나의 도형을 선택하세요.');
-        }
-    });
+        });
 
-    // "취소" 버튼 클릭 시
-    const cancelButton = document.getElementById('cancelButton');
-    cancelButton.addEventListener('click', () => {
-        // 폼 리셋 및 숨기기
-        equipmentForm.reset();
-        equipmentForm.classList.add('hidden');
-        savedEquipmentNumber = '';
-    });
+        // "취소" 버튼 클릭 시
+        const cancelButton = document.getElementById('cancelButton');
+        cancelButton.addEventListener('click', () => {
+            // 폼 리셋 및 숨기기
+            equipmentForm.reset();
+            equipmentForm.classList.add('hidden');
+            savedEquipmentNumber = '';
+        });
 
-</script>
-{% endblock %}
+    </script>
+</body>
+</html>
