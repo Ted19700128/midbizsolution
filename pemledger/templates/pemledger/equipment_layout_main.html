@@ -16,10 +16,6 @@
             align-items: center;
         }
 
-            .hidden {
-                display: none;
-        }
-
         .global-header-container {
             width: 100%;
             height: 60px;
@@ -343,9 +339,41 @@
             color: white;
             font-weight: bold;
         }
+
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+    
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+    
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div id="noDataModal" class="modal hidden">
+        <div class="modal-content">
+            <p>저장된 레이아웃 정보가 없습니다. 최초 생성을 시작하겠습니다.</p>
+            <button id="startCreateButton">확인</button>
+        </div>
+    </div>
+
     <!-- 공통 헤더 -->
     <header class="global-header-container">
         <h1 class="global-title">Hanon management <span class="global-title-italic">solutions</span></h1>
@@ -1214,8 +1242,41 @@
         // 조회 버튼 클릭 시
         lookupButton.addEventListener('click', () => {
             hideAllForms();
-            lookupForm.classList.remove('hidden');
+            checkForSavedLayout();
         });
+
+        // 저장된 레이아웃 정보 확인 함수
+        function checkForSavedLayout() {
+            // 여기에 서버 또는 로컬 스토리지에서 저장된 레이아웃 데이터를 확인하는 로직 추가
+            const savedLayoutExists = false; // 예시를 위해 데이터를 없다고 가정합니다.
+
+            if (!savedLayoutExists) {
+                document.getElementById('noDataModal').classList.remove('hidden');
+            } else {
+                // 저장된 레이아웃이 있는 경우 조회 폼을 표시
+                lookupForm.classList.remove('hidden');
+            }
+        }
+
+        // 모달 창의 확인 버튼 클릭 시 도형 생성 모드로 전환
+        document.getElementById('startCreateButton').addEventListener('click', () => {
+            document.getElementById('noDataModal').classList.add('hidden');
+            enableDrawingMode();
+        });
+
+        // 도형 생성 모드를 활성화하는 함수
+        function enableDrawingMode() {
+            // 좌측 패널의 버튼들을 활성화하고 도형을 추가할 수 있도록 설정
+            selectedMachine = machines[0]; // 기본 기계 장비 선택
+            const addMachineButton = document.querySelector('.machine-button');
+            if (addMachineButton) {
+                addMachineButton.classList.add('active'); // 첫 번째 버튼을 선택 상태로 설정
+            }
+            addButton.classList.add('active'); // '추가' 버튼을 활성화
+
+            // 도형 생성 모드를 알리는 메시지를 표시하거나 원하는 UI 업데이트
+            alert('이제 도형 생성을 시작할 수 있습니다. 좌측에서 도형을 선택하고 클릭하여 생성하세요.');
+        }
 
         // 생성 버튼 클릭 시
         createButton.addEventListener('click', () => {
