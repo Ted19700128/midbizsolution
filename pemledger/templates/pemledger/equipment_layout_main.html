@@ -1266,16 +1266,23 @@
 
         // 도형 생성 모드를 활성화하는 함수
         function enableDrawingMode() {
-            // 좌측 패널의 버튼들을 활성화하고 도형을 추가할 수 있도록 설정
-            selectedMachine = machines[0]; // 기본 기계 장비 선택
-            const addMachineButton = document.querySelector('.machine-button');
-            if (addMachineButton) {
-                addMachineButton.classList.add('active'); // 첫 번째 버튼을 선택 상태로 설정
-            }
-            addButton.classList.add('active'); // '추가' 버튼을 활성화
+            // 좌측 패널의 모든 버튼의 활성화 상태를 초기화
+            deactivateOtherButtons(); // 모든 버튼 비활성화 함수 호출
+
+            // '추가' 버튼을 활성화 하지 않고, 선택된 장비도 초기화
+            selectedMachine = null; // 선택된 기계 장비 초기화
+            addButton.classList.remove('active'); // '추가' 버튼 비활성화
 
             // 도형 생성 모드를 알리는 메시지를 표시하거나 원하는 UI 업데이트
             alert('이제 도형 생성을 시작할 수 있습니다. 좌측에서 도형을 선택하고 클릭하여 생성하세요.');
+        }
+
+        // 다른 버튼 비활성화 함수 (기존 함수 사용)
+        function deactivateOtherButtons() {
+            const buttons = leftPanel.querySelectorAll('.machine-button');
+            buttons.forEach(btn => btn.classList.remove('active')); // 모든 기계 장비 버튼 비활성화
+            selectedMachine = null; // 선택된 기계 장비 초기화
+            addButton.classList.remove('active'); // '추가' 버튼 비활성화
         }
 
         // 생성 버튼 클릭 시
