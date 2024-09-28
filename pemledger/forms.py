@@ -6,15 +6,13 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        exclude = ['equipment_number']
-        fields = '__all__'
         fields = [
             'equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
             'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul', 'current_status'
         ]
         # widgets와 labels를 Meta 클래스 안에 정의
         widgets = {
-            'equipment_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'equipment_number': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'model_name': forms.TextInput(attrs={'class': 'form-control'}),
             'manufacturer': forms.TextInput(attrs={'class': 'form-control'}),
@@ -51,6 +49,7 @@ class EquipmentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # 필수 입력이 아닌 필드에 대해 required 속성 비활성화
+        self.fields['equipment_number'].required = False
         self.fields['mfg_date'].required = False
         self.fields['mfg_number'].required = False
         self.fields['equipment_type'].required = False
