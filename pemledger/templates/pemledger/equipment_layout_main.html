@@ -695,6 +695,23 @@
             saveState(); // 상태 저장
         }
 
+        // 도형 생성 이벤트 리스너 추가
+        drawingArea.addEventListener('click', (e) => {
+            // selectedMachine이 설정되지 않았으면 도형 생성하지 않음
+            if (!selectedMachine) {
+                alert('좌측 패널에서 도형을 선택하세요.');
+                return;
+            }
+
+            // 그리기 영역 클릭 좌표 계산
+            const rect = drawingArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // 선택된 기계 장비 크기와 좌표로 도형 생성
+            createRectangle(x, y, selectedMachine.width, selectedMachine.height);
+        });
+
         // 삽입 도형 생성 함수 (rectangleCount에 포함되지 않음)
         function createInsertShape(type) {
             const x = drawingArea.clientWidth / 2 - 25; // 중앙 위치
