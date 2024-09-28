@@ -3,13 +3,7 @@
 from django.db import models, transaction
 
 class Equipment(models.Model):
-    supplier_name = models.CharField(max_length=100, blank=True, null=True)
-    plant_location = models.CharField(max_length=100, blank=True, null=True)
-    plant_name = models.CharField(max_length=100, blank=True, null=True)
-    floor = models.CharField(max_length=10, blank=True, null=True)
-    line_name = models.CharField(max_length=100, blank=True, null=True)
-    process_number = models.CharField(max_length=10, blank=True, null=True)
-    process_name = models.CharField(max_length=100, blank=True, null=True)
+
     equipment_number = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=10)
     model_name = models.CharField(max_length=15)

@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!-- D:/web/midbizsolution/pemledger/templates/pemledger/equipment_layout_main.html -->
+
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -15,64 +16,68 @@
             justify-content: center;
             align-items: center;
         }
-
+  
         .global-header-container {
-            width: 100%;
-            height: 60px;
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            width: 100%; /* 전체 너비 */
+            height: 60px; /* 고정된 높이 */
+            background-color: white; /* 배경색246,243,234 */
+            display: flex; /* 플렉스 컨테이너 설정 */
+            flex-direction: row; /* 자식 요소들을 수평으로 나열 */
+            align-items: center; /* 자식 요소들을 수직 중앙 정렬 */
+            justify-content: space-between; /* 좌우 공간을 균등하게 배분 */
             padding: 0 20px;
-            box-sizing: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+            
+            box-sizing: border-box; /* 패딩과 테두리를 너비에 포함 */
+            position: fixed; /* 화면 상단에 고정 */
+            top: 0; /* 윈도우의 상단에 고정 */
+            left: 0; /* 왼쪽 끝에 고정 */
+            z-index: 1000; /* 다른 요소보다 위에 표시되도록 설정 */
         }
 
         .global-title {
-            color: rgb(43, 43, 43);
-            font-size: 24px;
-            font-weight: bold;
-            margin: 150;
+            color: rgb(43, 43, 43); /* 검정색 글자 */
+            font-size: 24px; /* 제목 크기 */
+            font-weight: bold; /* 굵은 글씨 */
+            margin: 150; /* 제목의 기본 마진 제거 */
         }
 
         .global-title-italic {
-            font-style: italic;
-            color: rgb(0, 0, 0);
+            font-style: italic; /* 글자 기울이기 */
+            color: rgb(0, 0, 0); /* 글자색 변경 */
         }
-
+        
         .global-nav {
-            display: flex;
-            justify-content: center;
-            margin-right: 10%;
+            display: flex; /* 요소들을 가로로 정렬 */
+            justify-content: center; /* 요소들을 중앙 정렬 */
+            margin-right: 10%; /* 원하는 위치로 조정 */
         }
 
         .global-nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
+            list-style: none; /* 기본 리스트 스타일 제거 */
+            margin: 0; /* 기본 마진 제거 */
+            padding: 0; /* 기본 패딩 제거 */
+            display: flex; /* 리스트 항목들을 수평으로 나열 */
         }
 
         .global-nav li {
-            margin-left: 20px;
+            margin-left: 20px; /* 항목들 간의 간격 설정 */
         }
 
         .global-nav a {
-            color: black;
-            text-decoration: none;
-            font-size: 16px;
+            color: black; /* 링크 색상을 흰색으로 설정 */
+            text-decoration: none; /* 기본 밑줄 제거 */
+            font-size: 16px; /* 링크 글자 크기 */
         }
 
         .global-nav a:hover {
-            border-bottom: 2px solid black;
+            text-decoration: none; /* 기본 밑줄 제거 */
+            border-bottom: 2px solid black; /* 밑줄처럼 보이도록 아래쪽에 검정색 테두리 추가 */
         }
-
+        
+        /* 컨테이너: 전체 내용을 감싸는 영역 */
         .container {
-            margin-top: 80px;
-            width: 80%;
+            margin-top: 20px; /* 고정된 헤더 높이만큼 상단 여백 추가 */
+            width: 50%;
             height: 70%;
             background-color: #fff;
             position: relative;
@@ -80,8 +85,10 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            margin-right: 40px;
         }
 
+        /* 영역 1: 상단 헤더 */
         .header {
             width: 100%;
             height: 60px;
@@ -93,10 +100,21 @@
             justify-content: center;
             font-size: 24px;
         }
+        
+        .title {
+            color: rgb(0, 0, 0); /* 검정색 글자 */
+            position: absolute; /* 부모 요소(header)를 기준으로 위치를 설정 */
+            left: 100px; /* 왼쪽 끝에서 100px 떨어진 위치 */
+            top: 18px; /* 필요에 따라 위쪽 여백 설정 */
+            font-size: 22px; /* 제목 크기 */
+            font-weight: bold; /* 굵은 글씨 */
+        }
 
+        /* 맞춤, 회전, 삽입 버튼 위치 */
         .header-buttons {
             position: absolute;
             bottom: 5px;
+
             display: flex;
             align-items: center;
             margin-left: 70%;
@@ -117,6 +135,7 @@
             background-color: #ddd;
         }
 
+        /* 영역 2: 좌측 패널 */
         .left-panel {
             position: absolute;
             top: 60px;
@@ -150,6 +169,7 @@
             color: black;
         }
 
+        /* 영역 3: 도형 그리기 영역 */
         .drawing-area {
             position: absolute;
             top: 60px;
@@ -160,6 +180,7 @@
             overflow: hidden;
         }
 
+        /* 작은 사각형 */
         .small-rectangle {
             background-color: rgb(64,64,64);
             position: absolute;
@@ -167,42 +188,47 @@
             cursor: pointer;
         }
 
+        /* 화살표 본체 스타일 */
         .arrow-shape {
             position: absolute;
-            display: flex;
-            align-items: center;
+            display: flex; /* 자식 요소 정렬을 위한 플렉스 사용 */
+            align-items: center; /* 자식 요소 수직 중앙 정렬 */
         }
 
+        /* 화살표 끝부분 스타일 */
         .arrow-head {
             width: 0;
             height: 0;
-            border-left: 10px solid black;
+            border-left: 10px solid black; /* 화살표 끝부분 색상 */
             border-top: 5px solid transparent;
             border-bottom: 5px solid transparent;
-            margin-left: -1px;
+            margin-left: -1px; /* 화살표 본체와 연결 부위 조정 */
         }
 
+        /* 화살표 본체 스타일 */
         .arrow-body {
-            width: 30px;
-            height: 5px;
-            background-color: black;
+            width: 30px; /* 화살표 본체 길이 */
+            height: 5px; /* 화살표 본체 높이 */
+            background-color: black; /* 화살표 본체 색상 */
         }
 
+        /* 점선 사각형 */
         .dashed-rectangle {
             width: 50px;
             height: 30px;
             border: 2px dashed red;
             position: absolute;
             cursor: pointer;
-            box-sizing: border-box;
+            box-sizing: border-box; /* 리사이즈 핸들러가 영역을 벗어나지 않도록 함 */
         }
 
+        /* 리사이즈 핸들러 */
         .resize-handle {
             width: 8px;
             height: 8px;
             background-color: blue;
             position: absolute;
-            display: none;
+            display: none; /* 초기에는 숨김 */
         }
 
         .top-left {
@@ -229,10 +255,12 @@
             cursor: nwse-resize;
         }
 
+        /* 선택된 도형 스타일 */
         .selected {
             outline: 2px solid green;
         }
 
+        /* 선택 박스 */
         .selection-box {
             position: absolute;
             border: 1px dashed black;
@@ -240,6 +268,7 @@
             pointer-events: none;
         }
 
+        /* 회전 입력 상자 */
         .rotate-input {
             display: none;
             position: absolute;
@@ -255,6 +284,7 @@
             font-size: 12px;
         }
 
+        /* Alt 드래그 미리보기 */
         .preview-rectangle {
             position: absolute;
             border: 1px dashed blue;
@@ -262,14 +292,16 @@
             pointer-events: none;
         }
 
+        /* 폼을 감싸는 컨테이너 */
         .form-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 30%;
+            width: 30%; /* 컨테이너 너비 설정 */
             margin-left: 40px;
         }
 
+        /* 표: 상단 헤더 */
         .form-header {
             width: 100%;
             height: 40px;
@@ -280,33 +312,34 @@
             align-items: left;
             justify-content: center;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: bold; /* 굵은 글씨 */
             margin-bottom: 10px;
-        }
-
+        }        
         form {
-            width: 50%;
-            background-color: #ffffff;
-            padding: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            width: 30%; /* 폼의 너비를 50%로 설정 */
+            background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
+            padding: 8px; /* 폼 안쪽 여백 설정 */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+            border-radius: 10px; /* 모서리 둥글게 설정 */
         }
 
+        /* 테이블 열 폭 조정 스타일 */
         table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
+            width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
+            border-collapse: collapse; /* 경계선 겹침 방지 */
+            table-layout: fixed; /* 고정된 테이블 레이아웃 */
         }
 
         th, td {
-            font-size: 14px;
-            border: 1px solid #dddddd;
-            padding: 8px;
-            text-align: center;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+            font-size: 14px; /* 글자 크기 설정 */
+            border: 1px solid #dddddd; /* 테두리 스타일 */
+            padding: 8px; /* 패딩 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            word-wrap: break-word; /* 긴 단어 줄바꿈 */
+            overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
         }
-
+        
+        /* 버튼 컨테이너 스타일 =========== 0928 추가 */
         .button-container {
             display: flex;
             justify-content: center;
@@ -319,6 +352,7 @@
             font-size: 14px;
         }
 
+        /* 폼 버튼 스타일 */
         .form-buttons {
             display: flex;
             justify-content: center;
@@ -331,6 +365,7 @@
             font-size: 14px;
         }
 
+        /* 도형 내 레이블 스타일 */
         .shape-label {
             position: absolute;
             top: 50%;
@@ -339,61 +374,32 @@
             color: white;
             font-weight: bold;
         }
-
-        .modal {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-        }
-    
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-    
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <div id="noDataModal" class="modal hidden">
-        <div class="modal-content">
-            <p>저장된 레이아웃 정보가 없습니다. 최초 생성을 시작하겠습니다.</p>
-            <button id="startCreateButton">확인</button>
-        </div>
-    </div>
-
     <!-- 공통 헤더 -->
     <header class="global-header-container">
-        <h1 class="global-title">Hanon management <span class="global-title-italic">solutions</span></h1>
-        <nav class="global-nav">
-            <ul class="global-nav-ul">
-                <li><a href="{% url 'home' %}">홈</a></li>
-                <li><a href="{% url 'greetings' %}">인사말</a></li>
-                <li><a href="{% url 'checkpoint' %}">점검포인트</a></li>
-                <li><a href="{% url 'doc_index' %}">문서 목록</a></li>
-                <li><a href="{% url 'solutions' %}">설비 종합 관리</a></li>                    
-            </ul>
-        </nav>
+            <h1 class="global-title">Hanon management <span class="global-title-italic">solutions</span></h1>
+            <nav class="global-nav">
+                <ul class="global-nav-ul">
+                    <li><a href="{% url 'home' %}">홈</a></li>
+                    <li><a href="{% url 'greetings' %}">인사말</a></li>
+                    <li><a href="{% url 'checkpoint' %}">점검포인트</a></li>
+                    <li><a href="{% url 'doc_index' %}">문서 목록</a></li>
+                    <li><a href="{% url 'solutions' %}">설비 종합 관리</a></li>                    
+                </ul>
+            </nav>
     </header>
 
     <div class="container">
-        <!-- 상단 헤더 -->
+        <!-- 영역 1: 상단 헤더 -->
         <div class="header">
+            <!-- 타이틀 추가 -->
             <span>공정 레이아웃</span>
             <div class="header-buttons">
+
                 <button class="function-button" id="rotateButton">회전</button>
+                <!-- 맞춤 옵션 드롭다운 -->                
                 <select class="function-button" id="alignSelect">
                     <option value="">맞춤</option>
                     <option value="left">왼쪽 맞춤</option>
@@ -405,6 +411,8 @@
                     <option value="horizontal">가로 간격 동일</option>
                     <option value="vertical">세로 간격 동일</option>
                 </select>
+
+                <!-- 삽입 버튼 추가 -->
                 <select class="function-button" id="insertSelect">
                     <option value="">삽입</option>
                     <option value="arrow">화살표</option>
@@ -420,9 +428,12 @@
             <button id="applyRotation">적용</button>
         </div>
 
-        <!-- 좌측 패널 -->
+        <!-- 영역 2: 좌측 패널 -->
         <div class="left-panel" id="leftPanel">
+            <!-- 추가 버튼 -->
             <button id="addButton">추가</button>
+            <!-- 기계 장비 버튼들 -->
+            <!-- 버튼들은 JavaScript에서 동적으로 생성됩니다 -->
         </div>
 
         <!-- 도형 그리기 영역 -->
@@ -440,104 +451,89 @@
         </div>
     </div>
 
-    <!-- 우측 설비관리대장 영역 -->
-    <div class="form-container">
-        <form method="post" id="equipmentForm">
-            {% csrf_token %}
-            <div class="form-header">
-                <span>설비관리대장</span>
-            </div>
+    <!-- 폼 컨테이너 -->
+    <form method="post" id="equipmentForm" class="hidden">
+        {% csrf_token %}
+        <div class="form-header">
+            <!-- 타이틀 추가 -->
+            <span>설비관리대장</span>
+        </div>
 
-            <div class="button-container">
-                <button type="button" id="lookupButton">조회</button>
-                <button type="button" id="createButton">생성</button>
-                <button type="button" id="updateButton">변경</button>
-                <button type="button" id="processAddButton">공정추가</button>
-            </div>
+        <!-- 버튼 컨테이너 -->
+        <div class="button-container">
+            <button type="button" id="createButton">생성</button>
+            <button type="button" id="updateButton">변경</button>
+            <button type="button" id="viewButton">조회</button>
+        </div>
 
-            <!-- 조회 폼 -->
-            <div id="lookupForm" class="hidden">
-                <table id="layout_view_table">
-                    <tr>
-                        <th>업체명</th>
-                        <th>위치</th>
-                        <th>공장명</th>
-                        <th>층</th>
-                        <th>라인명</th>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="supplier_name" id="supplier_name"></td>
-                        <td><input type="text" name="plant_location" id="plant_location"></td>
-                        <td><input type="text" name="plant_name" id="plant_name"></td>
-                        <td><input type="text" name="floor" id="floor"></td>
-                        <td><input type="text" name="line_name" id="line_name"></td>
-                    </tr>
-                </table>
-                <div class="form-buttons">
-                    <button type="button" id="searchButton">조회하기</button>
-                    <button type="button" id="reFillButton">다시 채우기</button>
-                </div>
-            </div>
+        <table>
+            <!-- 1행 : 설비번호, 설비이름, 모델명 -->
+            <tr>
+                <th>설비번호</th>
+                <th>설비명</th>
+                <th>모델명</th>
+            </tr>
+            <tr>
+                <td>{{ form.equipment_number }}</td>
+                <td>{{ form.name }}</td>
+                <td>{{ form.model_name }}</td>            
+            </tr>
+    
+            <!-- 2행 : 제조사, 제조일자, 제조번호 -->
+            <tr>
+                <td>제조사</td>
+                <th>제조일자</th>
+                <th>제조번호</th>        
+            </tr>
+            <tr>
+                <td>{{ form.manufacturer }}</td>    
+                <td>{{ form.mfg_date }}</td>
+                <td>{{ form.mfg_number }}</td>        
+            </tr>
+    
+            <!-- 3행 : 형식, 사양 -->
+            <tr>
+                <th>형식</th>
+                <th colspan="2">사양</th>
+            </tr>
+            <tr>
+                <td>{{ form.equipment_type }}</td>
+                <td colspan="2">{{ form.specs }}</td>
+            </tr>
+    
+            <!-- 4행 : 최초 설치 시점, 최초 양산 적용, 현 운영 장소 -->
+            <tr>
+                <th>최초설치</th>
+                <th>최초양산</th>
+                <th>현 운영 장소</th>
+            </tr>
+            <tr>
+                <td>{{ form.first_install }}</td>
+                <td>{{ form.first_implement }}</td>
+                <td>{{ form.current_operation_place }}</td>
+            </tr>
+    
+            <!-- 5행 : 관리부서, 전면 정비, 상태 -->
+            <tr>
+                <th>관리부서</th>
+                <th>오버홀</th>
+                <th>상태</th>
+            </tr>
+            <tr>
+                <td>{{ form.management_team }}</td>
+                <td>{{ form.overhaul }}</td>
+                <td>{{ form.current_status }}</td>
+            </tr>
+        </table>    
+   
+        <!-- 폼 버튼들 -->
+        <div class="form-buttons">
+            <button type="button" id="saveButton">저장</button>
+            <button type="button" id="sendButton">전송</button>
+            <button type="button" id="cancelButton">취소</button>
+        </div>
+    </form>
 
-            <!-- 변경 폼 -->
-            <div id="updateForm" class="hidden">
-                <table id="layout_update_table">
-                    {% for field in form %}
-                    <tr>
-                        <th>{{ field.label_tag }}</th>
-                        <td>{{ field }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                <div class="form-buttons">
-                    <button type="button" id="updateConfirmButton">변경 확인</button>
-                    <button type="button" id="cancelUpdateButton">취소</button>
-                </div>
-            </div>
-
-            <!-- 공정추가 폼 -->
-            <div id="processAddForm" class="hidden">
-                <table id="process_add_table">
-                    {% for field in form %}
-                    <tr>
-                        <th>{{ field.label_tag }}</th>
-                        <td>{{ field }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                <div class="form-buttons">
-                    <button type="button" id="addProcessButton">추가하기</button>
-                    <button type="button" id="cancelProcessAddButton">취소</button>
-                </div>
-            </div>
-
-            <!-- 생성 폼 -->
-            <div id="createForm" class="hidden">
-                <table>
-                    {% for field in form %}
-                        {% if forloop.first or forloop.counter0|divisibleby:3 %}
-                            <tr>
-                        {% endif %}
-            
-                        <th>{{ field.label_tag }}</th>
-                        <td>{{ field }}</td>
-            
-                        {% if forloop.counter|divisibleby:3 %}
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    {% if not forloop.counter|divisibleby:3 %}
-                        </tr>
-                    {% endif %}
-                </table>
-                <div class="form-buttons">
-                    <button type="button" id="saveButton">저장</button>
-                    <button type="button" id="sendButton">전송</button>
-                    <button type="button" id="cancelButton">취소</button>
-                </div>
-            </div>           
-        </form>
-    </div>
 
     <script>
         // 사각형을 생성할 때마다 카운트를 위한 변수
@@ -636,7 +632,6 @@
 
         // 맞춤 옵션 변경 시 동작
         alignSelect.addEventListener('change', () => {
-            e.stopPropagation(); // 이벤트 전파 방지
             const alignType = alignSelect.value;
             if (alignType) {
                 alignShapes(alignType);
@@ -646,12 +641,11 @@
 
         // 회전 버튼 클릭 시 입력창 표시
         rotateButton.addEventListener('click', () => {
-            e.stopPropagation(); // 이벤트 전파 방지
             // 회전 버튼의 부모 요소 기준으로 위치를 계산
             const rect = rotateButton.getBoundingClientRect();
             const parentRect = rotateButton.parentElement.getBoundingClientRect();
 
-            // 회전 입력창 위치 설정    
+            // 회전 입력창 위치 설정
             rotateInput.style.left = `${rect.left - parentRect.left + 50}px`; // 부모 요소 기준 상대적인 x 위치
             rotateInput.style.top = `${rect.bottom - parentRect.top + 35}px`; // 부모 요소 기준 상대적인 y 위치
             rotateInput.style.display = 'block';
@@ -705,31 +699,6 @@
             drawingArea.appendChild(newRectangle);
             saveState(); // 상태 저장
         }
-
-        // 도형 생성 이벤트 리스너 추가
-        drawingArea.addEventListener('click', (e) => {
-            // 클릭 이벤트가 drawingArea에서 발생한 경우에만 처리
-            if (e.target !== drawingArea) return;
-
-            // selectedMachine이 설정되지 않았으면 도형 생성하지 않음
-            if (!selectedMachine) {
-                return;
-            }
-        
-            // CTRL 키가 눌려 있지 않으면 도형 생성하지 않음
-            if (!e.ctrlKey) {
-                alert('도형을 생성하려면 CTRL 키를 누른 상태로 클릭하세요.');
-                return;
-            }
-
-            // 그리기 영역 클릭 좌표 계산
-            const rect = drawingArea.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // 선택된 기계 장비 크기와 좌표로 도형 생성
-            createRectangle(x, y, selectedMachine.width, selectedMachine.height);
-        });
 
         // 삽입 도형 생성 함수 (rectangleCount에 포함되지 않음)
         function createInsertShape(type) {
@@ -1061,6 +1030,17 @@
             }
         });
 
+        // 도형 그리기 윈도우 내에서 Ctrl + 마우스 클릭 시 도형 생성
+        drawingArea.addEventListener('click', (e) => {
+            if (e.ctrlKey && selectedMachine) {
+                const rect = drawingArea.getBoundingClientRect();
+                const left = e.clientX - rect.left;
+                const top = e.clientY - rect.top;
+                const { width, height } = selectedMachine;
+                createRectangle(left, top, width, height);
+            }
+        });
+
         // 정렬 함수 구현
         function alignShapes(option) {
             if (selectedShapes.length < 2) return;
@@ -1162,10 +1142,8 @@
         // Undo 및 Redo 기능 구현
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'z') {
-                e.preventDefault(); // 기본 동작 방지
                 undoAction();
             } else if (e.ctrlKey && e.key === 'y') {
-                e.preventDefault(); // 기본 동작 방지
                 redoAction();
             }
         });
@@ -1191,7 +1169,6 @@
 
         // 기존 이벤트 리스너 재등록 함수
         function reattachEventListeners() {
-            selectedShapes = []; // 선택된 도형 초기화
             const shapes = drawingArea.querySelectorAll('.small-rectangle, .arrow-shape, .dashed-rectangle');
             shapes.forEach(shape => {
                 shape.addEventListener('click', shapeClickHandler);
@@ -1217,8 +1194,8 @@
             const parentRect = addButton.parentElement.getBoundingClientRect(); // 부모 요소 기준
 
             // 입력창 위치 설정
-            addMachineInput.style.left = `${rect.right - parentRect.left - 100}px`; // 부모 요소 기준 상대적인 x 위치
-            addMachineInput.style.top = `${rect.top - parentRect.top + 80}px`; // 부모 요소 기준 상대적인 y 위치
+            addMachineInput.style.left = '${rect.right - parentRect.left - 100}px'; // 부모 요소 기준 상대적인 x 위치
+            addMachineInput.style.top = '${rect.top - parentRect.top + 80}px'; // 부모 요소 기준 상대적인 y 위치
         });
 
         confirmAddMachine.addEventListener('click', () => {
@@ -1242,8 +1219,8 @@
         function createArrowShape(x, y) {
             const arrow = document.createElement('div');
             arrow.className = 'arrow-shape';
-            arrow.style.left = `${x}px`;
-            arrow.style.top = `${y}px`;
+            arrow.style.left ='${x}px';
+            arrow.style.top = '${y}px';
 
             // 화살표 본체 추가
             const arrowBody = document.createElement('div');
@@ -1263,159 +1240,48 @@
             saveState(); // 상태 저장
         }
 
-        // 폼 관련 요소 선택
-        const lookupButton = document.getElementById('lookupButton');
+        // 버튼 요소  ==========================0928 추가
+        // 버튼 요소 선택
         const createButton = document.getElementById('createButton');
-        const updateButton = document.getElementById('updateButton');
-        const processAddButton = document.getElementById('processAddButton');
-
-        // 폼 요소 선택
-        const lookupForm = document.getElementById('lookupForm');
-        const createForm = document.getElementById('createForm');
-        const updateForm = document.getElementById('updateForm');
-        const processAddForm = document.getElementById('processAddForm');
-
-        // 조회 버튼 클릭 시
-        lookupButton.addEventListener('click', () => {
-            hideAllForms();
-            checkForSavedLayout();
-        });
-
-        // 저장된 레이아웃 정보 확인 함수
-        function checkForSavedLayout() {
-            // 여기에 서버 또는 로컬 스토리지에서 저장된 레이아웃 데이터를 확인하는 로직 추가
-            const savedLayoutExists = false; // 예시를 위해 데이터를 없다고 가정합니다.
-
-            if (!savedLayoutExists) {
-                document.getElementById('noDataModal').classList.remove('hidden');
-            } else {
-                // 저장된 레이아웃이 있는 경우 조회 폼을 표시
-                lookupForm.classList.remove('hidden');
-            }
-        }
-
-        // 모달 창의 확인 버튼 클릭 시 도형 생성 모드로 전환
-        document.getElementById('startCreateButton').addEventListener('click', () => {
-            document.getElementById('noDataModal').classList.add('hidden');
-            enableDrawingMode();
-        });
-
-        // 도형 생성 모드를 활성화하는 함수
-        function enableDrawingMode() {
-            // 좌측 패널의 모든 버튼의 활성화 상태를 초기화
-            deactivateOtherButtons(); // 모든 버튼 비활성화 함수 호출
-
-            // '추가' 버튼을 활성화 하지 않고, 선택된 장비도 초기화
-            selectedMachine = null; // 선택된 기계 장비 초기화
-            addButton.classList.remove('active'); // '추가' 버튼 비활성화
-
-            // 도형 생성 모드를 알리는 메시지를 표시하거나 원하는 UI 업데이트
-            alert('이제 도형 생성을 시작할 수 있습니다. 좌측에서 도형을 선택하고 클릭하여 생성하세요.');
-        }
-
-        // 다른 버튼 비활성화 함수 (기존 함수 사용)
-        function deactivateOtherButtons() {
-            const buttons = leftPanel.querySelectorAll('.machine-button');
-            buttons.forEach(btn => btn.classList.remove('active')); // 모든 기계 장비 버튼 비활성화
-            selectedMachine = null; // 선택된 기계 장비 초기화
-            addButton.classList.remove('active'); // '추가' 버튼 비활성화
-        }
-
-        // 생성 버튼 클릭 시
-        createButton.addEventListener('click', () => {
-            hideAllForms();
-            if (selectedShapes.length === 1) {
-                createForm.classList.remove('hidden');
-            } else {
-                alert('하나의 도형을 선택하세요.');
-            }
-        });
-
-        // 변경 버튼 클릭 시
-        updateButton.addEventListener('click', () => {
-            hideAllForms();
-            if (selectedShapes.length === 1) {
-                updateForm.classList.remove('hidden');
-            } else {
-                alert('하나의 도형을 선택하세요.');
-            }
-        });
-
-        // 공정추가 버튼 클릭 시
-        processAddButton.addEventListener('click', () => {
-            hideAllForms();
-            processAddForm.classList.remove('hidden');
-
-            // 조회 폼에서 입력된 값을 공정추가 폼에 채웁니다.
-            document.getElementById('process_add_table').querySelector('[name="supplier_name"]').value = document.getElementById('supplier_name').value;
-            document.getElementById('process_add_table').querySelector('[name="plant_location"]').value = document.getElementById('plant_location').value;
-            document.getElementById('process_add_table').querySelector('[name="plant_name"]').value = document.getElementById('plant_name').value;
-            document.getElementById('process_add_table').querySelector('[name="floor"]').value = document.getElementById('floor').value;
-            document.getElementById('process_add_table').querySelector('[name="line_name"]').value = document.getElementById('line_name').value;
-        });
-
-        // 폼 숨기기 함수
-        function hideAllForms() {
-            lookupForm.classList.add('hidden');
-            createForm.classList.add('hidden');
-            updateForm.classList.add('hidden');
-            processAddForm.classList.add('hidden');
-        }
-
-        // 조회하기 버튼 클릭 시
-        const searchButton = document.getElementById('searchButton');
-        searchButton.addEventListener('click', () => {
-            // 입력된 정보를 기반으로 서버에서 데이터를 가져와 레이아웃에 표시합니다.
-            // AJAX 요청 등을 통해 구현 필요
-        });
-
-        // 변경 확인 버튼 클릭 시
-        const updateConfirmButton = document.getElementById('updateConfirmButton');
-        updateConfirmButton.addEventListener('click', () => {
-            // 변경된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
-            // AJAX 요청 등을 통해 구현 필요
-        });
-
-        // 추가하기 버튼 클릭 시
-        const addProcessButton = document.getElementById('addProcessButton');
-        addProcessButton.addEventListener('click', () => {
-            // 추가된 정보를 서버에 전송하고, 레이아웃에 반영합니다.
-            // AJAX 요청 등을 통해 구현 필요
-        });
-
-        // 취소 버튼들 클릭 시
-        const cancelButtons = document.querySelectorAll('button[id^="cancel"]');
-        cancelButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                hideAllForms();
-            });
-        });
+        const saveButton = document.getElementById('saveButton');
+        const sendButton = document.getElementById('sendButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const equipmentForm = document.getElementById('equipmentForm');
 
         // 저장된 equipment_number를 저장할 변수
         let savedEquipmentNumber = '';
 
+        // "생성" 버튼 클릭 시
+        createButton.addEventListener('click', () => {
+            if (selectedShapes.length === 1) {
+                // 폼 표시
+                equipmentForm.classList.remove('hidden');
+            } else {
+                alert('하나의 도형을 선택하세요.');
+            }
+        });
+
+        // CSRF 토큰 가져오기 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
         // "저장" 버튼 클릭 시
-        const saveButton = document.getElementById('saveButton');
         saveButton.addEventListener('click', () => {
             // 폼 데이터 수집
             const formData = new FormData(equipmentForm);
-            formData.append('action', 'create');
-            // CSRF 토큰 가져오기
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            const csrftoken = getCookie('csrftoken');
 
             // AJAX로 데이터 전송
             fetch('', {
@@ -1440,7 +1306,7 @@
                     // equipment_number 저장
                     savedEquipmentNumber = data.equipment_number;
                     // 폼에 equipment_number 표시
-                    const equipmentNumberField = equipmentForm.querySelector('[name="equipment_number"]');
+                    const equipmentNumberField = document.querySelector('[name="equipment_number"]');
                     equipmentNumberField.value = savedEquipmentNumber;
                 } else {
                     alert('데이터 저장에 실패했습니다.');
@@ -1454,7 +1320,6 @@
         });
 
         // "전송" 버튼 클릭 시
-        const sendButton = document.getElementById('sendButton');
         sendButton.addEventListener('click', () => {
             if (selectedShapes.length === 1) {
                 if (savedEquipmentNumber) {
@@ -1479,7 +1344,6 @@
         });
 
         // "취소" 버튼 클릭 시
-        const cancelButton = document.getElementById('cancelButton');
         cancelButton.addEventListener('click', () => {
             // 폼 리셋 및 숨기기
             equipmentForm.reset();
@@ -1490,3 +1354,4 @@
     </script>
 </body>
 </html>
+
