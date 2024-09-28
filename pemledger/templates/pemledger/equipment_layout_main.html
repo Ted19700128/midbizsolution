@@ -338,6 +338,47 @@
             word-wrap: break-word; /* 긴 단어 줄바꿈 */
             overflow-wrap: break-word; /* 긴 단어 줄바꿈 */
         }
+
+        /* 숨김 클래스 추가 */
+        .hidden {
+            display: none;
+        }
+
+        /* 버튼 컨테이너 스타일 */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .button-container button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* 폼 버튼 스타일 */
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .form-buttons button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        /* 도형 내 레이블 스타일 */
+        .shape-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+        }        
     </style>
 </head>
 <body>
@@ -415,12 +456,20 @@
         </div>
     </div>
 
-    <form method="post">
+    <form method="post" id="equipmentForm" class="hidden">
         {% csrf_token %}
         <div class="form-header">
             <!-- 타이틀 추가 -->
             <span>설비관리대장</span>
         </div>
+
+        <!-- 버튼 컨테이너 -->
+        <div class="button-container">
+            <button type="button" id="createButton">생성</button>
+            <button type="button" id="updateButton">변경</button>
+            <button type="button" id="viewButton">조회</button>
+        </div>
+        
         <table>
             <!-- 1행 : 설비번호, 설비이름, 모델명 -->
             <tr>
@@ -481,9 +530,13 @@
             </tr>
         </table>
     
-        <br>
-        <button type="submit">완료</button>
-        <button type="button" onclick="history.back()">취소</button>
+        <!-- 폼 버튼들 -->
+        <div class="form-buttons">
+            <button type="button" id="saveButton">저장</button>
+            <button type="button" id="sendButton">전송</button>
+            <button type="button" id="cancelButton">취소</button>
+        </div>
+
     </form>
 
     <script>
@@ -1190,6 +1243,102 @@
             drawingArea.appendChild(arrow);
             saveState(); // 상태 저장
         }
+        // 버튼 요소 선택
+        const createButton = document.getElementById('createButton');
+        const saveButton = document.getElementById('saveButton');
+        const sendButton = document.getElementById('sendButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const equipmentForm = document.getElementById('equipmentForm');
+
+        // "생성" 버튼 클릭 시
+        createButton.addEventListener('click', () => {
+            if (selectedShapes.length === 1) {
+                // 폼 표시
+                equipmentForm.classList.remove('hidden');
+            } else {
+                alert('하나의 도형을 선택하세요.');
+            }
+        });
+
+        // "저장" 버튼 클릭 시
+        saveButton.addEventListener('click', () => {
+            // 폼 데이터 수집
+            const formData = new FormData(equipmentForm);
+            // CSRF 토큰 가져오기
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+            // AJAX로 데이터 전송
+            fetch('', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('데이터가 저장되었습니다.');
+                    // 폼 숨기기
+                    equipmentForm.classList.add('hidden');
+                    // equipment_number 업데이트
+                    const equipmentNumberField = document.querySelector('[name="equipment_number"]');
+                    equipmentNumberField.value = data.equipment_number;
+                } else {
+                    alert('데이터 저장에 실패했습니다.');
+                    // 오류 처리
+                    // ... 필요 시 추가 ...
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('데이터 저장에 실패했습니다.');
+            });
+        });
+
+        // "전송" 버튼 클릭 시
+        sendButton.addEventListener('click', () => {
+            if (selectedShapes.length === 1) {
+                // equipment_number 가져오기
+                const equipmentNumberField = document.querySelector('[name="equipment_number"]');
+                const equipmentNumber = equipmentNumberField.value;
+                // 선택된 도형에 표시
+                const shape = selectedShapes[0];
+                let label = shape.querySelector('.shape-label');
+                if (!label) {
+                    label = document.createElement('div');
+                    label.className = 'shape-label';
+                    shape.appendChild(label);
+                }
+                label.textContent = equipmentNumber;
+                // 폼 숨기기
+                equipmentForm.classList.add('hidden');
+            } else {
+                alert('하나의 도형을 선택하세요.');
+            }
+        });
+
+        // "취소" 버튼 클릭 시
+        cancelButton.addEventListener('click', () => {
+            // 폼 리셋 및 숨기기
+            equipmentForm.reset();
+            equipmentForm.classList.add('hidden');
+        });
+
 
     </script>
 </body>

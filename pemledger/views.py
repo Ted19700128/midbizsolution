@@ -14,9 +14,38 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Alignment, Font
+from django.http import JsonResponse  # JsonResponse 임포트 
 
 def equipment_layout_main(request):
-    return render(request, 'pemledger/equipment_layout_main.html')
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST)
+        if form.is_valid():
+            # 설비 번호 자동 부여 (예: PF001 형식)
+            last_equipment = Equipment.objects.order_by('id').last()
+            if last_equipment:
+                last_equipment_number = int(last_equipment.equipment_number[2:])
+                new_equipment_number = f'PF{last_equipment_number + 1:03d}'
+            else:
+                new_equipment_number = 'PF001'
+
+            # 새 설비 생성
+            new_equipment = form.save(commit=False)
+            new_equipment.equipment_number = new_equipment_number
+            new_equipment.save()
+
+            if request.is_ajax():
+                # JSON 응답 반환
+                return JsonResponse({'success': True, 'equipment_number': new_equipment_number})
+            else:
+                return redirect('equipment_layout_main')  # 필요에 따라 수정
+        else:
+            if request.is_ajax():
+                # 폼 에러 반환
+                return JsonResponse({'success': False, 'errors': form.errors})
+    else:
+        form = EquipmentForm()
+
+    return render(request, 'pemledger/equipment_layout_main.html', {'form': form})
 
 def pemledger_change_main(request):
     equipments = Equipment.objects.all()

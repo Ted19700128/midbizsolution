@@ -6,6 +6,7 @@ from .models import Equipment
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
+        exclude = ['equipment_number']
         fields = '__all__'
         fields = [
             'equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
