@@ -2,13 +2,12 @@
 
 # models.py
 from django.db import models, transaction
-from pemledger.models import ManagementTeam  # pemledger의 ManagementTeam 모델을 가져옴  <== 새로 추가됨(0922)
 
 class PECS(models.Model):
     document_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     equipment_number = models.CharField(max_length=15, unique=True)
     name = models.CharField(max_length=50)  # 이름 필드 길이를 늘림
-    management_team = models.ForeignKey(ManagementTeam, on_delete=models.CASCADE)  # 관리부서를 참조, 새로 추가됨(0922)
+    management_team = models.CharField(max_length=50)  # 관리부서를 참조, 새로 추가됨(0922)
     # management_team = models.CharField(max_length=50)  # 관리부서 길이를 늘림
     date_written = models.DateField(auto_now_add=True)  # 날짜 필드 자동 생성
     rating = models.CharField(max_length=2)  # 등급 필드 길이 조정

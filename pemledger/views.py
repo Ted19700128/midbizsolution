@@ -20,41 +20,83 @@ from django.views.decorators.csrf import csrf_exempt
 
 def equipment_layout_main(request):
     if request.method == 'POST':
-        form = EquipmentForm(request.POST)
-        try:
+        action = request.POST.get('action')
+
+        if action == 'create':
+            form = EquipmentForm(request.POST)
             if form.is_valid():
-                # 설비 번호 자동 부여 (예: PF001 형식)
+                equipment = form.save(commit=False)
+                # equipment_number 자동 생성 로직
                 last_equipment = Equipment.objects.order_by('id').last()
                 if last_equipment:
-                    last_equipment_number = int(last_equipment.equipment_number[2:])
-                    new_equipment_number = f'PF{last_equipment_number + 1:03d}'
+                    last_number = int(last_equipment.equipment_number[2:])
+                    equipment.equipment_number = f'PF{last_number + 1:03d}'
                 else:
-                    new_equipment_number = 'PF001'
-
-                # 새 설비 생성
-                new_equipment = form.save(commit=False)
-                new_equipment.equipment_number = new_equipment_number
-                new_equipment.save()
-
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    # JSON 응답 반환
-                    return JsonResponse({'success': True, 'equipment_number': new_equipment_number})
-                else:
-                    return redirect('equipment_layout_main')
+                    equipment.equipment_number = 'PF001'
+                equipment.save()
+                return JsonResponse({'success': True, 'equipment_number': equipment.equipment_number})
             else:
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    # 폼 오류 반환
-                    return JsonResponse({'success': False, 'errors': form.errors})
-                else:
-                    return HttpResponseBadRequest('Invalid request')
-        except Exception as e:
-            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'error': str(e)})
+                return JsonResponse({'success': False, 'errors': form.errors})
+        elif action == 'update':
+            equipment_id = request.POST.get('equipment_id')
+            equipment = get_object_or_404(Equipment, id=equipment_id)
+            form = EquipmentForm(request.POST, instance=equipment)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
             else:
-                raise e  # 예외를 다시 발생시켜 오류 페이지를 확인
+                return JsonResponse({'success': False, 'errors': form.errors})
+        elif action == 'lookup':
+            # 조회 기능 구현
+            supplier_name = request.POST.get('supplier_name')
+            plant_location = request.POST.get('plant_location')
+            plant_name = request.POST.get('plant_name')
+            floor = request.POST.get('floor')
+            line_name = request.POST.get('line_name')
+
+            equipments = Equipment.objects.filter(
+                supplier_name=supplier_name,
+                plant_location=plant_location,
+                plant_name=plant_name,
+                floor=floor,
+                line_name=line_name
+            )
+
+            # equipments를 JSON 형태로 변환하여 반환
+            equipment_data = []
+            for equipment in equipments:
+                equipment_data.append({
+                    'process_number': equipment.process_number,
+                    'process_name': equipment.process_name,
+                    'equipment_number': equipment.equipment_number,
+                    'name': equipment.name,
+                    'model_name': equipment.model_name,
+                    'manufacturer': equipment.manufacturer,
+                    'mfg_date': equipment.mfg_date,
+                    'mfg_number': equipment.mfg_number,
+                    'equipment_type': equipment.equipment_type,
+                    'specs': equipment.specs,
+                    'first_install': equipment.first_install,
+                    'first_implement': equipment.first_implement,
+                    'current_operation_place': equipment.current_operation_place,
+                    'management_team': equipment.management_team,
+                    'overhaul': equipment.overhaul,
+                    'current_status': equipment.current_status,
+                })
+
+            if equipments.exists():
+                return JsonResponse({'success': True, 'equipments': equipment_data})
+            else:
+                return JsonResponse({'success': False, 'message': '저장된 레이아웃 정보가 없습니다.'})
+        elif action == 'add_process':
+            form = EquipmentForm(request.POST)
+            if form.is_valid():
+                equipment = form.save()
+                return JsonResponse({'success': True, 'equipment_number': equipment.equipment_number})
+            else:
+                return JsonResponse({'success': False, 'errors': form.errors})
     else:
         form = EquipmentForm()
-
     return render(request, 'pemledger/equipment_layout_main.html', {'form': form})
 
 def pemledger_change_main(request):

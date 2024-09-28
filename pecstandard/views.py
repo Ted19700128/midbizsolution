@@ -7,13 +7,8 @@ from django.db import transaction
 from .models import PECS
 from .forms import CreateDocumentForm, UpdateDocumentForm
 from django.contrib import messages
-from pemledger.models import ManagementTeam    # <== 새로 추가됨(0922)
 from django.http import JsonResponse
 from pemledger.models import Equipment  # Equipment 모델이 pemledger에 있다고 가정
-
-def show_management_teams(request):        # <== 새로 추가됨(0922)
-    management_teams = ManagementTeam.objects.all()
-    return render(request, 'pecstandard/management_team_list.html', {'management_teams': management_teams})
 
 def filter_by_management_team(request):    # <== 새로 추가됨(0922)
     management_team_id = request.GET.get('management_team')
@@ -32,10 +27,6 @@ def get_management_team(request):
         management_team = equipment.management_team.name  # management_team 필드가 Equipment에 있다고 가정
         return JsonResponse({'management_team': management_team})
     return JsonResponse({'error': 'Invalid equipment number'}, status=400)
-
-def show_search_popup(request):
-    management_teams = ManagementTeam.objects.all()  # 모든 관리부서 가져오기  # <== 수정됨(0922)
-    return render(request, 'pecstandard/searchpopup.html', {'management_teams': management_teams})
 
 def pecs_all_main(request):
     # 모든 PECS 문서를 가져옵니다.
