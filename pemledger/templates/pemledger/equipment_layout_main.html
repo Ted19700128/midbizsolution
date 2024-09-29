@@ -1257,8 +1257,8 @@
             const parentRect = addButton.parentElement.getBoundingClientRect(); // 부모 요소 기준
 
             // 입력창 위치 설정
-            addMachineInput.style.left = `${rect.right - parentRect.left - 100}px`; // 부모 요소 기준 상대적인 x 위치
-            addMachineInput.style.top = `${rect.top - parentRect.top + 80}px`; // 부모 요소 기준 상대적인 y 위치
+            addMachineInput.style.left = '${rect.right - parentRect.left - 100}px'; // 부모 요소 기준 상대적인 x 위치
+            addMachineInput.style.top = '${rect.top - parentRect.top + 80}px'; // 부모 요소 기준 상대적인 y 위치
         });
 
         confirmAddMachine.addEventListener('click', () => {
@@ -1282,8 +1282,8 @@
         function createArrowShape(x, y) {
             const arrow = document.createElement('div');
             arrow.className = 'arrow-shape';
-            arrow.style.left = `${x}px`;
-            arrow.style.top = `${y}px`;
+            arrow.style.left ='${x}px';
+            arrow.style.top = '${y}px';
 
             // 화살표 본체 추가
             const arrowBody = document.createElement('div');
@@ -1302,12 +1302,17 @@
             drawingArea.appendChild(arrow);
             saveState(); // 상태 저장
         }
+
+        // 버튼 요소  ==========================0928 추가
         // 버튼 요소 선택
         const createButton = document.getElementById('createButton');
         const saveButton = document.getElementById('saveButton');
         const sendButton = document.getElementById('sendButton');
         const cancelButton = document.getElementById('cancelButton');
         const equipmentForm = document.getElementById('equipmentForm');
+
+        // 저장된 equipment_number를 저장할 변수
+        let savedEquipmentNumber = '';
 
         // "생성" 버튼 클릭 시
         createButton.addEventListener('click', () => {
@@ -1319,48 +1324,56 @@
             }
         });
 
+        // CSRF 토큰 가져오기 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
         // "저장" 버튼 클릭 시
         saveButton.addEventListener('click', () => {
             // 폼 데이터 수집
             const formData = new FormData(equipmentForm);
-            // CSRF 토큰 가져오기
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-            const csrftoken = getCookie('csrftoken');
 
             // AJAX로 데이터 전송
             fetch('', {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest', // AJAX 요청임을 명시
                 },
                 body: formData,
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errData => {
+                        throw new Error(errData.error || 'Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert('데이터가 저장되었습니다.');
-                    // 폼 숨기기
-                    equipmentForm.classList.add('hidden');
-                    // equipment_number 업데이트
+                    // equipment_number 저장
+                    savedEquipmentNumber = data.equipment_number;
+                    // 폼에 equipment_number 표시
                     const equipmentNumberField = document.querySelector('[name="equipment_number"]');
-                    equipmentNumberField.value = data.equipment_number;
+                    equipmentNumberField.value = savedEquipmentNumber;
                 } else {
                     alert('데이터 저장에 실패했습니다.');
-                    // 오류 처리
-                    // ... 필요 시 추가 ...
+                    console.error('Form errors:', data.errors);
                 }
             })
             .catch(error => {
@@ -1372,20 +1385,22 @@
         // "전송" 버튼 클릭 시
         sendButton.addEventListener('click', () => {
             if (selectedShapes.length === 1) {
-                // equipment_number 가져오기
-                const equipmentNumberField = document.querySelector('[name="equipment_number"]');
-                const equipmentNumber = equipmentNumberField.value;
-                // 선택된 도형에 표시
-                const shape = selectedShapes[0];
-                let label = shape.querySelector('.shape-label');
-                if (!label) {
-                    label = document.createElement('div');
-                    label.className = 'shape-label';
-                    shape.appendChild(label);
+                if (savedEquipmentNumber) {
+                    const equipmentNumber = savedEquipmentNumber;
+                    // 선택된 도형에 표시
+                    const shape = selectedShapes[0];
+                    let label = shape.querySelector('.shape-label');
+                    if (!label) {
+                        label = document.createElement('div');
+                        label.className = 'shape-label';
+                        shape.appendChild(label);
+                    }
+                    label.textContent = equipmentNumber;
+                    // 폼 숨기기
+                    equipmentForm.classList.add('hidden');
+                } else {
+                    alert('저장된 equipment_number가 없습니다. 먼저 저장을 누르세요.');
                 }
-                label.textContent = equipmentNumber;
-                // 폼 숨기기
-                equipmentForm.classList.add('hidden');
             } else {
                 alert('하나의 도형을 선택하세요.');
             }
@@ -1396,8 +1411,8 @@
             // 폼 리셋 및 숨기기
             equipmentForm.reset();
             equipmentForm.classList.add('hidden');
+            savedEquipmentNumber = '';
         });
-
 
     </script>
 </body>
