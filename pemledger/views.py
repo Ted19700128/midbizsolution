@@ -21,37 +21,17 @@ from django.views.decorators.csrf import csrf_exempt
 def equipment_layout_main(request):
     if request.method == 'POST':
         form = EquipmentForm(request.POST)
-        try:
-            if form.is_valid():
-                # 설비 번호 자동 부여 (예: PF001 형식)
-                last_equipment = Equipment.objects.order_by('id').last()
-                if last_equipment:
-                    last_equipment_number = int(last_equipment.equipment_number[2:])
-                    new_equipment_number = f'PF{last_equipment_number + 1:03d}'
-                else:
-                    new_equipment_number = 'PF001'
-
-                # 새 설비 생성
-                new_equipment = form.save(commit=False)
-                new_equipment.equipment_number = new_equipment_number
-                new_equipment.save()
-
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    # JSON 응답 반환
-                    return JsonResponse({'success': True, 'equipment_number': new_equipment_number})
-                else:
-                    return redirect('equipment_layout_main')
-            else:
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    # 폼 오류 반환
-                    return JsonResponse({'success': False, 'errors': form.errors})
-                else:
-                    return HttpResponseBadRequest('Invalid request')
-        except Exception as e:
+        if form.is_valid():
+            new_equipment = form.save()  # equipment_number is generated in the model's save()
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                return JsonResponse({'success': False, 'error': str(e)})
+                return JsonResponse({'success': True, 'equipment_number': new_equipment.equipment_number})
             else:
-                raise e  # 예외를 다시 발생시켜 오류 페이지를 확인
+                return redirect('equipment_layout_main')
+        else:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+            else:
+                return HttpResponseBadRequest('Invalid request')
     else:
         form = EquipmentForm()
 

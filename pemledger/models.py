@@ -9,7 +9,7 @@ class Equipment(models.Model):
     line_name = models.CharField(max_length=5, blank=True, null=True)
     process_number = models.CharField(max_length=5, blank=True, null=True)
     process_name = models.CharField(max_length=10, blank=True, null=True)
-    equipment_number = models.CharField(max_length=5, unique=True)
+    equipment_number = models.CharField(max_length=5, unique=True, blank=True, null=True)
     name = models.CharField(max_length=10)
     model_name = models.CharField(max_length=15)
     manufacturer = models.CharField(max_length=10)
