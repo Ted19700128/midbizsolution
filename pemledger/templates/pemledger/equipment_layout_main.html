@@ -469,6 +469,29 @@
         <table>
             <!-- 1행 : 설비번호, 설비이름, 모델명 -->
             <tr>
+                <th>회사명</th>
+                <th>위치</th>
+                <th>공장명</th>
+                <th>층</th>
+            </tr>
+            <tr>
+                <td>{{ form.company_name }}</td>
+                <td>{{ form.plant_location }}</td>
+                <td>{{ form.plant_name }}</td>
+                <td>{{ form.plant_floor }}</td>
+            </tr>
+
+            <tr>
+                <th>라인명</th>
+                <th>공정번호</th>
+                <th>공정명</th>
+            </tr>
+            <tr>
+                <td>{{ form.line_name }}</td>
+                <td>{{ form.process_number }}</td>
+                <td>{{ form.process_name }}</td>
+            </tr>
+            <tr>
                 <th>설비번호</th>
                 <th>설비명</th>
                 <th>모델명</th>
