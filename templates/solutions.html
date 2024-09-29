@@ -1,16 +1,45 @@
-<!-- D:/web/midbizsolution/templates/solutions.html -->
+<!-- midbizsolution/templates/solutions.html-->
 
 {% extends 'base.html' %}
 
-{% block title %}중소기업용 솔루션{% endblock %}
+{% block title %}설비종합관리 메인 페이지{% endblock %}
 
 {% block content %}
-<h2>중소기업용 솔루션</h2>
-<div>
-    <a href="{% url 'plantlayout:playout_main' %}" class="btn">공장 레이아웃</a>
-    <a href="{% url 'pemledger_all_main' %}" class="btn">설비관리대장</a>
-    <a href="{% url 'pecs_all_main' %}" class="btn">설비 점검 기준서</a>
-    <a href="#" class="btn">설비등급평가</a>
-    <a href="{% url 'equipment_layout_main' %}" class="btn">레이아웃</a>
+<style>
+    .rectangle-button {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        background-color: #00a000; /* 초록색 배경 */
+        border: 2px solid #00a000; /* 얇은 초록색 테두리 */
+        border-radius: 10px; /* 약간 둥근 모서리 */
+        text-align: center;
+        line-height: 100px; /* 수직 중앙 정렬 */
+        color: white;
+        font-weight: bold;
+        text-decoration: none; /* 링크 밑줄 제거 */
+        cursor: pointer;
+        margin: 10px; /* 버튼 간 간격 */
+    }
+
+    .rectangle-button:hover {
+        background-color: #008000; /* 호버 시 더 어두운 초록색 */
+        border-color: #008000; /* 테두리도 어두운 초록색 */
+    }
+
+    /* 부모 요소에 중앙 정렬 */
+    .center-container {
+        text-align: center; /* 가로 중앙 정렬 */
+        margin-top: 50px; /* 상단 여백 */
+    }
+</style>
+
+<div class="center-container">
+    <h2>설비종합관리</h2>
+    <div>
+        <a href="{% url 'equipment_layout_main' %}" class="rectangle-button">설비관리대장</a>    
+        <a href="{% url 'pecs_all_main' %}" class="rectangle-button">설비점검기준</a>
+        <a href="#" class="rectangle-button">설비등급평가</a>
+    </div>
 </div>
 {% endblock %}

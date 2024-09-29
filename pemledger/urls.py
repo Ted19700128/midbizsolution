@@ -1,6 +1,6 @@
 # D:/web/midbizsolution/pemledger/urls.py
 
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 urlpatterns = [    
@@ -12,4 +12,6 @@ urlpatterns = [
     path('pemledger/change/', views.pemledger_change_main_mode, name='pemledger_change_main_mode'),  # 설비 변경 메인 페이지
     path('pemledger/export/', views.export_to_excel, name='export_to_excel'),  # 엑셀 내보내기
     path('health/', views.health_check, name='health_check'),  # 헬스 체크
+
+    path('pecstandard/', include('pecstandard.urls')),
 ]
