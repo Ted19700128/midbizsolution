@@ -43,7 +43,7 @@ class EquipmentForm(forms.ModelForm):
             'line_name': '라인명',
             'process_number': '공정번호',
             'process_name': '공정명',
-            'euipment_number': '설비번호',
+            'equipment_number': '설비번호',
             'name': '설비명',
             'model_name': '모델명',
             'manufacturer': '제조사',
