@@ -296,21 +296,9 @@
         form {
             margin-top: 20px; /* 고정된 헤더 높이만큼 상단 여백 추가 */
             width: 30%; /* 폼의 너비를 30%로 설정 */
+            height: 70%;
             background-color: #ffffff; /* 폼의 배경을 흰색으로 설정 */
-            padding: 8px; /* 폼 안쪽 여백 설정 */
-        }
-
-        /* 폼을 감싸는 컨테이너 */
-        .form-container {         
-            width: 100%; /* 컨테이너 너비 설정 */
-            background-color: #fff;
-            position: relative;
-            border: 0.5px solid #ccc;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 0px;
+            padding: 0px; /* 폼 안쪽 여백 설정 */
         }
 
         /* 우측 영역 : 상단 헤더 */
@@ -362,7 +350,7 @@
         } 
 
         /* 테이블 열 폭 조정 스타일 */
-        table {
+        form table {
             margin-top: 10px;
             width: 100%; /* 테이블 너비를 폼 내에서 100%로 설정 */
             border-collapse: collapse; /* 경계선 겹침 방지 */
@@ -493,16 +481,13 @@
     <!-- 폼 컨테이너 -->
     <form method="post" id="equipmentForm" class="hidden">
         {% csrf_token %}
-        <div class="form-container">
-            <!-- 영역 1: 상단 헤더 -->
-            <div class="form-header">
-                <!-- 타이틀 추가 -->
-                <span>설비관리대장</span>
-                <div class="form-header-buttons">
-                    <button class="function-button" id="createButton">생성</button>
-                    <button class="function-button" id="updateButton">변경</button>
-                    <button class="function-button" id="viewButton">조회</button>
-                </div>
+        <div class="form-header">
+            <!-- 타이틀 추가 -->
+            <span>설비관리대장</span>
+            <div class="form-header-buttons">
+                <button class="form--button" id="createButton">생성</button>
+                <button class="form-function-button" id="updateButton">변경</button>
+                <button class="form-function-button" id="viewButton">조회</button>
             </div>
         </div>
 
@@ -636,26 +621,51 @@
 
         // 기계 장비 목록과 크기
         let machines = [
-            { name: '기본', width: 60, height: 40 },
-            { name: '선반', width: 50, height: 30 },
-            { name: '머시닝센터', width: 70, height: 50 },
-            { name: '탭핑센터', width: 40, height: 30 },
-            { name: '사출기(100t)', width: 60, height: 24 },
-            { name: '사출기(300t)', width: 90, height: 30 },
-            { name: '사출기(500t)', width: 120, height: 40 },
-            { name: '사출기(1000t)', width: 160, height: 50 },
-            { name: '프레스(150t)', width: 70, height: 36 },
-            { name: '프레스(300t)', width: 90, height: 40 },
-            { name: '프레스(450t)', width: 110, height: 50 },
-            { name: '프레스(600t)', width: 130, height: 60 },
-            { name: '프레스(850t)', width: 140, height: 150 },
-            { name: '프레스(1000t)', width: 160, height: 80 },
-            { name: '대형로', width: 200, height: 40 }
+            { name: '기본', width: 30, height: 20 },
+            { name: '선반', width: 25, height: 15 },
+            { name: '머시닝센터', width: 35, height: 25 },
+            { name: '탭핑센터', width: 20, height: 15 },
+            { name: '사출기(100t)', width: 30, height: 12 },
+            { name: '사출기(300t)', width: 45, height: 15 },
+            { name: '사출기(500t)', width: 60, height: 20 },
+            { name: '사출기(1000t)', width: 80, height: 25 },
+            { name: '프레스(150t)', width: 35, height: 18 },
+            { name: '프레스(300t)', width: 45, height: 20 },
+            { name: '프레스(450t)', width: 55, height: 25 },
+            { name: '프레스(600t)', width: 65, height: 30 },
+            { name: '프레스(850t)', width: 70, height: 75 },
+            { name: '프레스(1000t)', width: 80, height: 40 },
+            { name: '대형로', width: 100, height: 20 }
         ];
 
-        // ========================================================================
- 
-        // =========================================================
+        // 기계 장비 버튼 생성 함수
+        function createMachineButtons() {
+            // 기존 버튼 제거
+            const existingButtons = leftPanel.querySelectorAll('.machine-button');
+            existingButtons.forEach(btn => btn.remove());
+
+            // 버튼 생성
+            machines.forEach(machine => {
+                const button = document.createElement('button');
+                button.className = 'machine-button';
+                button.textContent = machine.name;
+                button.addEventListener('click', () => {
+                    if (selectedMachine === machine) {
+                        // 이미 선택된 상태이면 선택 해제
+                        selectedMachine = null;
+                        button.classList.remove('active');
+                    } else {
+                        // 다른 버튼 비활성화
+                        deactivateOtherButtons();
+                        // 선택된 기계 장비 설정
+                        selectedMachine = machine;
+                        button.classList.add('active');
+                    }
+                });
+                leftPanel.appendChild(button);
+            });
+        }
+
         // 초기 버튼 생성
         createMachineButtons();
 
@@ -707,17 +717,8 @@
             }
         });
 
-        // =============================================================
-        let lastRectanglePosition = { top: 0, left: 0, width: 0, height: 0 }; // 마지막 도형의 위치와 크기
-
         // 도형 생성 함수
         function createRectangle(x, y, width, height) {
-            // 마지막 도형이 있는 경우, 그 오른쪽 10px에 새 도형을 배치
-            if (lastRectanglePosition.width > 0) {
-                x = lastRectanglePosition.left + lastRectanglePosition.width + 10; // 이전 도형의 오른쪽 10px 떨어진 위치
-                y = lastRectanglePosition.top; // y 좌표는 이전 도형과 동일
-            }
-
             // 사각형이 그리기 영역의 범위를 벗어나지 않도록 보정
             const maxLeft = drawingArea.clientWidth - width;
             const maxTop = drawingArea.clientHeight - height;
@@ -742,44 +743,9 @@
 
             // 그리기 영역에 추가
             drawingArea.appendChild(newRectangle);
-            
-            // 새 도형의 위치와 크기를 저장
-            lastRectanglePosition = { top: top, left: left, width: width, height: height };
-
             saveState(); // 상태 저장
         }
 
-        // 기계 장비 버튼 생성 후 첫 클릭 시 도형 생성 함수 호출
-        function createMachineButtons() {
-            // 기존 버튼 제거
-            const existingButtons = leftPanel.querySelectorAll('.machine-button');
-            existingButtons.forEach(btn => btn.remove());
-
-            // 버튼 생성
-            machines.forEach(machine => {
-                const button = document.createElement('button');
-                button.className = 'machine-button';
-                button.textContent = machine.name;
-                button.addEventListener('click', () => {
-                    if (selectedMachine === machine) {
-                        // 이미 선택된 상태이면 선택 해제
-                        selectedMachine = null;
-                        button.classList.remove('active');
-                    } else {
-                        // 다른 버튼 비활성화
-                        deactivateOtherButtons();
-                        // 선택된 기계 장비 설정
-                        selectedMachine = machine;
-                        button.classList.add('active');
-
-                        // 도형 생성 호출
-                        createRectangle(0, 0, machine.width, machine.height); // 좌표는 처음에는 0, 0에서 시작
-                    }
-                });
-                leftPanel.appendChild(button);
-            });
-        }   
-        // ==================================================== 
         // 삽입 도형 생성 함수 (rectangleCount에 포함되지 않음)
         function createInsertShape(type) {
             const x = drawingArea.clientWidth / 2 - 25; // 중앙 위치
@@ -1274,8 +1240,8 @@
             const parentRect = addButton.parentElement.getBoundingClientRect(); // 부모 요소 기준
 
             // 입력창 위치 설정
-            addMachineInput.style.left = '${rect.right - parentRect.left - 100}px'; // 부모 요소 기준 상대적인 x 위치
-            addMachineInput.style.top = '${rect.top - parentRect.top + 80}px'; // 부모 요소 기준 상대적인 y 위치
+            addMachineInput.style.left = `${rect.right - parentRect.left - 100}px`; // 부모 요소 기준 상대적인 x 위치
+            addMachineInput.style.top = `${rect.top - parentRect.top + 80}px`; // 부모 요소 기준 상대적인 y 위치
         });
 
         confirmAddMachine.addEventListener('click', () => {
@@ -1299,8 +1265,8 @@
         function createArrowShape(x, y) {
             const arrow = document.createElement('div');
             arrow.className = 'arrow-shape';
-            arrow.style.left ='${x}px';
-            arrow.style.top = '${y}px';
+            arrow.style.left = `${x}px`;
+            arrow.style.top = `${y}px`;
 
             // 화살표 본체 추가
             const arrowBody = document.createElement('div');
@@ -1319,17 +1285,12 @@
             drawingArea.appendChild(arrow);
             saveState(); // 상태 저장
         }
-
-        // 버튼 요소  ==========================0928 추가
         // 버튼 요소 선택
         const createButton = document.getElementById('createButton');
         const saveButton = document.getElementById('saveButton');
         const sendButton = document.getElementById('sendButton');
         const cancelButton = document.getElementById('cancelButton');
         const equipmentForm = document.getElementById('equipmentForm');
-
-        // 저장된 equipment_number를 저장할 변수
-        let savedEquipmentNumber = '';
 
         // "생성" 버튼 클릭 시
         createButton.addEventListener('click', () => {
@@ -1341,56 +1302,48 @@
             }
         });
 
-        // CSRF 토큰 가져오기 함수
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
-
         // "저장" 버튼 클릭 시
         saveButton.addEventListener('click', () => {
             // 폼 데이터 수집
             const formData = new FormData(equipmentForm);
+            // CSRF 토큰 가져오기
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
 
             // AJAX로 데이터 전송
             fetch('', {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrftoken,
-                    'X-Requested-With': 'XMLHttpRequest', // AJAX 요청임을 명시
                 },
                 body: formData,
             })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errData => {
-                        throw new Error(errData.error || 'Network response was not ok');
-                    });
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('데이터가 저장되었습니다.');
-                    // equipment_number 저장
-                    savedEquipmentNumber = data.equipment_number;
-                    // 폼에 equipment_number 표시
+                    // 폼 숨기기
+                    equipmentForm.classList.add('hidden');
+                    // equipment_number 업데이트
                     const equipmentNumberField = document.querySelector('[name="equipment_number"]');
-                    equipmentNumberField.value = savedEquipmentNumber;
+                    equipmentNumberField.value = data.equipment_number;
                 } else {
                     alert('데이터 저장에 실패했습니다.');
-                    console.error('Form errors:', data.errors);
+                    // 오류 처리
+                    // ... 필요 시 추가 ...
                 }
             })
             .catch(error => {
@@ -1402,22 +1355,20 @@
         // "전송" 버튼 클릭 시
         sendButton.addEventListener('click', () => {
             if (selectedShapes.length === 1) {
-                if (savedEquipmentNumber) {
-                    const equipmentNumber = savedEquipmentNumber;
-                    // 선택된 도형에 표시
-                    const shape = selectedShapes[0];
-                    let label = shape.querySelector('.shape-label');
-                    if (!label) {
-                        label = document.createElement('div');
-                        label.className = 'shape-label';
-                        shape.appendChild(label);
-                    }
-                    label.textContent = equipmentNumber;
-                    // 폼 숨기기
-                    equipmentForm.classList.add('hidden');
-                } else {
-                    alert('저장된 equipment_number가 없습니다. 먼저 저장을 누르세요.');
+                // equipment_number 가져오기
+                const equipmentNumberField = document.querySelector('[name="equipment_number"]');
+                const equipmentNumber = equipmentNumberField.value;
+                // 선택된 도형에 표시
+                const shape = selectedShapes[0];
+                let label = shape.querySelector('.shape-label');
+                if (!label) {
+                    label = document.createElement('div');
+                    label.className = 'shape-label';
+                    shape.appendChild(label);
                 }
+                label.textContent = equipmentNumber;
+                // 폼 숨기기
+                equipmentForm.classList.add('hidden');
             } else {
                 alert('하나의 도형을 선택하세요.');
             }
@@ -1428,10 +1379,9 @@
             // 폼 리셋 및 숨기기
             equipmentForm.reset();
             equipmentForm.classList.add('hidden');
-            savedEquipmentNumber = '';
         });
+
 
     </script>
 </body>
 </html>
-
