@@ -7,7 +7,7 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
         fields = [
-            'supplier_name', 'plant_location', 'plant_name', 'floor', 'line_name', 'process_number', 'process_name',
+            'supplier_name', 'plant_name', 'floor', 'line_name', 'process_number', 'process_name',
             'equipment_number', 'name', 'model_name', 'manufacturer', 'mfg_date', 'mfg_number', 'equipment_type', 'specs',
             'first_install', 'first_implement', 'current_operation_place', 'management_team', 'overhaul',
             'current_status'
@@ -15,7 +15,6 @@ class EquipmentForm(forms.ModelForm):
         # widgets와 labels를 Meta 클래스 안에 정의
         widgets = {
             'supplier_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'plant_location': forms.TextInput(attrs={'class': 'form-control'}),
             'plant_name': forms.TextInput(attrs={'class': 'form-control'}),
             'floor': forms.TextInput(attrs={'class': 'form-control'}),
             'line_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -39,7 +38,6 @@ class EquipmentForm(forms.ModelForm):
 
         labels = {
             'supplier_name': '업체명',
-            'plant_location': '위치',
             'plant_name': '공장명',
             'floor': '층',
             'line_name': '라인명',
