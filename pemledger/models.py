@@ -2,6 +2,18 @@
 
 from django.db import models, transaction
 
+class Shape(models.Model):
+    supplier_name = models.CharField(max_length=10, blank=True, null=True)
+    plant_name = models.CharField(max_length=2, blank=True, null=True)
+    floor = models.CharField(max_length=2, blank=True, null=True)
+    line_name = models.CharField(max_length=5, blank=True, null=True)
+    left = models.IntegerField()
+    top = models.IntegerField()
+    width = models.IntegerField()
+    height = models.IntegerField()
+    rotation = models.IntegerField(null=True, blank=True)
+    equipment_number = models.CharField(max_length=5, unique=True, blank=True, null=True)
+
 class Equipment(models.Model):
     supplier_name = models.CharField(max_length=10, blank=True, null=True)
     plant_name = models.CharField(max_length=2, blank=True, null=True)

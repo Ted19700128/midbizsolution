@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db import transaction
-from .models import Equipment
+from .models import Equipment, Shape
 from .forms import EquipmentForm
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -17,25 +17,99 @@ from openpyxl.styles import Alignment, Font
 from django.http import JsonResponse  # JsonResponse 임포트 
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 def equipment_layout_main(request):
     if request.method == 'POST':
-        form = EquipmentForm(request.POST)
-        if form.is_valid():
-            new_equipment = form.save()  # equipment_number is generated in the model's save()
-            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                return JsonResponse({'success': True, 'equipment_number': new_equipment.equipment_number})
+        if request.is_ajax():
+            form = EquipmentForm(request.POST)
+            if form.is_valid():
+                equipment = form.save()
+                equipment_number = equipment.equipment_number
+
+                # 선택된 도형의 equipment_number 업데이트
+                shape_id = request.POST.get('shape_id')
+                if shape_id:
+                    try:
+                        shape = Shape.objects.get(id=shape_id)
+                        shape.equipment_number = equipment_number
+                        shape.save()
+                    except Shape.DoesNotExist:
+                        pass
+
+                return JsonResponse({'success': True, 'equipment_number': equipment_number})
             else:
-                return redirect('equipment_layout_main')
-        else:
-            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-            else:
-                return HttpResponseBadRequest('Invalid request')
+        else:
+            return HttpResponseBadRequest('Invalid request')
     else:
         form = EquipmentForm()
-
     return render(request, 'pemledger/equipment_layout_main.html', {'form': form})
+
+@csrf_exempt
+def get_line_shapes(request):
+    if request.method == 'POST' and request.is_ajax():
+        data = json.loads(request.body)
+        supplier_name = data.get('supplier_name')
+        plant_name = data.get('plant_name')
+        floor = data.get('floor')
+        line_name = data.get('line_name')
+
+        shapes = Shape.objects.filter(
+            supplier_name=supplier_name,
+            plant_name=plant_name,
+            floor=floor,
+            line_name=line_name
+        )
+
+        shapes_data = []
+        for shape in shapes:
+            shapes_data.append({
+                'id': shape.id,
+                'left': shape.left,
+                'top': shape.top,
+                'width': shape.width,
+                'height': shape.height,
+                'rotation': shape.rotation,
+                'equipment_number': shape.equipment_number,
+            })
+
+        return JsonResponse({'success': True, 'shapes': shapes_data})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+
+def get_equipment_data(request):
+    if request.method == 'GET' and request.is_ajax():
+        equipment_number = request.GET.get('equipment_number')
+        try:
+            equipment = Equipment.objects.get(equipment_number=equipment_number)
+            equipment_data = {
+                'supplier_name': equipment.supplier_name,
+                'plant_name': equipment.plant_name,
+                'floor': equipment.floor,
+                'line_name': equipment.line_name,
+                'process_number': equipment.process_number,
+                'process_name': equipment.process_name,
+                'equipment_number': equipment.equipment_number,
+                'name': equipment.name,
+                'model_name': equipment.model_name,
+                'manufacturer': equipment.manufacturer,
+                'mfg_date': equipment.mfg_date.strftime('%Y-%m-%d') if equipment.mfg_date else '',
+                'mfg_number': equipment.mfg_number,
+                'equipment_type': equipment.equipment_type,
+                'specs': equipment.specs,
+                'first_install': equipment.first_install.strftime('%Y-%m-%d') if equipment.first_install else '',
+                'first_implement': equipment.first_implement.strftime('%Y-%m-%d') if equipment.first_implement else '',
+                'current_operation_place': equipment.current_operation_place,
+                'management_team': equipment.management_team,
+                'overhaul': equipment.overhaul,
+                'current_status': equipment.current_status,
+            }
+            return JsonResponse({'success': True, 'equipment': equipment_data})
+        except Equipment.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Equipment not found'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 def pemledger_change_main(request):
     equipments = Equipment.objects.all()
